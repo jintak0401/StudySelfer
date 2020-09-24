@@ -36,7 +36,7 @@ const correctAns = [
   5,
 ];
 
-const ResultTable = ({ time, studentAns }) => {
+const ResultTable = ({ time, studentAns, correctAns }) => {
   const [table, setTable] = useState({
     tableHead: ["풀이시간", "점수", "등급"],
     tableData: [
