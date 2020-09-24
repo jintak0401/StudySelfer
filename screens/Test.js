@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import TestQuestions from "./TestQuestions";
 import { StyleSheet, View, Button, SectionList, Text } from "react-native";
-import Progress from "react-native-progress";
 
 const testSet = {
   2020: [

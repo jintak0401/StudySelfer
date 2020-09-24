@@ -1,31 +1,42 @@
-import { useLinkProps } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Text,
   View,
   StyleSheet,
   Button,
   Image,
   Dimensions,
+  ScrollView,
+  Text,
 } from "react-native";
+import ScrollContainer from "./ScrollContainer";
+import PropTypes from "prop-types";
+import styled from "styled-components/native";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
 
 const falseArr = [false, false, false, false, false];
 
-export default ({ questNum, data }) => {
+export default ({ questNum, questData }) => {
+  const [ratio, setRatio] = useState(1);
+  useEffect(() => {
+    if (questData) {
+      Image.getSize(questData.questImageUrl, (width, height) => {
+        setRatio(width / height);
+      });
+    }
+  }, [questData]);
   return (
-    <View style={styles.container}>
-      {data ? (
+    <ScrollContainer>
+      {questData ? (
         <Image
-          style={{ width: WIDTH, height: HEIGHT }}
-          source={{ uri: data.questImageUrl }}
+          style={{ width: WIDTH * 0.9, height: undefined, aspectRatio: ratio }}
+          source={{ uri: questData.questImageUrl }}
           resizeMode="contain"
         />
       ) : (
-        <Text style={styles.text}>{questNum}</Text>
+        <Text>questNum</Text>
       )}
-    </View>
+    </ScrollContainer>
   );
 };
 

@@ -18,7 +18,11 @@ export default (props) => {
       ) : (
         <></>
       )}
-      <Button title="해설보기" onPress={() => navigation.navigate("해설")} />
+      <Button
+        buttonStyle={{ borderRadius: 100 }}
+        title="해설보기"
+        onPress={() => navigation.navigate("해설", { qNum: questNum })}
+      />
     </View>
   );
 };
@@ -26,6 +30,8 @@ export default (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: 60,
+    width: "100%",
     borderBottomWidth: 1,
     justifyContent: "space-between",
     alignItems: "center",
