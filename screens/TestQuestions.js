@@ -50,8 +50,8 @@ const LeftBtn = styled.TouchableOpacity`
 
 export default ({ navigation }) => {
   const [questNum, setQuestNum] = useState(30);
-  const [answers, setAnswers] = useState(Array(30).fill(0));
-  const [bookmarks, setBookmarks] = useState(Array(30).fill(false));
+  const [studentAns, setStudentAns] = useState({});
+  const [bookmarks, setBookmarks] = useState({});
   const [questData, setQuestData] = useState({});
   const [testTime, readyTime] = [6000, 5];
   const [time, setTime] = useState(testTime + readyTime);
@@ -66,18 +66,17 @@ export default ({ navigation }) => {
     const tmp = await apiTestQuests();
     setQuestData({ ...tmp });
   };
-  const bookmarking = (n) =>
-    setBookmarks([
-      ...bookmarks.slice(0, n - 1),
-      !bookmarks[n - 1],
-      ...bookmarks.slice(n),
-    ]);
+  const bookmarking = (n) => {
+    const tmp = { ...bookmarks };
+    tmp[n] = !tmp[n];
+    setBookmarks({ ...tmp });
+  };
   const activateClock = (n) => setClock(!clock);
   const selectAns = (n) => {
-    const tmp = [...answers];
-    if (questNum <= 21) tmp[questNum - 1] = answers[questNum - 1] === n ? 0 : n;
-    else tmp[questNum - 1] = n;
-    setAnswers([...tmp]);
+    const tmp = { ...studentAns };
+    if (questNum <= 21) tmp[questNum] = studentAns[questNum] === n ? 0 : n;
+    else tmp[questNum] = n;
+    setStudentAns({ ...tmp });
   };
   const changeQuestNum = (num) => {
     if (1 <= num && num <= 30) {
@@ -105,7 +104,7 @@ export default ({ navigation }) => {
         />
         <TestAdditionalFunc
           funcName="bookmark"
-          isActive={bookmarks[questNum - 1]}
+          isActive={bookmarks[questNum]}
           setActive={bookmarking}
           questNum={questNum}
         />
@@ -115,14 +114,13 @@ export default ({ navigation }) => {
         <ProgressBar time={time} totalTime={testTime + readyTime} />
       ) : null}
       <Questions questNum={questNum} questData={questData[questNum]} />
-
       {questNum <= 21 ? (
         <AnsbtnSet>
           {[1, 2, 3, 4, 5].map((n) => (
             <Ansbtn
               key={`${questNum}${n}`}
               ansNum={n}
-              isSelected={answers[questNum - 1] === n}
+              isSelected={studentAns[questNum] === n}
               selectAns={selectAns}
             />
           ))}
@@ -132,18 +130,17 @@ export default ({ navigation }) => {
           <Input
             placeholder={"답을 입력해주세요"}
             onSubmit={selectAns}
-            defaultValue={answers[questNum - 1]}
+            defaultValue={studentAns[questNum]}
           />
         </InputContainer>
       )}
-
       <MoveQuestBtn
         inTest={true}
         questNum={questNum}
         changeQuestNum={changeQuestNum}
         time={readyTime + testTime - time}
         questData={questData}
-        studentAns={answers}
+        studentAns={studentAns}
       />
     </Container>
   );

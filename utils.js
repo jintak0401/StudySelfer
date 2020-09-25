@@ -12,10 +12,10 @@ export const getGrade = (studentAns, correctAns) => {
   const math = { 4: 3, 14: 4, 22: 3, 26: 4 };
   let allotedScore = 2;
   const ret = { totalScore: 0, wrongAns: {} };
-  for (let i = 0; i < 30; i++) {
-    allotedScore = i + 1 in math ? math[i + 1] : allotedScore;
+  for (let i = 1; i <= 30; i++) {
+    allotedScore = i in math ? math[i] : allotedScore;
     if (studentAns[i] === correctAns[i]) ret.totalScore += allotedScore;
-    else ret.wrongAns[i + 1] = [studentAns[i], correctAns[i]];
+    else ret.wrongAns[i] = [studentAns[i], correctAns[i]];
   }
   return ret;
 };

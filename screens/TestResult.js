@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Button,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import QuestResult from "../components/QuestResult";
 import ScrollContainer from "../components/ScrollContainer";
 import ResultTable from "./../components/ResultTable";
@@ -12,40 +18,39 @@ const Container = styled.View`
 `;
 
 export default (props) => {
-  const { time, studentAns } = props.route.params;
-  const selAns = [1, 2, 3, 4, 5, 1, 2];
-  const corAns = [1, 2, 3, 4, 1, 2, 2];
-  const [correctAns, setCorrectAns] = useState({});
-  const [solutions, setSolutions] = useState({});
+  const { time, studentAns, questData } = props.route.params;
+  const [comments, setComments] = useState({
+    loading: true,
+    correctAns: {},
+    solutions: {},
+  });
 
-  const getCorrectAns = async () => {
-    const tmp = await apiTestAns();
-    setCorrectAns({ ...tmp });
-  };
-
-  const getSolutions = async () => {
-    const tmp = await apiTestSolutions();
-    setSolutions({ ...tmp });
+  const getComments = async () => {
+    const { correctAns } = await apiTestAns();
+    const { solutionImageUrl: solutions } = await apiTestSolutions();
+    setComments({
+      loading: false,
+      correctAns,
+      solutions,
+    });
   };
 
   useEffect(() => {
-    getCorrectAns();
-    getSolutions();
-  });
+    getComments();
+  }, []);
 
-  // console.log(correctAns);
-
-  return (
+  return comments.loading ? (
+    <View style={{ flex: 1 }}>
+      <ActivityIndicator flex={1} color="black" size="small" />
+    </View>
+  ) : (
     <Container>
-      <Button title="jintak" onPress={() => props.navigation.pop(2)} />
-      {correctAns ? (
-        <ResultTable
-          time={time}
-          studentAns={studentAns}
-          correctAns={correctAns}
-        />
-      ) : null}
-      {/* <ResultTable time={time} studentAns={studentAns} /> */}
+      {/* <Button title="jintak" onPress={() => props.navigation.pop(2)} /> */}
+      <ResultTable
+        time={time}
+        studentAns={studentAns}
+        correctAns={comments.correctAns}
+      />
       <ScrollContainer>
         {[...Array(30)]
           .map((x, i) => i + 1)
@@ -53,8 +58,11 @@ export default (props) => {
             <QuestResult
               key={n}
               questNum={n}
-              studentAns={selAns[n - 1]}
-              corAns={corAns[n - 1]}
+              studentAns={studentAns}
+              correctAns={comments.correctAns}
+              // solutions={comments.solutions}
+              solutions={comments.solutions}
+              questData={questData}
               navigation={props.navigation}
             />
           ))}

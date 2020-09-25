@@ -2,39 +2,11 @@ import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Table, Row, Rows } from "react-native-table-component";
 import { getGrade, timerFormat } from "./../utils";
+import styled from "styled-components/native";
 
-const correctAns = [
-  1,
-  2,
-  3,
-  4,
-  5,
-  1,
-  2,
-  3,
-  4,
-  5,
-  1,
-  2,
-  3,
-  4,
-  5,
-  1,
-  2,
-  3,
-  4,
-  5,
-  1,
-  2,
-  3,
-  4,
-  5,
-  1,
-  2,
-  3,
-  4,
-  5,
-];
+const Container = styled.View`
+  margin-vertical: 5;
+`;
 
 const ResultTable = ({ time, studentAns, correctAns }) => {
   const [table, setTable] = useState({
@@ -49,10 +21,10 @@ const ResultTable = ({ time, studentAns, correctAns }) => {
   });
 
   return (
-    <View style={styles.container}>
+    <Container>
       <Table
         borderStyle={{ borderWidth: 2, borderColor: "#c8e1ff" }}
-        style={{ marginBottm: 10 }}
+        style={{ marginBottom: 10 }}
       >
         <Row
           data={table.tableHead}
@@ -61,7 +33,7 @@ const ResultTable = ({ time, studentAns, correctAns }) => {
         />
         <Rows data={table.tableData} textStyle={styles.text} />
       </Table>
-    </View>
+    </Container>
   );
 };
 

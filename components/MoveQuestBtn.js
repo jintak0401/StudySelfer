@@ -68,7 +68,7 @@ MoveQuestBtn.propTypes = {
   changeQuestNum: PropTypes.func.isRequired,
   time: PropTypes.number,
   questData: PropTypes.object,
-  studentAns: PropTypes.array,
+  studentAns: PropTypes.object,
 };
 
 export default MoveQuestBtn;

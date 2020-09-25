@@ -12,6 +12,8 @@ export const apiTestQuests = async () => {
   }
 };
 
+const parsing
+
 export const apiTestSolutions = async () => {
   try {
     const { data } = await axios.get(
@@ -29,7 +31,6 @@ export const apiTestAns = async () => {
     const { data } = await axios.get(
       "http://211.43.12.24:9999/api/answers/19년수능"
     );
-    console.log(data);
     return data;
   } catch (e) {
     console.log(e);
