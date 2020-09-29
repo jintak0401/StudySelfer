@@ -8,7 +8,6 @@ export const timerFormat = (secs) => {
 };
 
 export const getGrade = (studentAns, correctAns) => {
-  console.log(studentAns);
   const math = { 4: 3, 14: 4, 22: 3, 26: 4 };
   let allotedScore = 2;
   const ret = { totalScore: 0, wrongAns: {} };

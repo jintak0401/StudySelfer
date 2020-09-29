@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
 import {
-  ActivityIndicator,
-  Button,
-  StyleSheet,
-  Text,
-  View,
+  ActivityIndicator, View, Text
 } from "react-native";
 import QuestResult from "../components/QuestResult";
 import ScrollContainer from "../components/ScrollContainer";
 import ResultTable from "./../components/ResultTable";
 import styled from "styled-components/native";
 import { apiTestAns, apiTestSolutions } from "../api";
+import { TouchableOpacity } from "react-native";
 
 const Container = styled.View`
   flex: 1;
@@ -34,14 +31,14 @@ export default (props) => {
       solutions,
     });
   };
-
   useEffect(() => {
     getComments();
   }, []);
 
   return comments.loading ? (
-    <View style={{ flex: 1 }}>
-      <ActivityIndicator flex={1} color="black" size="small" />
+    <View style={{flex : 1, alignItems : "center", justifyContent: "center"}}>
+      <ActivityIndicator color="blue" size="large" />
+      <Text style={{fontSize: 30}}>   채점중   </Text>
     </View>
   ) : (
     <Container>
@@ -60,7 +57,6 @@ export default (props) => {
               questNum={n}
               studentAns={studentAns}
               correctAns={comments.correctAns}
-              // solutions={comments.solutions}
               solutions={comments.solutions}
               questData={questData}
               navigation={props.navigation}

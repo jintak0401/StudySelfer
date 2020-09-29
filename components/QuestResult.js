@@ -4,7 +4,7 @@ import { Feather } from "@expo/vector-icons";
 import styled from "styled-components/native";
 
 const Container = styled.View`
-  height: 60;
+  height: 60px;
   width: 100%;
   justify-content: space-between;
   align-items: center;
@@ -15,23 +15,37 @@ const Container = styled.View`
 
 const Left = styled.View`
   margin-left: 10px;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: row;
-  width: 15%;
+  width: 17%;
 `;
 
 const Right = styled.View`
   margin-right: 10px;
-  justify-content: space-between;
+  justify-content: ${props=>props.isCorrect ? "flex-end" : "flex-end"};
   align-items: center;
   flex-direction: row;
-  width: 45%;
+  width: 48%;
 `;
 
 const Text = styled.Text`
   font-size: 15px;
   color: ${(props) => (props.isCorrect ? "blue" : "red")};
+`;
+
+const GotoSolContainer = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+`;
+
+const GotoSolutions = styled.Text`
+  font-size: 15px;
+  border: 1px solid ${props => (props.isCorrect ? "gray" : "blue")};
+  color: ${props => props.isCorrect ? "gray" : "white"};
+  background-color: ${props => props.isCorrect ? "skyblue" : "blue"};
+  padding-horizontal: 12px;
+  border-radius: 23px;
 `;
 
 export default (props) => {
@@ -47,7 +61,7 @@ export default (props) => {
   return (
     <Container>
       <Left>
-        <Text isCorrect color="blue">
+        <Text isCorrect={isCorrect} color="blue">
           {questNum}번
         </Text>
         <Feather
@@ -56,7 +70,7 @@ export default (props) => {
           color={isCorrect ? "blue" : "red"}
         />
       </Left>
-      <Right>
+      <Right isCorrect={isCorrect}>
         {isCorrect ? null : (
           <>
             <Text color="red">
@@ -67,7 +81,19 @@ export default (props) => {
             </Text>
           </>
         )}
-        <Button
+        <GotoSolContainer
+          onPress={() =>
+            navigation.navigate("해설", {
+              qNum: questNum,
+              studentAns,
+              correctAns,
+              questData,
+              solutions,
+            })
+        }>
+          <GotoSolutions isCorrect={isCorrect}>해설보기</GotoSolutions>
+        </GotoSolContainer>
+        {/* <Button
           buttonStyle={{ borderRadius: 100 }}
           title="해설보기"
           onPress={() =>
@@ -79,7 +105,7 @@ export default (props) => {
               solutions,
             })
           }
-        />
+        /> */}
       </Right>
     </Container>
   );

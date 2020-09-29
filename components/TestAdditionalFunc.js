@@ -1,10 +1,13 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 
+const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
+
 const TestAdditionalFunc = ({ funcName, isActive, setActive, questNum }) => {
   const iconName = `${funcName}-outline`;
+  const iconSize = 0.045 * HEIGHT;
   let color = "gray";
   return (
     <TouchableOpacity
@@ -16,7 +19,7 @@ const TestAdditionalFunc = ({ funcName, isActive, setActive, questNum }) => {
     >
       <MaterialCommunityIcons
         name={funcName === "bookmark" && isActive ? "bookmark" : iconName}
-        size={30}
+        size={iconSize}
         color={isActive ? "blue" : "gray"}
       />
     </TouchableOpacity>
@@ -33,6 +36,6 @@ export default TestAdditionalFunc;
 
 const styles = StyleSheet.create({
   icon: {
-    padding: 5,
+    paddingHorizontal: WIDTH * 0.018,
   },
 });

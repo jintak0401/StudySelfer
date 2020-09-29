@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { Dimensions } from "react-native";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
+
+const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
 
 const NumberInput = styled.TextInput`
   background-color: white;

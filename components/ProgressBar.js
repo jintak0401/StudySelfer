@@ -1,8 +1,10 @@
 import React from "react";
 import * as Progress from "react-native-progress";
-import { Text, View } from "react-native";
+import { Text, View, Dimensions } from "react-native";
 import { timerFormat } from "./../utils";
 import styled from "styled-components/native";
+
+const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
 
 const Container = styled.View`
   padding-top: 2px;
@@ -10,15 +12,23 @@ const Container = styled.View`
   align-items: center;
 `;
 
+const Timer = styled.Text`
+  align-self: center;
+  color: gray;
+  position: absolute;
+  font-size: 25px;
+`;
+
 export default ({ time, totalTime }) => {
+  const fontsize = HEIGHT * 0.020;
   return (
     <Container>
       <Progress.Bar
         progress={1 - time / totalTime}
         color={"skyblue"}
-        width={330}
-        height={20}
-        borderRadius={10}
+        width={0.9 * WIDTH}
+        height={fontsize * 1.2}
+        borderRadius={100}
         style={{ justifyContent: "center" }}
       >
         <Text
@@ -26,7 +36,7 @@ export default ({ time, totalTime }) => {
             alignSelf: "center",
             color: "gray",
             position: "absolute",
-            fontSize: 15,
+            fontSize: fontsize,
           }}
         >
           {timerFormat(time)}

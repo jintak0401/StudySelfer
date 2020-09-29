@@ -5,7 +5,7 @@ import { getGrade, timerFormat } from "./../utils";
 import styled from "styled-components/native";
 
 const Container = styled.View`
-  margin-vertical: 5;
+  margin-vertical: 5px;
 `;
 
 const ResultTable = ({ time, studentAns, correctAns }) => {

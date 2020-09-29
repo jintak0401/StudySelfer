@@ -1,13 +1,16 @@
 import React from "react";
+import { Dimensions } from "react-native";
 import styled from "styled-components/native";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import PropTypes from "prop-types";
 
+const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
+
 const MoveQuestBtnSet = styled.View`
   flex-direction: row;
   position: absolute;
-  bottom: 60px;
+  bottom: ${HEIGHT * 0.12};
   justify-content: space-between;
   width: 100%;
 `;
@@ -29,6 +32,7 @@ const MoveQuestBtn = ({
   studentAns,
 }) => {
   const navigation = useNavigation();
+  const iconSize = 0.07 * WIDTH;
   const moveQuestIcon = {
     left: "leftcircle",
     right: "rightcircle",
@@ -38,7 +42,7 @@ const MoveQuestBtn = ({
     <MoveQuestBtnSet>
       <LeftBtn onPress={() => changeQuestNum(questNum - 1)}>
         {questNum === 1 ? null : (
-          <AntDesign name={moveQuestIcon.left} size={30} color="skyblue" />
+          <AntDesign name={moveQuestIcon.left} size={iconSize} color="skyblue" />
         )}
       </LeftBtn>
       <RightBtn
@@ -53,9 +57,9 @@ const MoveQuestBtn = ({
         }
       >
         {questNum !== 30 ? (
-          <AntDesign name={moveQuestIcon.right} size={30} color="skyblue" />
+          <AntDesign name={moveQuestIcon.right} size={iconSize} color="skyblue" />
         ) : inTest ? (
-          <AntDesign name={moveQuestIcon.done} size={30} color="skyblue" />
+          <AntDesign name={moveQuestIcon.done} size={iconSize} color="skyblue" />
         ) : null}
       </RightBtn>
     </MoveQuestBtnSet>

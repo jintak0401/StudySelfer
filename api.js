@@ -12,8 +12,6 @@ export const apiTestQuests = async () => {
   }
 };
 
-const parsing
-
 export const apiTestSolutions = async () => {
   try {
     const { data } = await axios.get(
