@@ -6,7 +6,7 @@ import styled from "styled-components/native";
 import TestAdditionalFunc from "./../components/TestAdditionalFunc";
 import Ansbtn from "../components/Ansbtn";
 import Input from "../components/Input";
-import { View } from "react-native";
+import { Image, View } from "react-native";
 import MoveQuestBtn from "./../components/MoveQuestBtn";
 
 const IconSet = styled.View`
@@ -56,11 +56,6 @@ export default ({ navigation }) => {
   const [testTime, readyTime] = [6000, 5];
   const [time, setTime] = useState(testTime + readyTime);
   const [clock, setClock] = useState(false);
-  const moveQuestIcon = {
-    left: "leftcircle",
-    right: "rightcircle",
-    done: "checkcircle",
-  };
 
   const getQuestData = async () => {
     const tmp = await apiTestQuests();
