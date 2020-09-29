@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -16,9 +16,9 @@ const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
 
 const falseArr = [false, false, false, false, false];
 
-export default ({ questNum, questData }) => {
+export default ({ questNum, questData, isTest }) => {
   const [ratio, setRatio] = useState(1);
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (questData) {
       Image.getSize(questData.questImageUrl, (width, height) => {
         setRatio(width / height);
@@ -26,12 +26,12 @@ export default ({ questNum, questData }) => {
     }
   }, [questData]);
   return (
-    <ScrollContainer>
+    <ScrollContainer isTest={isTest}>
       {questData ? (
         <Image
           style={{ width: WIDTH * 0.9, height: undefined, aspectRatio: ratio }}
           source={{ uri: questData.questImageUrl }}
-          resizeMode="contain"
+          resizeMode="cover"
         />
       ) : (
         <Text>questNum</Text>

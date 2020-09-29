@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  ActivityIndicator, View, Text
-} from "react-native";
+import { ActivityIndicator, View, Text } from "react-native";
 import QuestResult from "../components/QuestResult";
 import ScrollContainer from "../components/ScrollContainer";
 import ResultTable from "./../components/ResultTable";
@@ -10,8 +8,8 @@ import { apiTestAns, apiTestSolutions } from "../api";
 import { TouchableOpacity } from "react-native";
 
 const Container = styled.View`
-  flex: 1;
   padding-horizontal: 10px;
+  flex: 1;
 `;
 
 export default (props) => {
@@ -36,13 +34,12 @@ export default (props) => {
   }, []);
 
   return comments.loading ? (
-    <View style={{flex : 1, alignItems : "center", justifyContent: "center"}}>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <ActivityIndicator color="blue" size="large" />
-      <Text style={{fontSize: 30}}>   채점중   </Text>
+      <Text style={{ fontSize: 30 }}> 채점중 </Text>
     </View>
   ) : (
     <Container>
-      {/* <Button title="jintak" onPress={() => props.navigation.pop(2)} /> */}
       <ResultTable
         time={time}
         studentAns={studentAns}

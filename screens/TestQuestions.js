@@ -113,7 +113,11 @@ export default ({ navigation }) => {
       {clock ? (
         <ProgressBar time={time} totalTime={testTime + readyTime} />
       ) : null}
-      <Questions questNum={questNum} questData={questData[questNum]} />
+      <Questions
+        isTest={true}
+        questNum={questNum}
+        questData={questData[questNum]}
+      />
       {questNum <= 21 ? (
         <AnsbtnSet>
           {[1, 2, 3, 4, 5].map((n) => (

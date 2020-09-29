@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Dimensions } from "react-native";
 import styled from "styled-components/native";
 import { AntDesign } from "@expo/vector-icons";
@@ -10,7 +10,7 @@ const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
 const MoveQuestBtnSet = styled.View`
   flex-direction: row;
   position: absolute;
-  bottom: ${HEIGHT * 0.12};
+  bottom: ${parseFloat(HEIGHT * 0.12)};
   justify-content: space-between;
   width: 100%;
 `;
@@ -38,28 +38,45 @@ const MoveQuestBtn = ({
     right: "rightcircle",
     done: "checkcircle",
   };
+  const goToResult = () => {
+    navigation.navigate("모의시험 결과", {
+      time: time,
+      questData,
+      studentAns: studentAns,
+    });
+  };
+  useEffect(() => {
+    if (time === 6004 && inTest) goToResult();
+  }, [time]);
+
   return (
     <MoveQuestBtnSet>
       <LeftBtn onPress={() => changeQuestNum(questNum - 1)}>
         {questNum === 1 ? null : (
-          <AntDesign name={moveQuestIcon.left} size={iconSize} color="skyblue" />
+          <AntDesign
+            name={moveQuestIcon.left}
+            size={iconSize}
+            color="skyblue"
+          />
         )}
       </LeftBtn>
       <RightBtn
         onPress={() =>
-          questNum === 30
-            ? navigation.navigate("모의시험 결과", {
-                time: time,
-                questData,
-                studentAns: studentAns,
-              })
-            : changeQuestNum(questNum + 1)
+          questNum === 30 ? goToResult() : changeQuestNum(questNum + 1)
         }
       >
         {questNum !== 30 ? (
-          <AntDesign name={moveQuestIcon.right} size={iconSize} color="skyblue" />
+          <AntDesign
+            name={moveQuestIcon.right}
+            size={iconSize}
+            color="skyblue"
+          />
         ) : inTest ? (
-          <AntDesign name={moveQuestIcon.done} size={iconSize} color="skyblue" />
+          <AntDesign
+            name={moveQuestIcon.done}
+            size={iconSize}
+            color="skyblue"
+          />
         ) : null}
       </RightBtn>
     </MoveQuestBtnSet>

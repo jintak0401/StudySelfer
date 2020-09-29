@@ -2,10 +2,18 @@ import React from "react";
 import PropTypes from "prop-types";
 import { ScrollView } from "react-native";
 
-const ScrollContainer = ({ children, contentContainerStyle }) => {
+const ScrollContainer = ({
+  isTest = false,
+  children,
+  contentContainerStyle,
+}) => {
   return (
     <ScrollView
-      style={{ backgroundColor: "white", maxHeight: "85%" }}
+      showsVerticalScrollIndicator={false}
+      style={{
+        backgroundColor: "white",
+        maxHeight: isTest ? "85%" : "100%",
+      }}
       contentContainerStyle={{
         flex: 0,
         justifyContent: "center",

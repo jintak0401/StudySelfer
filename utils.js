@@ -1,3 +1,7 @@
+import { Dimensions } from "react-native";
+
+const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
+
 export const timerFormat = (secs) => {
   const h_str = "0" + parseInt(secs / 3600).toString();
   const m = parseInt((secs % 3600) / 60).toString();
@@ -17,4 +21,8 @@ export const getGrade = (studentAns, correctAns) => {
     else ret.wrongAns[i] = [studentAns[i], correctAns[i]];
   }
   return ret;
+};
+
+export const isTablet = () => {
+  return HEIGHT > 1000;
 };

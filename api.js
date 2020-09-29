@@ -1,4 +1,7 @@
 import axios from "axios";
+import { Dimensions } from "react-native";
+
+const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
 
 export const apiTestQuests = async () => {
   try {
@@ -34,4 +37,8 @@ export const apiTestAns = async () => {
     console.log(e);
     return {};
   }
+};
+
+export const isTablet = () => {
+  return HEIGHT > 1000;
 };
