@@ -103,7 +103,7 @@ export default (props) => {
 
   return comments.loading ? (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <ActivityIndicator color="blue" size="large" />
+      <ActivityIndicator color="#4f62c0" size="large" />
       <Text style={{ fontSize: 30 }}> 채점중 </Text>
     </View>
   ) : (

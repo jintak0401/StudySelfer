@@ -28,3 +28,13 @@ export const screenInfo = {
   WIDTH: WIDTH,
   HEIGHT: HEIGHT,
 };
+
+export const getTestTitle = (year, month) => {
+  const title =
+    month === 11
+      ? `${year}학년도 수능`
+      : month === 6 || month === 9
+      ? `${month}월 평가원 모의고사`
+      : `${month}월 교육청 모의고사`;
+  return title;
+};

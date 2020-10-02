@@ -6,6 +6,9 @@ import Book from "../assets/Svg/Book.svg";
 import Profile from "../assets/Svg/Profile.svg";
 import Collapsible from "react-native-collapsible";
 import SelectMonth from "../components/SelectMonth";
+import ModalRestudy from "../components/ModalRestudy";
+import ModalModeSelect from "../components/ModalModeSelect";
+import { getTestTitle } from "../utils";
 
 const BookButton = styled.TouchableOpacity`
   margin-left: 30px;
@@ -73,20 +76,20 @@ const testSet = {
 
 export default (props) => {
   const { navigation, route } = props;
-  const [part, setPart] = useState("liberal");
-  const [selectedChap, setSelectedChap] = useState([]);
   const flatListItemSeparator = () => <View style={styles.separator} />;
   const [show, setShow] = useState({ 2020: true, 2019: true, 2018: true });
   const years = [2020, 2019, 2018];
   const [selectedMonth, setSelectedMonth] = useState(0);
+  const [restudyModalVisible, setRestudyModalVisible] = useState(false);
+  const [modeModalVisible, setModeModalVisible] = useState(false);
 
   const changeShow = (year) => {
     const tmp = { ...show };
     tmp[year] = !tmp[year];
     setShow(tmp);
   };
-  const goToTest = () => {
-    navigation.navigate("모의시험 문제");
+  const goToTest = (title) => {
+    navigation.navigate("모의시험 문제", { subtitle: title });
   };
 
   useLayoutEffect(() => {
@@ -109,12 +112,24 @@ export default (props) => {
           <SelectMonth
             selectedMonth={selectedMonth}
             setSelectedMonth={setSelectedMonth}
+            setRestudyModalVisible={setRestudyModalVisible}
+            setModeModalVisible={setModeModalVisible}
             year={2018}
             month={month}
-            goToTest={goToTest}
           />
         </SectionContainer>
       ))}
+      <ModalRestudy
+        restudyModalVisible={restudyModalVisible}
+        setRestudyModalVisible={setRestudyModalVisible}
+        setModeModalVisible={setModeModalVisible}
+      />
+      <ModalModeSelect
+        modalVisible={modeModalVisible}
+        setModalVisible={setModeModalVisible}
+        goToTest={goToTest}
+        title={getTestTitle(2018, selectedMonth)}
+      />
     </Container>
     //   <View style={styles.container}>
     //     <View style={styles.areaSet}>

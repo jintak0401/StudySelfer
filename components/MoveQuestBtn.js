@@ -27,8 +27,9 @@ const MoveQuestBtn = ({
   inTest,
   questNum,
   changeQuestNum,
-  time,
-  goToResult,
+  // time,
+  // goToResult,
+  setModalVisible,
 }) => {
   const navigation = useNavigation();
   const iconSize = isTablet ? 50 : 35;
@@ -38,9 +39,9 @@ const MoveQuestBtn = ({
     done: "checkcircle",
   };
   const color = "#A9E4EB";
-  useEffect(() => {
-    if (time === 6004 && inTest) goToResult();
-  }, [time]);
+  // useEffect(() => {
+  //   if (time === 6004 && inTest) goToResult();
+  // }, [time]);
 
   return (
     <MoveQuestBtnSet>
@@ -56,7 +57,7 @@ const MoveQuestBtn = ({
       </LeftBtn>
       <RightBtn
         onPress={() =>
-          questNum === 30 ? goToResult() : changeQuestNum(questNum + 1)
+          questNum === 30 ? setModalVisible(true) : changeQuestNum(questNum + 1)
         }
       >
         {questNum !== 30 ? (
@@ -83,10 +84,11 @@ MoveQuestBtn.propTypes = {
   inTest: PropTypes.bool.isRequired,
   questNum: PropTypes.number.isRequired,
   changeQuestNum: PropTypes.func.isRequired,
-  time: PropTypes.number,
+  // time: PropTypes.number,
   questData: PropTypes.object,
   studentAns: PropTypes.object,
-  goToResult: PropTypes.func,
+  // goToResult: PropTypes.func,
+  setModalVisible: PropTypes.func,
 };
 
 export default MoveQuestBtn;

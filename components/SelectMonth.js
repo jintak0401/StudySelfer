@@ -5,6 +5,7 @@ import Collapsible from "react-native-collapsible";
 import { getSolvedMonth } from "../solvedData";
 import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import Dash from "react-native-dash";
+import { getTestTitle } from "../utils";
 
 const DisplayFirstContainer = styled.View`
   border-width: 2px;
@@ -106,7 +107,7 @@ const DashedLine = styled.View`
   border-radius: 20px;
 `;
 
-const DisplaySolvedData = ({ time, grade, rank, goToTest }) => {
+const DisplaySolvedData = ({ time, grade, rank, setRestudyModalVisible }) => {
   return (
     <DisplayFirstContainer>
       <DisplaySecondContainer>
@@ -118,7 +119,11 @@ const DisplaySolvedData = ({ time, grade, rank, goToTest }) => {
           <Button>
             <ResultText>채점 결과</ResultText>
           </Button>
-          <Button onPress={() => goToTest()}>
+          <Button
+            onPress={() => {
+              setRestudyModalVisible(true);
+            }}
+          >
             <FontAwesome5 name="redo" size={20} color="#999999" />
           </Button>
         </SolvedDataWrapper>
@@ -130,17 +135,13 @@ const DisplaySolvedData = ({ time, grade, rank, goToTest }) => {
 const SelectMonth = ({
   selectedMonth,
   setSelectedMonth,
+  setRestudyModalVisible,
+  setModeModalVisible,
   year,
   month,
-  goToTest,
 }) => {
   const [selected, setSelected] = useState(false);
-  const title =
-    month === 11
-      ? `${year}학년도 수능`
-      : month === 6 || month === 9
-      ? `${month}월 평가원 모의고사`
-      : `${month}월 교육청 모의고사`;
+  const title = getTestTitle(year, month);
   const isSolved = getSolvedMonth(year, month);
   const [time, grade, rank] = isSolved || [0, 0, 0];
 
@@ -153,7 +154,8 @@ const SelectMonth = ({
         <TestTitleButton
           isSolved={isSolved}
           onPress={() => {
-            isSolved ? setSelectedMonth(selected ? 0 : month) : goToTest();
+            setSelectedMonth(selected ? 0 : month);
+            isSolved ? null : setModeModalVisible(true);
           }}
         >
           <ContainerText selected={selected}>{title}</ContainerText>
@@ -167,7 +169,7 @@ const SelectMonth = ({
         </TestTitleButton>
       </TestTitleContainer>
       <Dash
-        style={{ width: "100%", height: 2 }}
+        style={{ width: "100%", height: 0.9 }}
         dashGap={3}
         dashLength={5}
         dashThickness={1}
@@ -180,7 +182,7 @@ const SelectMonth = ({
             grade={grade}
             rank={rank}
             setSelected={setSelected}
-            goToTest={goToTest}
+            setRestudyModalVisible={setRestudyModalVisible}
           />
         </Collapsible>
       ) : null}
@@ -191,9 +193,10 @@ const SelectMonth = ({
 SelectMonth.propTypes = {
   selectedMonth: PropTypes.number.isRequired,
   setSelectedMonth: PropTypes.func.isRequired,
+  setRestudyModalVisible: PropTypes.func.isRequired,
+  setModeModalVisible: PropTypes.func.isRequired,
   year: PropTypes.number.isRequired,
   month: PropTypes.number.isRequired,
-  goToTest: PropTypes.func.isRequired,
 };
 
 export default SelectMonth;

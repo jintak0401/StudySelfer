@@ -126,9 +126,9 @@ const AnswerSheet = ({
   correctAns,
   bookmarks,
   time,
-  setModalVisible,
+  setAnswersheetModalVisible,
   changeQuestNum,
-  goToResult,
+  setSubmitModalVisible,
 }) => {
   return (
     <Container>
@@ -137,8 +137,8 @@ const AnswerSheet = ({
         {inTest ? (
           <SubmitButton
             onPress={() => {
-              goToResult();
-              setModalVisible(false);
+              setSubmitModalVisible(true);
+              setAnswersheetModalVisible(false);
             }}
           >
             <SubmitText>제출하기</SubmitText>
@@ -151,9 +151,10 @@ const AnswerSheet = ({
             {[1, 2, 3, 4, 5].map((j) => (
               <BoxContainer
                 key={5 * i + j}
+                activeOpacity={0.8}
                 onPress={() => {
                   changeQuestNum(5 * i + j);
-                  setModalVisible(false);
+                  setAnswersheetModalVisible(false);
                 }}
               >
                 <LeftBox
@@ -200,9 +201,9 @@ AnswerSheet.propTypes = {
   correctAns: PropTypes.object,
   bookmarks: PropTypes.object.isRequired,
   time: PropTypes.number.isRequired,
-  setModalVisible: PropTypes.func.isRequired,
+  setAnswersheetModalVisible: PropTypes.func.isRequired,
   changeQuestNum: PropTypes.func.isRequired,
-  goToResult: PropTypes.func,
+  setSubmitModalVisible: PropTypes.func,
 };
 
 export default AnswerSheet;

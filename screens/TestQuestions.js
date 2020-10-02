@@ -9,6 +9,7 @@ import Input from "../components/Input";
 import MoveQuestBtn from "./../components/MoveQuestBtn";
 import ModalAnsSheet from "./../components/ModalAnsSheet";
 import Collapsible from "react-native-collapsible";
+import ModalSubmit from "./../components/ModalSubmit";
 
 const TitleContainer = styled.View`
   margin-left: -20px;
@@ -72,7 +73,8 @@ export default ({ navigation, route }) => {
   const [testTime, readyTime] = [6000, 5];
   const [time, setTime] = useState(testTime + readyTime);
   const [clock, setClock] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [answersheetModalVisible, setAnswersheetModalVisible] = useState(false);
+  const [submitModalVisible, setSubmitModalVisible] = useState(false);
 
   const getQuestData = async () => {
     const tmp = await apiTestQuests();
@@ -84,7 +86,7 @@ export default ({ navigation, route }) => {
     setBookmarks({ ...tmp });
   };
   const activateClock = (n) => setClock(!clock);
-  const setModal = (n) => setModalVisible(!modalVisible);
+  const setModal = (n) => setAnswersheetModalVisible(!answersheetModalVisible);
   const selectAns = (n) => {
     const tmp = { ...studentAns };
     if (questNum <= 21) tmp[questNum] = studentAns[questNum] === n ? 0 : n;
@@ -109,17 +111,18 @@ export default ({ navigation, route }) => {
     const interval = setInterval(() => {
       setTime((prevTime) => prevTime - 1);
     }, 1000);
+    if (time === 0) goToResult();
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [time]);
   useLayoutEffect(() => {
     navigation.setOptions({
       headerStyle: { backgroundColor: "white", height: 80, elevation: 0 },
       headerTitle: () => (
         <TitleContainer>
           <HeaderTitle>모의고사 풀기</HeaderTitle>
-          <HeaderSubtitle>2020년 7월 모의고사</HeaderSubtitle>
+          <HeaderSubtitle>{route.params.subtitle}</HeaderSubtitle>
         </TitleContainer>
       ),
       headerRight: () => (
@@ -182,15 +185,22 @@ export default ({ navigation, route }) => {
         changeQuestNum={changeQuestNum}
         time={readyTime + testTime - time}
         goToResult={goToResult}
+        setModalVisible={setSubmitModalVisible}
       />
       <ModalAnsSheet
         inTest={true}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
+        answersheetModalVisible={answersheetModalVisible}
+        setAnswersheetModalVisible={setAnswersheetModalVisible}
         studentAns={studentAns}
         bookmarks={bookmarks}
         time={readyTime + testTime - time}
         changeQuestNum={changeQuestNum}
+        goToResult={goToResult}
+        setSubmitModalVisible={setSubmitModalVisible}
+      />
+      <ModalSubmit
+        modalVisible={submitModalVisible}
+        setModalVisible={setSubmitModalVisible}
         goToResult={goToResult}
       />
     </Container>

@@ -109,8 +109,8 @@ export default (props) => {
     <Container>
       <ModalAnsSheet
         inTest={false}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
+        answersheetModalVisible={modalVisible}
+        setAnswersheetModalVisible={setModalVisible}
         studentAns={studentAns}
         correctAns={correctAns}
         bookmarks={bookmarks}
