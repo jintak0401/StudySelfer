@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import Questions from "../components/Questions";
 import { apiTestQuests } from "./../api";
 import ProgressBar from "../components/ProgressBar";
@@ -6,8 +6,24 @@ import styled from "styled-components/native";
 import TestAdditionalFunc from "./../components/TestAdditionalFunc";
 import Ansbtn from "../components/Ansbtn";
 import Input from "../components/Input";
-import { Image, View } from "react-native";
 import MoveQuestBtn from "./../components/MoveQuestBtn";
+import ModalAnsSheet from "./../components/ModalAnsSheet";
+import Collapsible from "react-native-collapsible";
+
+const TitleContainer = styled.View`
+  margin-left: -20px;
+  justify-content: center;
+`;
+
+const HeaderTitle = styled.Text`
+  font-size: 23px;
+  color: #4f62c0;
+`;
+
+const HeaderSubtitle = styled.Text`
+  font-size: 15px;
+  color: #999999;
+`;
 
 const IconSet = styled.View`
   flex-direction: row;
@@ -48,7 +64,7 @@ const LeftBtn = styled.TouchableOpacity`
   margin-left: 10px;
 `;
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
   const [questNum, setQuestNum] = useState(30);
   const [studentAns, setStudentAns] = useState({});
   const [bookmarks, setBookmarks] = useState({});
@@ -56,6 +72,7 @@ export default ({ navigation }) => {
   const [testTime, readyTime] = [6000, 5];
   const [time, setTime] = useState(testTime + readyTime);
   const [clock, setClock] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const getQuestData = async () => {
     const tmp = await apiTestQuests();
@@ -67,6 +84,7 @@ export default ({ navigation }) => {
     setBookmarks({ ...tmp });
   };
   const activateClock = (n) => setClock(!clock);
+  const setModal = (n) => setModalVisible(!modalVisible);
   const selectAns = (n) => {
     const tmp = { ...studentAns };
     if (questNum <= 21) tmp[questNum] = studentAns[questNum] === n ? 0 : n;
@@ -78,6 +96,14 @@ export default ({ navigation }) => {
       setQuestNum(num);
     }
   };
+  const goToResult = () => {
+    navigation.navigate("모의시험 결과", {
+      time: time,
+      questData,
+      studentAns,
+      bookmarks,
+    });
+  };
   useEffect(() => {
     getQuestData();
     const interval = setInterval(() => {
@@ -87,27 +113,44 @@ export default ({ navigation }) => {
       clearInterval(interval);
     };
   }, []);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerStyle: { backgroundColor: "white", height: 80, elevation: 0 },
+      headerTitle: () => (
+        <TitleContainer>
+          <HeaderTitle>모의고사 풀기</HeaderTitle>
+          <HeaderSubtitle>2020년 7월 모의고사</HeaderSubtitle>
+        </TitleContainer>
+      ),
+      headerRight: () => (
+        <IconSet>
+          <TestAdditionalFunc
+            funcName="clock"
+            isActive={clock}
+            setActive={activateClock}
+            questNum={questNum}
+          />
+          <TestAdditionalFunc
+            funcName="bookmark"
+            isActive={bookmarks[questNum]}
+            setActive={bookmarking}
+            questNum={questNum}
+          />
+          <TestAdditionalFunc
+            funcName="subtitles"
+            setActive={setModal}
+            questNum={questNum}
+          />
+        </IconSet>
+      ),
+    });
+  }, [route, clock, questNum, bookmarks]);
 
   return (
     <Container>
-      <IconSet>
-        <TestAdditionalFunc
-          funcName="clock"
-          isActive={clock}
-          setActive={activateClock}
-          questNum={questNum}
-        />
-        <TestAdditionalFunc
-          funcName="bookmark"
-          isActive={bookmarks[questNum]}
-          setActive={bookmarking}
-          questNum={questNum}
-        />
-        <TestAdditionalFunc funcName="subtitles" />
-      </IconSet>
-      {clock ? (
+      <Collapsible collapsed={!clock}>
         <ProgressBar time={time} totalTime={testTime + readyTime} />
-      ) : null}
+      </Collapsible>
       <Questions
         isTest={true}
         questNum={questNum}
@@ -138,8 +181,17 @@ export default ({ navigation }) => {
         questNum={questNum}
         changeQuestNum={changeQuestNum}
         time={readyTime + testTime - time}
-        questData={questData}
+        goToResult={goToResult}
+      />
+      <ModalAnsSheet
+        inTest={true}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
         studentAns={studentAns}
+        bookmarks={bookmarks}
+        time={readyTime + testTime - time}
+        changeQuestNum={changeQuestNum}
+        goToResult={goToResult}
       />
     </Container>
   );

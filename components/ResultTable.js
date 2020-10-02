@@ -1,19 +1,17 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Table, Row, Rows } from "react-native-table-component";
 import { getGrade, timerFormat } from "./../utils";
 import styled from "styled-components/native";
-import { isTablet } from "../utils";
+import { screenInfo } from "../utils";
 
-const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
+const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
 const Container = styled.View`
   margin-vertical: 5px;
   width: 80%;
   margin-left: ${0.1 * WIDTH}px;
 `;
-
-const _isTablet = isTablet();
 
 const ResultTable = ({ time, studentAns, correctAns }) => {
   const [table, setTable] = useState({
@@ -39,7 +37,7 @@ const ResultTable = ({ time, studentAns, correctAns }) => {
           textStyle={styles.text}
         />
         <Rows
-          style={{ height: _isTablet ? 50 : 30 }}
+          style={{ height: isTablet ? 50 : 30 }}
           data={table.tableData}
           textStyle={styles.text}
         />
@@ -55,12 +53,12 @@ const styles = new StyleSheet.create({
     marginBottom: 10,
   },
   head: {
-    height: _isTablet ? 50 : 30,
+    height: isTablet ? 50 : 30,
     backgroundColor: "#f1f8ff",
   },
   text: {
     margin: 6,
-    fontSize: _isTablet ? 20 : 14,
+    fontSize: isTablet ? 20 : 14,
     textAlign: "center",
   },
 });

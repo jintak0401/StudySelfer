@@ -9,7 +9,7 @@ export default function App() {
       <NavigationContainer>
         <Stack />
       </NavigationContainer>
-      <StatusBar barStyle="light-content" />
+      <StatusBar backgroundColor="#6c63ff" barStyle="light-content" />
     </>
   );
 }

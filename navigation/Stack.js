@@ -10,20 +10,25 @@ import Init from "../screens/Init";
 import TestQuestions from "../screens/TestQuestions";
 import TestResult from "../screens/TestResult";
 import QuestComment from "../screens/QuestComment";
-import { TouchableOpacity } from "react-native";
+import { Button, Text, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import StepUp from "../assets/Svg/StepUp.svg";
+import Book from "../assets/Svg/Book.svg";
 
 const Stack = createStackNavigator();
 
 export default ({ navigation }) => (
   <Stack.Navigator
-    mode="modal"
+    // mode="modal"
+    // headerMode="float"
     screenOptions={{
+      // animationEnabled: false,
+      // headerMode: "none",
       headerStyle: {
         backgroundColor: "blue",
-        // height: 50,
+        // height: 100,
       },
-      headerTintColor: "white",
+      headerTintColor: "#4F62C0",
       headerBackTitleVisible: false,
     }}
   >
@@ -33,14 +38,28 @@ export default ({ navigation }) => (
     <Stack.Screen name="모의수능 및 모의고사" component={Test} />
     <Stack.Screen name="모의시험 문제" component={TestQuestions} />
     <Stack.Screen name="모의시험 결과" component={TestResult} />
-    <Stack.Screen
-      name="해설"
-      component={QuestComment}
-      // options={{
-      //   headerLeft: () => (
-      //     <TouchableOpacity onPress={() => console.log("jintak")} />
-      //   ),
-      // }}
-    />
+    <Stack.Screen name="해설" component={QuestComment} />
   </Stack.Navigator>
 );
+
+// <Stack.Screen
+//   options={{
+//     height: 100,
+//     headerLeft: () => (
+//       <TouchableOpacity>
+//         <Book marginLeft={30} width={50} height={50} />
+//       </TouchableOpacity>
+//     ),
+//     headerStyle: { backgroundColor: "#4F62C0", height: 150 },
+//     headerTitle: () => (
+//       <>
+//         <Text style={{ marginTop: 30, color: "black", fontSize: 30 }}>
+//           jintak
+//         </Text>
+//         <Text>wlskr</Text>
+//       </>
+//     ),
+//   }}
+//   name="초기화면"
+//   component={Init}
+// />

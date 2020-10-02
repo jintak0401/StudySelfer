@@ -1,18 +1,11 @@
 import React, { useLayoutEffect, useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Button,
-  Image,
-  Dimensions,
-  ScrollView,
-  Text,
-} from "react-native";
+import { StyleSheet, Image, ScrollView, Text } from "react-native";
 import ScrollContainer from "./ScrollContainer";
 import PropTypes from "prop-types";
 import styled from "styled-components/native";
+import { screenInfo } from "../utils";
 
-const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
+const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
 const falseArr = [false, false, false, false, false];
 

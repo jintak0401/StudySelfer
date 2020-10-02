@@ -23,6 +23,8 @@ export const getGrade = (studentAns, correctAns) => {
   return ret;
 };
 
-export const isTablet = () => {
-  return HEIGHT > 1000;
+export const screenInfo = {
+  isTablet: HEIGHT > 1000,
+  WIDTH: WIDTH,
+  HEIGHT: HEIGHT,
 };

@@ -1,26 +1,26 @@
 import React from "react";
-import { StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
+import { screenInfo } from "../utils";
 
-const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
+const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
 const TestAdditionalFunc = ({ funcName, isActive, setActive, questNum }) => {
   const iconName = `${funcName}-outline`;
-  const iconSize = 0.045 * HEIGHT;
-  let color = "gray";
+  const iconSize = isTablet ? 45 : 30;
+  const color = isActive ? "#4F62C0" : "#CCCCCC";
   return (
     <TouchableOpacity
       style={styles.icon}
       onPress={() => {
-        if (funcName === "clock" || funcName === "bookmark")
-          setActive(questNum);
+        setActive(questNum);
       }}
     >
       <MaterialCommunityIcons
         name={funcName === "bookmark" && isActive ? "bookmark" : iconName}
         size={iconSize}
-        color={isActive ? "blue" : "gray"}
+        color={color}
       />
     </TouchableOpacity>
   );
@@ -29,7 +29,8 @@ const TestAdditionalFunc = ({ funcName, isActive, setActive, questNum }) => {
 TestAdditionalFunc.propTypes = {
   funcName: PropTypes.string.isRequired,
   isActive: PropTypes.bool,
-  setActive: PropTypes.func,
+  setActive: PropTypes.func.isRequired,
+  questNum: PropTypes.number,
 };
 
 export default TestAdditionalFunc;

@@ -1,10 +1,10 @@
 import React from "react";
-import { Dimensions } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import styled from "styled-components/native";
-import { isTablet } from "../utils";
+import { screenInfo } from "../utils";
+import PropTypes from "prop-types";
 
-const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
+const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
 const Container = styled.View`
   height: ${(props) => (props.isTablet ? 100 : 60)}px;
@@ -30,12 +30,23 @@ const Right = styled.View`
     props.isCorrect ? "flex-end" : "space-between"};
   align-items: center;
   flex-direction: row;
-  width: ${(props) => (props.isTablet ? 35 : 50)}%;
+  width: ${(props) => (props.isTablet ? 35 : 45)}%;
+`;
+
+const RightWrapper = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+const QuestNum = styled.Text`
+  font-size: ${isTablet ? 25 : 15}px;
+  color: #4f62c0;
 `;
 
 const Text = styled.Text`
   font-size: ${(props) => (props.isTablet ? 25 : 15)}px;
-  color: ${(props) => (props.isCorrect ? "blue" : "red")};
+  color: ${(props) => (props.isCorrect ? "#4F62C0" : "red")};
 `;
 
 const GotoSolContainer = styled.TouchableOpacity`
@@ -45,60 +56,44 @@ const GotoSolContainer = styled.TouchableOpacity`
 
 const GotoSolutions = styled.Text`
   font-size: ${(props) => (props.isTablet ? 25 : 15)}px;
-  border: 1px solid ${(props) => (props.isCorrect ? "gray" : "blue")};
+  border: 1px solid ${(props) => (props.isCorrect ? "#CCCCCC" : "#4F62C0")};
   color: ${(props) => (props.isCorrect ? "gray" : "white")};
-  background-color: ${(props) => (props.isCorrect ? "skyblue" : "blue")};
+  background-color: ${(props) => (props.isCorrect ? "#F1F9FF" : "#4F62C0")};
   padding-horizontal: 12px;
   border-radius: 23px;
 `;
 
-export default (props) => {
-  const {
-    questNum,
-    studentAns,
-    correctAns,
-    solutions,
-    questData,
-    navigation,
-  } = props;
-  const isCorrect = studentAns[questNum] === correctAns[questNum];
-  const _isTablet = isTablet();
+const QuestResult = ({ questNum, studentAns, correctAns, goToComment }) => {
+  const isCorrect = studentAns === correctAns;
   return (
-    <Container isTablet={_isTablet}>
-      <Left isTablet={_isTablet}>
-        <Text isTablet={_isTablet} isCorrect={isCorrect} color="blue">
-          {questNum}번
-        </Text>
+    <Container isTablet={isTablet}>
+      <Left isTablet={isTablet}>
+        <QuestNum>{questNum}번</QuestNum>
         <Feather
           name={isCorrect ? "circle" : "x"}
-          size={_isTablet ? 34 : 24}
-          color={isCorrect ? "blue" : "red"}
+          size={isTablet ? 34 : 24}
+          color={isCorrect ? "#A9E4EB" : "red"}
         />
       </Left>
-      <Right isTablet={_isTablet} isCorrect={isCorrect}>
+      <Right isTablet={isTablet} isCorrect={isCorrect}>
         {isCorrect ? null : (
           <>
-            <Text isTablet={_isTablet} color="red">
-              {studentAns[questNum] ? studentAns[questNum] : "입력 없음"}
-            </Text>
-            <Text isTablet={_isTablet} isCorrect color="blue">
-              {correctAns[questNum]}
-            </Text>
+            <RightWrapper>
+              <Text isTablet={isTablet}>{studentAns || "미입력"}</Text>
+            </RightWrapper>
+            <RightWrapper>
+              <Text isTablet={isTablet} isCorrect={true}>
+                {correctAns}
+              </Text>
+            </RightWrapper>
           </>
         )}
+
         <GotoSolContainer
-          isTablet={_isTablet}
-          onPress={() =>
-            navigation.navigate("해설", {
-              qNum: questNum,
-              studentAns,
-              correctAns,
-              questData,
-              solutions,
-            })
-          }
+          isTablet={isTablet}
+          onPress={() => goToComment(questNum)}
         >
-          <GotoSolutions isTablet={_isTablet} isCorrect={isCorrect}>
+          <GotoSolutions isTablet={isTablet} isCorrect={isCorrect}>
             해설보기
           </GotoSolutions>
         </GotoSolContainer>
@@ -106,3 +101,12 @@ export default (props) => {
     </Container>
   );
 };
+
+QuestResult.propTypes = {
+  questNum: PropTypes.number.isRequired,
+  studentAns: PropTypes.number,
+  correctAns: PropTypes.number.isRequired,
+  goToComment: PropTypes.func.isRequired,
+};
+
+export default QuestResult;
