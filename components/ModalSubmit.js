@@ -17,13 +17,14 @@ const Text = styled.Text`
   color: #4f62c0;
   font-size: 30px;
   margin-top: ${(props) => (props.isFirstLine ? 30 : 0)}px;
+  font-family: Ssangmoon;
 `;
 
 const ButtonContainer = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 30px;
 `;
 
 const Button = styled.TouchableOpacity`

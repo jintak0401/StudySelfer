@@ -49,6 +49,9 @@ const TextWrapper = styled.View`
 const Text = styled.Text`
   color: #4f62c0;
   font-size: ${(props) => (props.isFirstLine ? 22 : 15)}px;
+  font-family: ${(props) => (props.isFirstLine ? "Ssangmoon" : "NanumSquare")};
+  font-weight: ${(props) => (props.isFirstLine ? "normal" : "bold")};
+  letter-spacing: ${(props) => (props.isFirstLine ? 0 : -1)}px;
 `;
 
 const ModeSelect = ({ setModalVisible, goToTest, title }) => {

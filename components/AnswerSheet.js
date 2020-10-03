@@ -33,7 +33,7 @@ const TopLine = styled.View`
 const TopText = styled.Text`
   color: #4f62c0;
   margin-left: 20px;
-  font-size: ${isTablet ? "30" : "14"}px;
+  font-size: ${isTablet ? "30" : "18"}px;
   font-weight: bold;
 `;
 

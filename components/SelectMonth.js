@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
 import Collapsible from "react-native-collapsible";
-import { getSolvedMonth } from "../solvedData";
+import { getSolvedMonth, solvedData } from "../solvedData";
 import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import Dash from "react-native-dash";
 import { getTestTitle } from "../utils";
@@ -142,12 +142,16 @@ const SelectMonth = ({
 }) => {
   const [selected, setSelected] = useState(false);
   const title = getTestTitle(year, month);
-  const isSolved = getSolvedMonth(year, month);
+  const [isSolved, setIsSolved] = useState(getSolvedMonth(year, month));
   const [time, grade, rank] = isSolved || [0, 0, 0];
 
   useEffect(() => {
     setSelected(month === selectedMonth);
   }, [selectedMonth]);
+  useEffect(() => {
+    setIsSolved(getSolvedMonth(year, month));
+  }, [solvedData.test[year]?.[month]]);
+
   return (
     <Container>
       <TestTitleContainer>
@@ -169,7 +173,7 @@ const SelectMonth = ({
         </TestTitleButton>
       </TestTitleContainer>
       <Dash
-        style={{ width: "100%", height: 0.9 }}
+        style={{ position: "relative", bottom: 0.1, width: "100%", height: 1 }}
         dashGap={3}
         dashLength={5}
         dashThickness={1}

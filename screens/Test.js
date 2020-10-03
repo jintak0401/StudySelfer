@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import TestQuestions from "./TestQuestions";
 import { StyleSheet, View, Button, SectionList, Text } from "react-native";
 import styled from "styled-components/native";
@@ -9,6 +9,9 @@ import SelectMonth from "../components/SelectMonth";
 import ModalRestudy from "../components/ModalRestudy";
 import ModalModeSelect from "../components/ModalModeSelect";
 import { getTestTitle } from "../utils";
+import ScrollContainer from "./../components/ScrollContainer";
+import BackMark from "../assets/Svg/BackMark.svg";
+import { resetSolvedData } from "../solvedData";
 
 const BookButton = styled.TouchableOpacity`
   margin-left: 30px;
@@ -30,6 +33,11 @@ const Container = styled.View`
   align-items: center;
 `;
 
+const ListContainer = styled.View`
+  flex: 7;
+  width: 100%;
+`;
+
 const SectionContainer = styled.View`
   margin-vertical: 15px;
   justify-content: center;
@@ -37,10 +45,55 @@ const SectionContainer = styled.View`
   width: 95%;
 `;
 
+const TestSelectContainer = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+`;
+
+const TestSelectButton = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  background-color: ${(props) => (props.isSelected ? "#4F62C0" : "#CCCCCC")};
+  margin-horizontal: 20px;
+  width: 130px;
+  height: 35px;
+`;
+
+const TestSelectText = styled.Text`
+  font-size: 13px;
+  color: white;
+  font-family: NanumSquare;
+  font-weight: bold;
+`;
+
+const SelectedYearContainer = styled.View`
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex: 0.6;
+  width: 85%;
+`;
+
+const BackButton = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+`;
+
+const SelectedYearText = styled.Text`
+  color: #4f62c0;
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 10px;
+  margin-bottom: 3px;
+`;
+
 const SECTIONS = {
   2020: [3, 4, 5, 6, 8, 9, 10],
   2019: [3, 4, 5, 6, 8, 9, 10, 11],
-  2018: [3, 4, 5, 6, 8, 9, 10, 11],
+  2018: [3, 4, 6, 7, 9, 10],
 };
 
 const testSet = {
@@ -82,6 +135,7 @@ export default (props) => {
   const [selectedMonth, setSelectedMonth] = useState(0);
   const [restudyModalVisible, setRestudyModalVisible] = useState(false);
   const [modeModalVisible, setModeModalVisible] = useState(false);
+  const [selectedTest, setSelectedTest] = useState(undefined);
 
   const changeShow = (year) => {
     const tmp = { ...show };
@@ -89,9 +143,19 @@ export default (props) => {
     setShow(tmp);
   };
   const goToTest = (title) => {
-    navigation.navigate("모의시험 문제", { subtitle: title });
+    navigation.navigate("모의시험 문제", {
+      subtitle: title,
+      year: 2018,
+      month: selectedMonth,
+    });
   };
-
+  useEffect(() => {
+    const refresh = navigation.addListener("focus", () => {
+      const tmpMonth = selectedMonth;
+      setSelectedMonth(0);
+    });
+    return refresh;
+  }, [navigation]);
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTintColor: "white",
@@ -107,134 +171,60 @@ export default (props) => {
 
   return (
     <Container>
-      {SECTIONS[2018].map((month) => (
-        <SectionContainer key={month}>
-          <SelectMonth
-            selectedMonth={selectedMonth}
-            setSelectedMonth={setSelectedMonth}
-            setRestudyModalVisible={setRestudyModalVisible}
-            setModeModalVisible={setModeModalVisible}
-            year={2018}
-            month={month}
-          />
-        </SectionContainer>
-      ))}
-      <ModalRestudy
-        restudyModalVisible={restudyModalVisible}
-        setRestudyModalVisible={setRestudyModalVisible}
-        setModeModalVisible={setModeModalVisible}
-      />
-      <ModalModeSelect
-        modalVisible={modeModalVisible}
-        setModalVisible={setModeModalVisible}
-        goToTest={goToTest}
-        title={getTestTitle(2018, selectedMonth)}
+      <TestSelectContainer>
+        <TestSelectButton
+          isSelected={selectedTest === "mockTest"}
+          onPress={() => setSelectedTest("mockTest")}
+        >
+          <TestSelectText>기출 모의고사</TestSelectText>
+        </TestSelectButton>
+        <TestSelectButton
+          isSelected={selectedTest === "sat"}
+          onPress={() => setSelectedTest("sat")}
+        >
+          <TestSelectText>대학 수학 능력시험</TestSelectText>
+        </TestSelectButton>
+      </TestSelectContainer>
+      <SelectedYearContainer>
+        <BackButton>
+          <BackMark width={18} height={18} />
+        </BackButton>
+        <SelectedYearText>2018년 모의고사</SelectedYearText>
+      </SelectedYearContainer>
+      <ListContainer>
+        {/* <ScrollContainer> */}
+        {SECTIONS[2018].map((month) => (
+          <SectionContainer key={month}>
+            <SelectMonth
+              selectedMonth={selectedMonth}
+              setSelectedMonth={setSelectedMonth}
+              setRestudyModalVisible={setRestudyModalVisible}
+              setModeModalVisible={setModeModalVisible}
+              year={2018}
+              month={month}
+            />
+          </SectionContainer>
+        ))}
+        <ModalRestudy
+          restudyModalVisible={restudyModalVisible}
+          setRestudyModalVisible={setRestudyModalVisible}
+          setModeModalVisible={setModeModalVisible}
+        />
+        <ModalModeSelect
+          modalVisible={modeModalVisible}
+          setModalVisible={setModeModalVisible}
+          goToTest={goToTest}
+          title={getTestTitle(2018, selectedMonth)}
+        />
+        {/* </ScrollContainer> */}
+      </ListContainer>
+      <Button
+        title="RESET"
+        onPress={() => {
+          resetSolvedData();
+          setSelectedMonth(100);
+        }}
       />
     </Container>
-    //   <View style={styles.container}>
-    //     <View style={styles.areaSet}>
-    //       <Button
-    //         title="        문과        "
-    //         color={part === "liberal" ? "blue" : "gray"}
-    //         onPress={() => setPart("liberal")}
-    //       />
-    //       <Button
-    //         title="        이과        "
-    //         color={part === "natural" ? "blue" : "gray"}
-    //         onPress={() => setPart("natural")}
-    //       />
-    //     </View>
-    //     <View style={{ alignItems: "center", marginVertical: 10 }}>
-    //       <SelectMonth
-    //         selectedMonth={selectedMonth}
-    //         setSelectedMonth={setSelectedMonth}
-    //         year={2020}
-    //         month={9}
-    //       />
-    //     </View>
-    //     <View style={{ alignItems: "center", marginVertical: 10 }}>
-    //       <SelectMonth
-    //         selectedMonth={selectedMonth}
-    //         setSelectedMonth={setSelectedMonth}
-    //         year={2020}
-    //         month={8}
-    //       />
-    //     </View>
-    //     <View style={{ alignItems: "center", marginVertical: 10 }}>
-    //       <SelectMonth
-    //         selectedMonth={selectedMonth}
-    //         setSelectedMonth={setSelectedMonth}
-    //         year={2020}
-    //         month={7}
-    //       />
-    //     </View>
-    //     <View style={{ alignItems: "center", marginVertical: 10 }}>
-    //       <SelectMonth
-    //         selectedMonth={selectedMonth}
-    //         setSelectedMonth={setSelectedMonth}
-    //         year={2020}
-    //         month={6}
-    //       />
-    //     </View>
-    //     <View style={{ flex: 10 }}>
-    //       <SectionList
-    //         ItemSeparatorComponent={flatListItemSeparator}
-    //         sections={years.map((year) => ({
-    //           title: `${year}년`,
-    //           data: testSet[year],
-    //         }))}
-    //         renderSectionHeader={({ section }) => (
-    //           <Text
-    //             style={styles.sectionHeaderStyle}
-    //             onPress={() => {
-    //               changeShow(section.title.substring(0, 4));
-    //             }}
-    //           >
-    //             {section.title}{" "}
-    //           </Text>
-    //         )}
-    //         renderItem={({ item }) => {
-    //           return show[item.id.substring(0, 4)] ? (
-    //             <Text
-    //               style={styles.SectionListItemStyle}
-    //               onPress={() => props.navigation.navigate("모의시험 문제")}
-    //             >
-    //               {item.value}
-    //             </Text>
-    //           ) : (
-    //             <Text style={{ height: 0 }}></Text>
-    //           );
-    //         }}
-    //         keyExtractor={(item, index) => index}
-    //       />
-    //     </View>
-    //   </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  areaSet: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10,
-  },
-  separator: {
-    height: 0.5,
-    width: "100%",
-    backgroundColor: "skyblue",
-  },
-  sectionHeaderStyle: {
-    backgroundColor: "skyblue",
-    fontSize: 20,
-    paddingVertical: 5,
-  },
-  SectionListItemStyle: {
-    fontSize: 15,
-    padding: 15,
-    color: "#000",
-  },
-});

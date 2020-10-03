@@ -7,7 +7,9 @@ import styled from "styled-components/native";
 import { apiTestAns, apiTestSolutions } from "../api";
 import Home from "../assets/Svg/Home.svg";
 import { Feather } from "@expo/vector-icons";
-import { screenInfo } from "../utils";
+import { screenInfo, getGrade } from "../utils";
+import { setSolvedData } from "../solvedData";
+import { timerFormat } from "./../utils";
 
 const { isTablet } = screenInfo;
 
@@ -44,16 +46,26 @@ const Container = styled.View`
 
 export default (props) => {
   const { route, navigation } = props;
-  const { time, studentAns, questData, bookmarks } = props.route.params;
+  const {
+    time,
+    year,
+    month,
+    studentAns,
+    questData,
+    bookmarks,
+  } = props.route.params;
   const [comments, setComments] = useState({
     loading: true,
     correctAns: {},
     solutions: {},
   });
+  const [result, setResult] = useState([0, 0, 0]);
 
   const getComments = async () => {
     const { correctAns } = await apiTestAns();
     const { solutionImageUrl: solutions } = await apiTestSolutions();
+    const testResult = getGrade(studentAns, correctAns);
+    setResult([timerFormat(time), `${testResult.totalScore}점`, "2등급"]);
     setComments({
       loading: false,
       correctAns,
@@ -75,9 +87,10 @@ export default (props) => {
   useEffect(() => {
     // BackHandler.addEventListener("hardwareBackPress", popBefore);
     getComments();
+    setSolvedData(year, month, ...result);
     // return () =>
     //   BackHandler.removeEventListener("hardwareBackPress", popBefore);
-  }, []);
+  }, [comments.loading]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -108,11 +121,7 @@ export default (props) => {
     </View>
   ) : (
     <Container>
-      <ResultTable
-        time={time}
-        studentAns={studentAns}
-        correctAns={comments.correctAns}
-      />
+      <ResultTable time={timerFormat(time)} grade={result[1]} />
       <View>
         <View
           style={{

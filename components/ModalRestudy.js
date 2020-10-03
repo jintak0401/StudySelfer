@@ -17,15 +17,17 @@ const Container = styled.View`
 const Text = styled.Text`
   color: ${(props) => (props.isWarning ? "#C04F4F" : "#4F62C0")};
   font-size: ${(props) =>
-    props.isWarning ? 13 : props.isFirstLine ? 57 : 27}px;
+    props.isWarning ? 16 : props.isFirstLine ? 48 : 23}px;
   margin-top: ${(props) =>
     props.isWarning ? 16 : props.isFirstLine ? 30 : 0}px;
+  font-family: ${(props) => (props.isWarning ? "NanumSquare" : "Ssangmoon")};
+  font-weight: ${(props) => (props.isWarning ? "bold" : "normal")};
 `;
 
 const YesButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
-  margin-top: 16px;
+  margin-top: 25px;
 `;
 
 const CancelButton = styled.TouchableOpacity`

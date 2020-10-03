@@ -98,9 +98,12 @@ export default ({ navigation, route }) => {
       setQuestNum(num);
     }
   };
+
   const goToResult = () => {
     navigation.navigate("모의시험 결과", {
       time: time,
+      year: route.params.year,
+      month: route.params.month,
       questData,
       studentAns,
       bookmarks,

@@ -8,7 +8,7 @@ export const timerFormat = (secs) => {
   const s = parseInt(secs % 60).toString();
   const m_str = (m.length === 1 ? "0" : "") + m;
   const s_str = (s.length === 1 ? "0" : "") + s;
-  return h_str + " : " + m_str + " : " + s_str;
+  return `${h_str} : ${m_str} : ${s_str}`;
 };
 
 export const getGrade = (studentAns, correctAns) => {

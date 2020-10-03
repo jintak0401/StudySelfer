@@ -12,6 +12,7 @@ const ScrollContainer = ({
       showsVerticalScrollIndicator={false}
       style={{
         backgroundColor: "white",
+        width: "100%",
         maxHeight: isTest ? "85%" : "100%",
       }}
       contentContainerStyle={{

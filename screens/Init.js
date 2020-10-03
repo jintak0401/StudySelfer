@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect } from "react";
 import styled from "styled-components/native";
 import { screenInfo } from "../utils";
 import StepUp from "../assets/Svg/StepUp.svg";
@@ -6,6 +6,8 @@ import NoteAndPerson from "../assets/Svg/NoteAndPerson.svg";
 import TestingPeople from "../assets/Svg/TestingPeople.svg";
 import Book from "../assets/Svg/Book.svg";
 import Profile from "../assets/Svg/Profile.svg";
+import { useFonts } from "expo-font";
+import { typoSsangmoon } from "../src/Fonts";
 
 const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
@@ -46,9 +48,11 @@ const Button = styled.TouchableOpacity`
 const Text = styled.Text`
   font-size: 20px;
   color: #4f62c0;
+  font-family: Ssangmoon;
 `;
 
 export default ({ navigation, route }) => {
+  const loaded = true;
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => <Book marginLeft={30} width={50} height={50} />,
@@ -62,20 +66,29 @@ export default ({ navigation, route }) => {
     });
   }, [route]);
 
-  return (
+  return loaded ? (
     <Container>
-      <Button onPress={() => navigation.navigate("진단평가")}>
+      <Button
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate("진단평가")}
+      >
         <StepUp width={100} height={100} />
         <Text>진단평가</Text>
       </Button>
-      <Button onPress={() => navigation.navigate("추천문제")}>
+      <Button
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate("추천문제")}
+      >
         <NoteAndPerson width={117.71} height={100} />
         <Text>추천문제</Text>
       </Button>
-      <Button onPress={() => navigation.navigate("모의수능 및 모의고사")}>
+      <Button
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate("모의수능 및 모의고사")}
+      >
         <TestingPeople width={97.76} height={100} />
         <Text>모의고사</Text>
       </Button>
     </Container>
-  );
+  ) : null;
 };

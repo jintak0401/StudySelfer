@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Table, Row, Rows } from "react-native-table-component";
-import { getGrade, timerFormat } from "./../utils";
 import styled from "styled-components/native";
 import { screenInfo } from "../utils";
 
@@ -13,18 +12,11 @@ const Container = styled.View`
   margin-left: ${0.1 * WIDTH}px;
 `;
 
-const ResultTable = ({ time, studentAns, correctAns }) => {
+const ResultTable = ({ time, grade }) => {
   const [table, setTable] = useState({
     tableHead: ["풀이시간", "점수", "등급"],
-    tableData: [
-      [
-        timerFormat(time),
-        `${getGrade(studentAns, correctAns).totalScore}점`,
-        "2등급",
-      ],
-    ],
+    tableData: [[time, grade, "2등급"]],
   });
-
   return (
     <Container>
       <Table
