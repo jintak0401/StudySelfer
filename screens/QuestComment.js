@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import React, { useLayoutEffect, useEffect, useState } from "react";
+import { Animated, Easing, Image, StyleSheet, Text, View } from "react-native";
 import styled from "styled-components/native";
 import Questions from "../components/Questions";
 import ScrollContainer from "../components/ScrollContainer";
@@ -7,7 +7,13 @@ import MoveQuestBtn from "./../components/MoveQuestBtn";
 import ModalAnsSheet from "./../components/ModalAnsSheet";
 import Home from "../assets/Svg/Home.svg";
 import TestAdditionalFunc from "../components/TestAdditionalFunc";
-import QuestSummary from "../components/QuestSummary";
+import QuestSummary from "../components/QuestComment/QuestSummary";
+import { screenInfo } from "../utils";
+import Collapsible from "react-native-collapsible";
+import Dash from "react-native-dash";
+import { AntDesign } from "@expo/vector-icons";
+
+const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
 const TitleContainer = styled.View`
   margin-left: -20px;
@@ -37,6 +43,7 @@ const HomeButton = styled.TouchableOpacity`
 
 const Container = styled.View`
   flex: 1;
+  background-color: white;
 `;
 
 const AnswersContainer = styled.View`
@@ -47,18 +54,33 @@ const AnswersContainer = styled.View`
   margin-vertical: 10px;
 `;
 
-// border-top-width: 3px;
-// border-style: solid;
-// border-color: #95989a;
+const CollapseButton = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 65px;
+  background-color: white;
+  margin-bottom: 20px;
+  ${(props) => props.isSolution && `margin-top: 20px`};
+`;
 
-const Divider = styled.View`
+const CollapseText = styled.Text`
+  text-align: center;
+  padding-right: 5px;
+  font-size: 16px;
+  color: #4f62c0;
+  font-weight: bold;
+  padding-left: 6px;
+`;
+
+const FoldDirection = styled(Animated.View)`
   justify-content: center;
   align-items: center;
 `;
 
-const DividerText = styled.Text`
-  font-size: 20px;
-  color: gray;
+const Wrapper = styled.View`
+  justify-content: center;
+  align-items: center;
 `;
 
 export default (props) => {
@@ -74,6 +96,57 @@ export default (props) => {
   const [questNum, setQuestNum] = useState(qNum);
   const [modalVisible, setModalVisible] = useState(false);
   const setModal = (n) => setModalVisible(!modalVisible);
+  const [questCollapsed, setQuestCollapsed] = useState(false);
+  const [solutionCollapsed, setSolutionCollapsed] = useState(false);
+  const [questDirection, setQuestDirection] = useState(new Animated.Value(0));
+  const [solutionDirection, setSolutionDirection] = useState(
+    new Animated.Value(0)
+  );
+  const questRotate = questDirection.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "180deg"],
+  });
+  const solutionRotate = solutionDirection.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "180deg"],
+  });
+
+  const [questRatio, setQuestRatio] = useState(1);
+  const [solutionRatio, setSolutionRatio] = useState(1);
+  useLayoutEffect(() => {
+    if (solutions) {
+      Image.getSize(solutions[questNum], (width, height) => {
+        setSolutionRatio(width / height);
+      });
+    }
+  }, [questNum]);
+  useLayoutEffect(() => {
+    if (questData) {
+      Image.getSize(questData[questNum].questImageUrl, (width, height) => {
+        setQuestRatio(width / height);
+      });
+    }
+  }, [questNum]);
+  useEffect(() => {
+    setQuestCollapsed(false);
+    setSolutionCollapsed(false);
+  }, [questNum]);
+
+  useEffect(() => {
+    Animated.timing(questDirection, {
+      toValue: questCollapsed ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+      easing: Easing.easeInOutCubic,
+    }).start();
+  }, [questCollapsed]);
+  useEffect(() => {
+    Animated.timing(solutionDirection, {
+      toValue: solutionCollapsed ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  }, [solutionCollapsed]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -121,51 +194,85 @@ export default (props) => {
         questNum={questNum}
         studentAns={studentAns[questNum]}
         correctAns={correctAns[questNum]}
+        isChoice={questNum <= 21}
       />
-      {/* <AnswersContainer>
-        {studentAns[questNum] !== correctAns[questNum] ? (
-          <Text style={{ color: "red", marginHorizontal: 5, fontSize: 20 }}>
-            {studentAns[questNum] ? studentAns[questNum] : "입력없음"}
-          </Text>
-        ) : null}
-        <Text style={{ color: "blue", marginHorizontal: 5, fontSize: 20 }}>
-          {correctAns[questNum]}
-        </Text>
-      </AnswersContainer> */}
-      <Divider>
-        <DividerText>--------- 문제 ---------</DividerText>
-      </Divider>
-      <Questions questNum={questNum} questData={questData[questNum]} />
-      <Divider>
-        <DividerText>--------- 해설 ---------</DividerText>
-      </Divider>
-      <Questions
-        questNum={questNum}
-        questData={{ questImageUrl: solutions[questNum] }}
-      />
+      <ScrollContainer>
+        <Wrapper>
+          <Dash
+            style={{
+              position: "absolute",
+              top: 10,
+              width: 360,
+              height: 1,
+            }}
+            dashGap={3}
+            dashLength={5}
+            dashThickness={1}
+            dashColor={"#999999"}
+          />
+          <CollapseButton
+            activeOpacity={1}
+            onPress={() => setQuestCollapsed(!questCollapsed)}
+          >
+            <CollapseText>문제</CollapseText>
+            <FoldDirection style={{ transform: [{ rotate: questRotate }] }}>
+              <AntDesign name="up" size={20} color="#4F62C0" />
+            </FoldDirection>
+          </CollapseButton>
+          <Collapsible collapsed={questCollapsed}>
+            <Image
+              style={{
+                width: WIDTH * 0.9,
+                height: undefined,
+                aspectRatio: questRatio,
+              }}
+              source={{ uri: questData[questNum].questImageUrl }}
+              resizeMode="cover"
+            />
+          </Collapsible>
+        </Wrapper>
+        <Wrapper>
+          <Dash
+            style={{
+              position: "relative",
+              width: 360,
+              height: 1,
+              top: 32,
+            }}
+            dashGap={3}
+            dashLength={5}
+            dashThickness={1}
+            dashColor={"#999999"}
+          />
+          <CollapseButton
+            isSolution={true}
+            activeOpacity={1}
+            onPress={() => setSolutionCollapsed(!solutionCollapsed)}
+          >
+            <CollapseText>해설</CollapseText>
+            <FoldDirection style={{ transform: [{ rotate: solutionRotate }] }}>
+              <AntDesign name="up" size={20} color="#4F62C0" />
+            </FoldDirection>
+          </CollapseButton>
+          <Collapsible collapsed={solutionCollapsed}>
+            <Image
+              style={{
+                width: WIDTH * 0.9,
+                height: undefined,
+                aspectRatio: solutionRatio,
+              }}
+              source={{ uri: solutions[questNum] }}
+              resizeMode="cover"
+            />
+          </Collapsible>
+        </Wrapper>
+      </ScrollContainer>
       <MoveQuestBtn
         inTest={false}
         questNum={questNum}
         changeQuestNum={(qNum) => setQuestNum(qNum)}
       />
     </Container>
-
-    // <View style={styles.container}>
-    //   <View style={{ ...styles.box, flex: 1 }}>
-    //     <Text>선택내용</Text>
-    //   </View>
-    //   <View style={{ ...styles.box, flex: 3 }}>
-    //     <Text>{questNum}번 문제</Text>
-    //   </View>
-    //   <View style={{ ...styles.box, flex: 3 }}>
-    //     <Text>해설</Text>
-    //   </View>
-    //   <MoveQuestBtn
-    //     inTest={false}
-    //     questNum={questNum}
-    //     changeQuestNum={(qNum) => setQuestNum(qNum)}
-    //   />
-    // </View>
   );
 };
 

@@ -2,13 +2,15 @@ import { Dimensions } from "react-native";
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
 
-export const timerFormat = (secs) => {
+export const timerFormat = (secs, inProgress = false) => {
   const h_str = "0" + parseInt(secs / 3600).toString();
   const m = parseInt((secs % 3600) / 60).toString();
   const s = parseInt(secs % 60).toString();
   const m_str = (m.length === 1 ? "0" : "") + m;
   const s_str = (s.length === 1 ? "0" : "") + s;
-  return `${h_str} : ${m_str} : ${s_str}`;
+  return inProgress
+    ? `${h_str} : ${m_str} : ${s_str}`
+    : `${h_str}:${m_str}:${s_str}`;
 };
 
 export const getGrade = (studentAns, correctAns) => {
@@ -29,12 +31,22 @@ export const screenInfo = {
   HEIGHT: HEIGHT,
 };
 
-export const getTestTitle = (year, month) => {
-  const title =
-    month === 11
+export const getTestTitle = (year, month, inList = false) => {
+  const title = inList
+    ? month === 11
       ? `${year}학년도 수능`
       : month === 6 || month === 9
       ? `${month}월 평가원 모의고사`
-      : `${month}월 교육청 모의고사`;
+      : `${month}월 교육청 모의고사`
+    : month === 11
+    ? `${year}학년도 수능`
+    : month === 6 || month === 9
+    ? `${year}년 ${month}월 평가원`
+    : `${year}년 ${month}월 교육청`;
   return title;
+};
+
+export const answerFormat = (ans, isChoice) => {
+  const mark = { 1: "①", 2: "②", 3: "③", 4: "④", 5: "⑤" };
+  return ans ? (isChoice ? mark[ans] : ans) : "미입력";
 };

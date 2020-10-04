@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
 import Collapsible from "react-native-collapsible";
-import { getSolvedMonth, solvedData } from "../solvedData";
+import { getSolvedMonth, solvedData } from "../../solvedData";
 import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
 import Dash from "react-native-dash";
-import { getTestTitle } from "../utils";
+import { getTestTitle } from "../../utils";
 
 const DisplayFirstContainer = styled.View`
   border-width: 2px;
@@ -49,6 +49,7 @@ const SolvedDataWrapper = styled.View`
 const SolvedDataText = styled.Text`
   color: #999999;
   font-size: 14px;
+  letter-spacing: ${(props) => (props.isTime ? -1 : 0)}px;
 `;
 
 const Button = styled.TouchableOpacity`
@@ -66,7 +67,8 @@ const ResultText = styled.Text`
 const Container = styled.View`
   width: 85%;
   justify-content: center;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
+  ${(props) => props.isSat && `margin-bottom: 25px`};
 `;
 
 const ContainerButton = styled.TouchableOpacity`
@@ -93,27 +95,13 @@ const ContainerText = styled.Text`
   font-size: 17px;
 `;
 
-const ButtonText = styled.Text`
-  background-color: tomato;
-  font-size: 14px;
-`;
-
-const DashedLine = styled.View`
-  height: 0px;
-  border-width: 1px;
-  border-style: dashed;
-  border-color: black;
-  width: 100%;
-  border-radius: 20px;
-`;
-
 const DisplaySolvedData = ({ time, grade, rank, setRestudyModalVisible }) => {
   return (
     <DisplayFirstContainer>
       <DisplaySecondContainer>
         <LastData>지난 기록</LastData>
         <SolvedDataWrapper>
-          <SolvedDataText>{time}</SolvedDataText>
+          <SolvedDataText isTime={true}>{time}</SolvedDataText>
           <SolvedDataText>{grade}</SolvedDataText>
           <SolvedDataText>{rank}</SolvedDataText>
           <Button>
@@ -134,31 +122,34 @@ const DisplaySolvedData = ({ time, grade, rank, setRestudyModalVisible }) => {
 
 const SelectMonth = ({
   selectedMonth,
+  selectedYear,
   setSelectedMonth,
+  setSelectedYear,
   setRestudyModalVisible,
   setModeModalVisible,
   year,
   month,
 }) => {
   const [selected, setSelected] = useState(false);
-  const title = getTestTitle(year, month);
+  const title = getTestTitle(year, month, true);
   const [isSolved, setIsSolved] = useState(getSolvedMonth(year, month));
   const [time, grade, rank] = isSolved || [0, 0, 0];
 
   useEffect(() => {
-    setSelected(month === selectedMonth);
+    setSelected(year === selectedYear && month === selectedMonth);
   }, [selectedMonth]);
   useEffect(() => {
     setIsSolved(getSolvedMonth(year, month));
   }, [solvedData.test[year]?.[month]]);
 
   return (
-    <Container>
+    <Container isSat={month === 11}>
       <TestTitleContainer>
         <TestTitleButton
           isSolved={isSolved}
           onPress={() => {
             setSelectedMonth(selected ? 0 : month);
+            setSelectedYear(selected ? 0 : year);
             isSolved ? null : setModeModalVisible(true);
           }}
         >
@@ -173,7 +164,7 @@ const SelectMonth = ({
         </TestTitleButton>
       </TestTitleContainer>
       <Dash
-        style={{ position: "relative", bottom: 0.1, width: "100%", height: 1 }}
+        style={{ position: "absolute", top: 22.8, width: "100%", height: 1 }}
         dashGap={3}
         dashLength={5}
         dashThickness={1}
@@ -196,7 +187,9 @@ const SelectMonth = ({
 
 SelectMonth.propTypes = {
   selectedMonth: PropTypes.number.isRequired,
+  selectedYear: PropTypes.number.isRequired,
   setSelectedMonth: PropTypes.func.isRequired,
+  setSelectedYear: PropTypes.func.isRequired,
   setRestudyModalVisible: PropTypes.func.isRequired,
   setModeModalVisible: PropTypes.func.isRequired,
   year: PropTypes.number.isRequired,

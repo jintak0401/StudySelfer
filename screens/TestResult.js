@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { BackHandler, ActivityIndicator, View, Text } from "react-native";
-import QuestResult from "../components/QuestResult";
+import QuestResult from "../components/TestResult/QuestResult";
 import ScrollContainer from "../components/ScrollContainer";
-import ResultTable from "./../components/ResultTable";
+import ResultTable from "./../components/TestResult/ResultTable";
 import styled from "styled-components/native";
 import { apiTestAns, apiTestSolutions } from "../api";
 import Home from "../assets/Svg/Home.svg";
 import { Feather } from "@expo/vector-icons";
-import { screenInfo, getGrade } from "../utils";
+import { screenInfo, getGrade, getTestTitle } from "../utils";
 import { setSolvedData } from "../solvedData";
 import { timerFormat } from "./../utils";
 
@@ -103,7 +103,7 @@ export default (props) => {
       headerTitle: () => (
         <TitleContainer>
           <HeaderTitle>채점 결과</HeaderTitle>
-          <HeaderSubtitle>2020년 7월 모의고사</HeaderSubtitle>
+          <HeaderSubtitle>{getTestTitle(year, month)}</HeaderSubtitle>
         </TitleContainer>
       ),
       headerRight: () => (
@@ -130,7 +130,7 @@ export default (props) => {
             borderBottomColor: "#95989A",
             borderBottomWidth: 3,
             height: "50%",
-            width: "100%",
+            width: "120%",
           }}
         />
         <Text
@@ -155,6 +155,8 @@ export default (props) => {
               studentAns={studentAns[n]}
               correctAns={comments.correctAns[n]}
               goToComment={goToComment}
+              isChoice={n <= 21}
+              isLast={n === 30}
             />
           ))}
       </ScrollContainer>

@@ -1,5 +1,5 @@
-import React, { useLayoutEffect } from "react";
-import styled from "styled-components/native";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import styled, { keyframes } from "styled-components/native";
 import { screenInfo } from "../utils";
 import StepUp from "../assets/Svg/StepUp.svg";
 import NoteAndPerson from "../assets/Svg/NoteAndPerson.svg";
@@ -8,6 +8,7 @@ import Book from "../assets/Svg/Book.svg";
 import Profile from "../assets/Svg/Profile.svg";
 import { useFonts } from "expo-font";
 import { typoSsangmoon } from "../src/Fonts";
+import { Animated, Easing } from "react-native";
 
 const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
@@ -23,6 +24,7 @@ const HeaderTitle = styled.Text`
   color: white;
   margin-top: 25px;
   margin-left: 20px;
+  font-family: Ssangmoon;
 `;
 
 const ProfileButton = styled.TouchableOpacity`
@@ -46,13 +48,78 @@ const Button = styled.TouchableOpacity`
 `;
 
 const Text = styled.Text`
-  font-size: 20px;
+  font-size: 23px;
   color: #4f62c0;
   font-family: Ssangmoon;
+  padding-right: 5px;
+`;
+
+const RedBox = styled(Animated.View)`
+  height: 200px;
+  width: 50px;
+  background-color: red;
+  justify-content: center;
+  align-items: center;
+`;
+
+const BlueBox = styled(Animated.View)`
+  height: 100px;
+  width: 100px;
+  background-color: blue;
+  justify-content: center;
+  align-items: center;
+`;
+
+const YellowBox = styled(Animated.View)`
+  height: 200px;
+  width: 200px;
+  background-color: yellow;
+`;
+
+const Wrapper = styled.View`
+  width: 90%;
+  justify-content: space-between;
+  flex-direction: row;
+`;
+
+const TmpButton = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
+
+const TmpText = styled.Text`
+  font-size: 30px;
+  color: white;
 `;
 
 export default ({ navigation, route }) => {
   const loaded = true;
+  // const boxOpaicity = useRef(new Animated.Value(0)).current;
+  // const redOpacity = boxOpaicity.interpolate({
+  //   inputRange: [0, 0.5, 0.75, 1],
+  //   outputRange: [1, 0, 1, 0],
+  // });
+  // const blueOpacity = boxOpaicity.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: [0, 1],
+  // });
+  // const [isRed, setIsRed] = useState(true);
+  // const spinning = boxOpaicity.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: ["0deg", "180deg"],
+  // });
+
+  // useEffect(() => {
+  //   Animated.timing(boxOpaicity, {
+  //     toValue: isRed ? 1 : 0,
+  //     duration: 500,
+  //     easing: Easing.bounce,
+  //     useNativeDriver: true,
+  //   }).start();
+  // }, [isRed]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => <Book marginLeft={30} width={50} height={50} />,
@@ -68,6 +135,23 @@ export default ({ navigation, route }) => {
 
   return loaded ? (
     <Container>
+      {/* <Wrapper>
+        <RedBox
+          style={{ opacity: redOpacity, transform: [{ rotate: spinning }] }}
+        >
+          <TmpButton disabled={isRed} onPress={() => setIsRed(true)}>
+            <TmpText>red</TmpText>
+          </TmpButton>
+        </RedBox>
+        <BlueBox
+          style={{ opacity: blueOpacity, transform: [{ rotate: spinning }] }}
+        >
+          <TmpButton disabled={!isRed} onPress={() => setIsRed(false)}>
+            <TmpText>blue</TmpText>
+          </TmpButton>
+        </BlueBox>
+        <YellowBox style={{ transform: [{ rotate: spinning }] }} />
+      </Wrapper> */}
       <Button
         activeOpacity={0.8}
         onPress={() => navigation.navigate("진단평가")}

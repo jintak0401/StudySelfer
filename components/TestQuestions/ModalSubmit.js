@@ -2,8 +2,7 @@ import React from "react";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
 import Modal from "react-native-modal";
-import YesMark from "../assets/Svg/YesMark.svg";
-import NoMark from "../assets/Svg/NoMark.svg";
+import { YesMark, NoMark } from "../../assets/Svg";
 
 const Container = styled.View`
   background-color: white;

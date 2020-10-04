@@ -2,9 +2,7 @@ import React from "react";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
 import Modal from "react-native-modal";
-import StudyingPerson from "../assets/Svg/StudyingPerson.svg";
-import CancelMark from "../assets/Svg/CancelMark.svg";
-import YesMark from "../assets/Svg/YesMark.svg";
+import { StudyingPerson, CancelMark, YesMark } from "../../assets/Svg";
 
 const Container = styled.View`
   background-color: white;
@@ -38,7 +36,11 @@ const CancelButton = styled.TouchableOpacity`
   top: -12px;
 `;
 
-const Restudy = ({ setRestudyModalVisible, setModeModalVisible }) => {
+const Restudy = ({
+  setRestudyModalVisible,
+  setModeModalVisible,
+  setSelectedMonth,
+}) => {
   return (
     <Container>
       <StudyingPerson
@@ -52,7 +54,10 @@ const Restudy = ({ setRestudyModalVisible, setModeModalVisible }) => {
       />
       <CancelButton
         activeOpacity={0.8}
-        onPress={() => setRestudyModalVisible(false)}
+        onPress={() => {
+          setSelectedMonth(0);
+          setRestudyModalVisible(false);
+        }}
       >
         <CancelMark width={30} height={30} />
       </CancelButton>
@@ -75,6 +80,7 @@ const ModalRestudy = ({
   restudyModalVisible,
   setRestudyModalVisible,
   setModeModalVisible,
+  setSelectedMonth,
 }) => {
   return (
     <Modal
@@ -82,8 +88,14 @@ const ModalRestudy = ({
       isVisible={restudyModalVisible}
       //아이폰에서 모달창 동작시 깜박임이 있었는데, useNativeDriver Props를 True로 주니 해결되었다.
       useNativeDriver={true}
-      onBackButtonPress={() => setRestudyModalVisible(false)}
-      onBackdropPress={() => setRestudyModalVisible(false)}
+      onBackButtonPress={() => {
+        setSelectedMonth(0);
+        setRestudyModalVisible(false);
+      }}
+      onBackdropPress={() => {
+        setSelectedMonth(0);
+        setRestudyModalVisible(false);
+      }}
       hideModalContentWhileAnimating={true}
       style={{
         flex: 1,
@@ -94,6 +106,7 @@ const ModalRestudy = ({
       <Restudy
         setRestudyModalVisible={setRestudyModalVisible}
         setModeModalVisible={setModeModalVisible}
+        setSelectedMonth={setSelectedMonth}
       />
     </Modal>
   );
@@ -103,6 +116,7 @@ ModalRestudy.propTypes = {
   restudyModalVisible: PropTypes.bool.isRequired,
   setRestudyModalVisible: PropTypes.func.isRequired,
   setModeModalVisible: PropTypes.func.isRequired,
+  setSelectedMonth: PropTypes.func.isRequired,
 };
 
 export default ModalRestudy;

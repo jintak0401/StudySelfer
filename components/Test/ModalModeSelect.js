@@ -2,9 +2,7 @@ import React from "react";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
 import Modal from "react-native-modal";
-import NoTimeLimit from "../assets/Svg/NoTimeLimit.svg";
-import TimeLimit from "../assets/Svg/TimeLimit.svg";
-import CancelMark from "../assets/Svg/CancelMark.svg";
+import { NoTimeLimit, TimeLimit, CancelMark } from "../../assets/Svg";
 
 const Container = styled.View`
   border-radius: 20px;
@@ -54,12 +52,12 @@ const Text = styled.Text`
   letter-spacing: ${(props) => (props.isFirstLine ? 0 : -1)}px;
 `;
 
-const ModeSelect = ({ setModalVisible, goToTest, title }) => {
+const ModeSelect = ({ setModalVisible, goToTest, title, setSelectedMonth }) => {
   return (
     <Container>
       <Button
         isPractice={true}
-        activeOpacity={0.8}
+        activeOpacity={0.9}
         onPress={() => {
           setModalVisible(false);
           goToTest(title);
@@ -88,7 +86,13 @@ const ModeSelect = ({ setModalVisible, goToTest, title }) => {
           </TextWrapper>
         </Wrapper>
       </Button>
-      <CancelButton activeOpacity={0.8} onPress={() => setModalVisible(false)}>
+      <CancelButton
+        activeOpacity={0.8}
+        onPress={() => {
+          setSelectedMonth(0);
+          setModalVisible(false);
+        }}
+      >
         <CancelMark width={30} height={30} />
       </CancelButton>
     </Container>
@@ -100,6 +104,7 @@ const ModalModeSelect = ({
   modalVisible,
   goToTest,
   title,
+  setSelectedMonth,
 }) => {
   return (
     <Modal
@@ -107,8 +112,14 @@ const ModalModeSelect = ({
       isVisible={modalVisible}
       //아이폰에서 모달창 동작시 깜박임이 있었는데, useNativeDriver Props를 True로 주니 해결되었다.
       useNativeDriver={true}
-      onBackButtonPress={() => setModalVisible(false)}
-      onBackdropPress={() => setModalVisible(false)}
+      onBackButtonPress={() => {
+        setSelectedMonth(0);
+        setModalVisible(false);
+      }}
+      onBackdropPress={() => {
+        setSelectedMonth(0);
+        setModalVisible(false);
+      }}
       hideModalContentWhileAnimating={true}
       style={{
         flex: 1,
@@ -120,6 +131,7 @@ const ModalModeSelect = ({
         setModalVisible={setModalVisible}
         goToTest={goToTest}
         title={title}
+        setSelectedMonth={setSelectedMonth}
       />
     </Modal>
   );
@@ -130,6 +142,7 @@ ModalModeSelect.propTypes = {
   modalVisible: PropTypes.bool.isRequired,
   goToTest: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
+  setSelectedMonth: PropTypes.func.isRequired,
 };
 
 export default ModalModeSelect;

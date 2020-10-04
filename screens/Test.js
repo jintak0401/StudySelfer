@@ -1,17 +1,19 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import TestQuestions from "./TestQuestions";
 import { StyleSheet, View, Button, SectionList, Text } from "react-native";
 import styled from "styled-components/native";
-import Book from "../assets/Svg/Book.svg";
 import Profile from "../assets/Svg/Profile.svg";
-import Collapsible from "react-native-collapsible";
-import SelectMonth from "../components/SelectMonth";
-import ModalRestudy from "../components/ModalRestudy";
-import ModalModeSelect from "../components/ModalModeSelect";
 import { getTestTitle } from "../utils";
 import ScrollContainer from "./../components/ScrollContainer";
 import BackMark from "../assets/Svg/BackMark.svg";
 import { resetSolvedData } from "../solvedData";
+import {
+  ModalModeSelect,
+  ModalRestudy,
+  SelectMonth,
+  SelectTest,
+  SelectYear,
+} from "../components/Test";
+import testInfo from "../testInfo";
 
 const BookButton = styled.TouchableOpacity`
   margin-left: 30px;
@@ -33,6 +35,12 @@ const Container = styled.View`
   align-items: center;
 `;
 
+const SelectYearMonthContainer = styled.View`
+  flex: 7.6;
+  width: 100%;
+  align-items: center;
+`;
+
 const ListContainer = styled.View`
   flex: 7;
   width: 100%;
@@ -43,30 +51,7 @@ const SectionContainer = styled.View`
   justify-content: center;
   align-items: center;
   width: 95%;
-`;
-
-const TestSelectContainer = styled.View`
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  flex: 1;
-`;
-
-const TestSelectButton = styled.TouchableOpacity`
-  justify-content: center;
-  align-items: center;
-  border-radius: 50px;
-  background-color: ${(props) => (props.isSelected ? "#4F62C0" : "#CCCCCC")};
-  margin-horizontal: 20px;
-  width: 130px;
-  height: 35px;
-`;
-
-const TestSelectText = styled.Text`
-  font-size: 13px;
-  color: white;
-  font-family: NanumSquare;
-  font-weight: bold;
+  margin-left: 10px;
 `;
 
 const SelectedYearContainer = styled.View`
@@ -75,6 +60,7 @@ const SelectedYearContainer = styled.View`
   align-items: center;
   flex: 0.6;
   width: 85%;
+  margin-left: 10px;
 `;
 
 const BackButton = styled.TouchableOpacity`
@@ -90,48 +76,16 @@ const SelectedYearText = styled.Text`
   margin-bottom: 3px;
 `;
 
-const SECTIONS = {
-  2020: [3, 4, 5, 6, 8, 9, 10],
-  2019: [3, 4, 5, 6, 8, 9, 10, 11],
-  2018: [3, 4, 6, 7, 9, 10],
-};
-
-const testSet = {
-  2020: [
-    { id: "2020_9", value: "9월 평가원 모의고사" },
-    { id: "2020_8", value: "8월 교육청 모의고사" },
-    { id: "2020_6", value: "6월 평가원 모의고사" },
-    { id: "2020_5", value: "5월 교육청 모의고사" },
-    { id: "2020_4", value: "4월 교육청 모의고사" },
-    { id: "2020_3", value: "3월 교육청 모의고사" },
-  ],
-  2019: [
-    { id: "2019_11", value: "20학년도 수능" },
-    { id: "2019_10", value: "10월 교육청 모의고사" },
-    { id: "2019_9", value: "9월 평가원 모의고사" },
-    { id: "2019_8", value: "8월 교육청 모의고사" },
-    { id: "2019_6", value: "6월 평가원 모의고사" },
-    { id: "2019_5", value: "5월 교육청 모의고사" },
-    { id: "2019_4", value: "4월 교육청 모의고사" },
-    { id: "2019_3", value: "3월 교육청 모의고사" },
-  ],
-  2018: [
-    { id: "2018_11", value: "19학년도 수능" },
-    { id: "2018_10", value: "10월 교육청 모의고사" },
-    { id: "2018_9", value: "9월 평가원 모의고사" },
-    { id: "2018_8", value: "8월 교육청 모의고사" },
-    { id: "2018_6", value: "6월 평가원 모의고사" },
-    { id: "2018_5", value: "5월 교육청 모의고사" },
-    { id: "2018_4", value: "4월 교육청 모의고사" },
-    { id: "2018_3", value: "3월 교육청 모의고사" },
-  ],
-};
+const EmptyBox = styled.View`
+  height: 30px;
+`;
 
 export default (props) => {
   const { navigation, route } = props;
   const flatListItemSeparator = () => <View style={styles.separator} />;
   const [show, setShow] = useState({ 2020: true, 2019: true, 2018: true });
   const years = [2020, 2019, 2018];
+  const [selectedYear, setSelectedYear] = useState(0);
   const [selectedMonth, setSelectedMonth] = useState(0);
   const [restudyModalVisible, setRestudyModalVisible] = useState(false);
   const [modeModalVisible, setModeModalVisible] = useState(false);
@@ -145,7 +99,7 @@ export default (props) => {
   const goToTest = (title) => {
     navigation.navigate("모의시험 문제", {
       subtitle: title,
-      year: 2018,
+      year: selectedYear,
       month: selectedMonth,
     });
   };
@@ -171,59 +125,102 @@ export default (props) => {
 
   return (
     <Container>
-      <TestSelectContainer>
-        <TestSelectButton
-          isSelected={selectedTest === "mockTest"}
-          onPress={() => setSelectedTest("mockTest")}
-        >
-          <TestSelectText>기출 모의고사</TestSelectText>
-        </TestSelectButton>
-        <TestSelectButton
-          isSelected={selectedTest === "sat"}
-          onPress={() => setSelectedTest("sat")}
-        >
-          <TestSelectText>대학 수학 능력시험</TestSelectText>
-        </TestSelectButton>
-      </TestSelectContainer>
-      <SelectedYearContainer>
-        <BackButton>
-          <BackMark width={18} height={18} />
-        </BackButton>
-        <SelectedYearText>2018년 모의고사</SelectedYearText>
-      </SelectedYearContainer>
-      <ListContainer>
-        {/* <ScrollContainer> */}
-        {SECTIONS[2018].map((month) => (
-          <SectionContainer key={month}>
-            <SelectMonth
-              selectedMonth={selectedMonth}
-              setSelectedMonth={setSelectedMonth}
-              setRestudyModalVisible={setRestudyModalVisible}
-              setModeModalVisible={setModeModalVisible}
-              year={2018}
-              month={month}
-            />
-          </SectionContainer>
-        ))}
-        <ModalRestudy
-          restudyModalVisible={restudyModalVisible}
-          setRestudyModalVisible={setRestudyModalVisible}
-          setModeModalVisible={setModeModalVisible}
-        />
-        <ModalModeSelect
-          modalVisible={modeModalVisible}
-          setModalVisible={setModeModalVisible}
-          goToTest={goToTest}
-          title={getTestTitle(2018, selectedMonth)}
-        />
-        {/* </ScrollContainer> */}
-      </ListContainer>
+      <SelectTest
+        selectedTest={selectedTest}
+        setSelectedTest={setSelectedTest}
+        setSelectedMonth={setSelectedMonth}
+        selectedMonth={selectedMonth}
+        setSelectedYear={setSelectedYear}
+      />
+      <SelectYearMonthContainer>
+        {selectedYear === 0 && selectedTest === "mockTest" ? (
+          <>
+            <EmptyBox />
+            <ListContainer>
+              {Object.keys(testInfo.mockTest).map((year, idx) => (
+                <SectionContainer key={parseInt(year)}>
+                  <SelectYear
+                    year={parseInt(year)}
+                    setSelectedYear={setSelectedYear}
+                    needMarginTop={idx === 0}
+                  />
+                </SectionContainer>
+              ))}
+            </ListContainer>
+          </>
+        ) : null}
+        {selectedYear !== 0 && selectedTest === "mockTest" ? (
+          <>
+            <SelectedYearContainer>
+              <BackButton
+                onPress={() => {
+                  setSelectedYear(0);
+                  setSelectedMonth(0);
+                }}
+              >
+                <BackMark width={18} height={18} />
+              </BackButton>
+              <SelectedYearText>{selectedYear}년 모의고사</SelectedYearText>
+            </SelectedYearContainer>
+            <ListContainer>
+              {testInfo.mockTest[selectedYear].map((month) => (
+                <SectionContainer key={month}>
+                  <SelectMonth
+                    selectedMonth={selectedMonth}
+                    selectedYear={selectedYear}
+                    setSelectedMonth={setSelectedMonth}
+                    setSelectedYear={setSelectedYear}
+                    setRestudyModalVisible={setRestudyModalVisible}
+                    setModeModalVisible={setModeModalVisible}
+                    year={selectedYear}
+                    month={month}
+                  />
+                </SectionContainer>
+              ))}
+            </ListContainer>
+          </>
+        ) : null}
+        {selectedTest === "sat" ? (
+          <>
+            <EmptyBox />
+            <ListContainer>
+              {testInfo.sat.map((year) => (
+                <SectionContainer key={year}>
+                  <SelectMonth
+                    selectedMonth={selectedMonth}
+                    selectedYear={selectedYear}
+                    setSelectedMonth={setSelectedMonth}
+                    setSelectedYear={setSelectedYear}
+                    setRestudyModalVisible={setRestudyModalVisible}
+                    setModeModalVisible={setModeModalVisible}
+                    year={year}
+                    month={11}
+                  />
+                </SectionContainer>
+              ))}
+            </ListContainer>
+          </>
+        ) : null}
+      </SelectYearMonthContainer>
       <Button
         title="RESET"
         onPress={() => {
           resetSolvedData();
           setSelectedMonth(100);
         }}
+      />
+      <ModalRestudy
+        restudyModalVisible={restudyModalVisible}
+        setRestudyModalVisible={setRestudyModalVisible}
+        setModeModalVisible={setModeModalVisible}
+        setSelectedMonth={setSelectedMonth}
+      />
+      <ModalModeSelect
+        modalVisible={modeModalVisible}
+        setModalVisible={setModeModalVisible}
+        goToTest={goToTest}
+        title={getTestTitle(selectedYear, selectedMonth)}
+        setSelectedMonth={setSelectedMonth}
       />
     </Container>
   );

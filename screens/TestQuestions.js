@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import Questions from "../components/Questions";
 import { apiTestQuests } from "./../api";
-import ProgressBar from "../components/ProgressBar";
+import ProgressBar from "../components/TestQuestions/ProgressBar";
 import styled from "styled-components/native";
 import TestAdditionalFunc from "./../components/TestAdditionalFunc";
-import Ansbtn from "../components/Ansbtn";
-import Input from "../components/Input";
+import Ansbtn from "../components/TestQuestions/Ansbtn";
+import Input from "../components/TestQuestions/Input";
 import MoveQuestBtn from "./../components/MoveQuestBtn";
 import ModalAnsSheet from "./../components/ModalAnsSheet";
 import Collapsible from "react-native-collapsible";
-import ModalSubmit from "./../components/ModalSubmit";
+import ModalSubmit from "../components/TestQuestions/ModalSubmit";
 
 const TitleContainer = styled.View`
   margin-left: -20px;
@@ -109,8 +109,11 @@ export default ({ navigation, route }) => {
       bookmarks,
     });
   };
+
   useEffect(() => {
     getQuestData();
+  }, []);
+  useEffect(() => {
     const interval = setInterval(() => {
       setTime((prevTime) => prevTime - 1);
     }, 1000);
