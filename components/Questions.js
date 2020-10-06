@@ -9,7 +9,7 @@ const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
 const falseArr = [false, false, false, false, false];
 
-export default ({ questNum, questData, isTest }) => {
+export default ({ questNum, questData, isTest, flexValue }) => {
   const [ratio, setRatio] = useState(1);
   useLayoutEffect(() => {
     if (questData) {
@@ -19,7 +19,7 @@ export default ({ questNum, questData, isTest }) => {
     }
   }, [questData]);
   return (
-    <ScrollContainer isTest={isTest}>
+    <ScrollContainer flexValue={flexValue} isTest={isTest}>
       {questData ? (
         <Image
           style={{ width: WIDTH * 0.9, height: undefined, aspectRatio: ratio }}

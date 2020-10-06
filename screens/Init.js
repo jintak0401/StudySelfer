@@ -9,6 +9,7 @@ import Profile from "../assets/Svg/Profile.svg";
 import { useFonts } from "expo-font";
 import { typoSsangmoon } from "../src/Fonts";
 import { Animated, Easing } from "react-native";
+import GestureRecognizer from "react-native-swipe-gestures";
 
 const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
@@ -120,6 +121,8 @@ export default ({ navigation, route }) => {
   //   }).start();
   // }, [isRed]);
 
+  const [color, setColor] = useState("red");
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => <Book marginLeft={30} width={50} height={50} />,
@@ -133,8 +136,35 @@ export default ({ navigation, route }) => {
     });
   }, [route]);
 
+  const onSwipeUp = () => {
+    setColor("red");
+    console.log("up");
+  };
+
+  const onSwipeRight = () => {
+    setColor("blue");
+    console.log("right");
+  };
+  const onSwipeDown = () => {
+    setColor("yellow");
+    console.log("down");
+  };
+  const onSwipeLeft = () => {
+    setColor("black");
+    console.log("left");
+  };
+  const config = { directionalOffsetThreshold: 500, gestureClickThreshold: 5 };
+
   return loaded ? (
     <Container>
+      <GestureRecognizer
+        onSwipeUp={() => onSwipeUp()}
+        onSwipeRight={() => onSwipeRight()}
+        onSwipeDown={() => onSwipeDown()}
+        onSwipeLeft={() => onSwipeLeft()}
+        config={config}
+        style={{ height: 200, backgroundColor: color }}
+      />
       {/* <Wrapper>
         <RedBox
           style={{ opacity: redOpacity, transform: [{ rotate: spinning }] }}

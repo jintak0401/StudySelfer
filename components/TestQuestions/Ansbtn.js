@@ -1,12 +1,45 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components/native";
+import { AntDesign } from "@expo/vector-icons";
+import { Animated } from "react-native";
 
-const Button = styled.TouchableHighlight`
+const Container = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
   border-color: white;
+  height: 100%;
   border-left-width: ${(props) => (!props.isFirst ? 1 : 0)}px;
+`;
+
+const Wrapper = styled(Animated.View)`
+  height: 100%;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const RemoveTag = styled.TouchableOpacity`
+  flex: 2;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: #999999;
+`;
+
+const TagContainer = styled(Animated.View)`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Button = styled.TouchableHighlight`
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex: 7;
 `;
 
 const Text = styled.Text`
@@ -17,20 +50,56 @@ const Text = styled.Text`
   font-size: 25px;
   color: white;
   text-align: center;
-  padding-vertical: 20px;
+  text-align-vertical: center;
 `;
 
-const Ansbtn = (props) => {
-  const { ansNum, isSelected, selectAns } = props;
+const Ansbtn = ({ ansNum, isSelected, selectAns, isRemoved, removeAns }) => {
+  const removing = useRef(new Animated.Value(0)).current;
+  const goDown = removing.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 70],
+  });
+  const rotation = removing.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "180deg"],
+  });
+  useEffect(() => {
+    Animated.timing(removing, {
+      toValue: isRemoved ? 1 : 0,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }, [isRemoved]);
   return (
-    <Button
-      isFirst={ansNum === 1}
-      onPress={() => {
-        selectAns(ansNum);
-      }}
-    >
-      <Text isSelected={isSelected}>{ansNum}</Text>
-    </Button>
+    <Container isFirst={ansNum === 1}>
+      <Wrapper style={{ transform: [{ translateY: goDown }] }}>
+        <RemoveTag
+          activeOpacity={0.9}
+          onPress={() => (isSelected ? null : removeAns(ansNum))}
+        >
+          <TagContainer style={{ transform: [{ rotate: rotation }] }}>
+            <AntDesign name="down" size={18} color="white" />
+          </TagContainer>
+        </RemoveTag>
+        <Button
+          onPress={() => {
+            isRemoved ? null : selectAns(ansNum);
+          }}
+        >
+          <Text isSelected={isSelected}>{ansNum}</Text>
+        </Button>
+      </Wrapper>
+    </Container>
+    //  {/* <Button
+    //   isFirst={ansNum === 1}
+    //   onPress={() => {
+    //     selectAns(ansNum);
+    //   }}
+    // >
+    //   <Text isRemoved={isRemoved} isSelected={isSelected}>
+    //     {ansNum}
+    //   </Text>
+    // </Button> */}
   );
 };
 

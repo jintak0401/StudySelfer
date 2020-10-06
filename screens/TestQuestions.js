@@ -33,16 +33,18 @@ const IconSet = styled.View`
   margin-top: 10px;
 `;
 
+//flex: 1
 const Container = styled.View`
   background-color: white;
   flex: 1;
 `;
 
+// bottom: 0px;
+// position: absolute;
 const AnsbtnSet = styled.View`
   flex-direction: row;
-  bottom: 0px;
-  position: absolute;
   align-items: center;
+  height: 90px;
 `;
 
 const InputContainer = styled.View`
@@ -66,7 +68,7 @@ const LeftBtn = styled.TouchableOpacity`
 `;
 
 export default ({ navigation, route }) => {
-  const [questNum, setQuestNum] = useState(30);
+  const [questNum, setQuestNum] = useState(1);
   const [studentAns, setStudentAns] = useState({});
   const [bookmarks, setBookmarks] = useState({});
   const [questData, setQuestData] = useState({});
@@ -76,6 +78,15 @@ export default ({ navigation, route }) => {
   const [answersheetModalVisible, setAnswersheetModalVisible] = useState(false);
   const [submitModalVisible, setSubmitModalVisible] = useState(false);
   const [moveActive, setMoveActive] = useState(true);
+  const [removedAns, setRemovedAns] = useState({});
+
+  const removingAns = (ans) => {
+    const tmp = { ...removedAns };
+    if (!(questNum in tmp)) tmp[questNum] = {};
+    const alreadyRemoved = tmp[questNum][ans];
+    tmp[questNum][ans] = !alreadyRemoved;
+    setRemovedAns({ ...tmp });
+  };
 
   const getQuestData = async () => {
     const tmp = await apiTestQuests();
@@ -163,6 +174,7 @@ export default ({ navigation, route }) => {
       </Collapsible>
       <Questions
         isTest={true}
+        flexValue={6}
         questNum={questNum}
         questData={questData[questNum]}
       />
@@ -170,10 +182,12 @@ export default ({ navigation, route }) => {
         <AnsbtnSet>
           {[1, 2, 3, 4, 5].map((n) => (
             <Ansbtn
-              key={`${questNum}${n}`}
+              key={n}
               ansNum={n}
               isSelected={studentAns[questNum] === n}
               selectAns={selectAns}
+              isRemoved={removedAns[questNum]?.[n]}
+              removeAns={removingAns}
             />
           ))}
         </AnsbtnSet>
