@@ -3,12 +3,12 @@
     "name": "SWmaestro",
     "slug": "SWmaestro",
     "version": "1.0.0",
+    "icon": "./assets/pink.png",
+    "backgroundColor": "#4F62C0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#4F62C0"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -20,6 +20,12 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "icon": "./assets/yellow.png",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/pink.png"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

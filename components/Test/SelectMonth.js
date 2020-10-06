@@ -149,7 +149,7 @@ const SelectMonth = ({
           isSolved={isSolved}
           onPress={() => {
             setSelectedMonth(selected ? 0 : month);
-            setSelectedYear(selected ? 0 : year);
+            setSelectedYear(year);
             isSolved ? null : setModeModalVisible(true);
           }}
         >

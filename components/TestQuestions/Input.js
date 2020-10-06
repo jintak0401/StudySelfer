@@ -14,7 +14,7 @@ const NumberInput = styled.TextInput`
   width: 80%;
 `;
 
-const Input = ({ placeholder, onSubmit, defaultValue }) => {
+const Input = ({ placeholder, onSubmit, defaultValue, setMoveActive }) => {
   const [input, setInput] = useState("");
   const inputNum = (text) => {
     setInput(text);
@@ -30,6 +30,8 @@ const Input = ({ placeholder, onSubmit, defaultValue }) => {
       value={input}
       onChangeText={(text) => setInput(text)}
       onSubmitEditing={() => onSubmit(Number(input))}
+      onFocus={() => setMoveActive(false)}
+      onEndEditing={() => setMoveActive(true)}
     />
   );
 };
@@ -40,4 +42,5 @@ Input.propTypes = {
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
+  setMoveActive: PropTypes.func.isRequired,
 };

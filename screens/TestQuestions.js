@@ -75,6 +75,7 @@ export default ({ navigation, route }) => {
   const [clock, setClock] = useState(false);
   const [answersheetModalVisible, setAnswersheetModalVisible] = useState(false);
   const [submitModalVisible, setSubmitModalVisible] = useState(false);
+  const [moveActive, setMoveActive] = useState(true);
 
   const getQuestData = async () => {
     const tmp = await apiTestQuests();
@@ -182,17 +183,20 @@ export default ({ navigation, route }) => {
             placeholder={"답을 입력해주세요"}
             onSubmit={selectAns}
             defaultValue={studentAns[questNum]}
+            setMoveActive={setMoveActive}
           />
         </InputContainer>
       )}
-      <MoveQuestBtn
-        inTest={true}
-        questNum={questNum}
-        changeQuestNum={changeQuestNum}
-        time={readyTime + testTime - time}
-        goToResult={goToResult}
-        setModalVisible={setSubmitModalVisible}
-      />
+      {moveActive ? (
+        <MoveQuestBtn
+          inTest={true}
+          questNum={questNum}
+          changeQuestNum={changeQuestNum}
+          time={readyTime + testTime - time}
+          goToResult={goToResult}
+          setModalVisible={setSubmitModalVisible}
+        />
+      ) : null}
       <ModalAnsSheet
         inTest={true}
         answersheetModalVisible={answersheetModalVisible}

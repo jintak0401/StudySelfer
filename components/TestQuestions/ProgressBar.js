@@ -20,21 +20,21 @@ const Timer = styled.Text`
 `;
 
 export default ({ time, totalTime }) => {
-  const fontsize = parseInt(HEIGHT * 0.02);
+  const fontsize = isTablet ? 20 : 16;
   return (
     <Container>
       <Progress.Bar
         progress={1 - time / totalTime}
-        color={"skyblue"}
+        color={"#A9E4EB"}
         width={parseInt(0.9 * WIDTH)}
-        height={fontsize * 1.2}
+        height={19}
         borderRadius={100}
         style={{ justifyContent: "center" }}
       >
         <Text
           style={{
             alignSelf: "center",
-            color: "gray",
+            color: "#999999",
             position: "absolute",
             fontSize: fontsize,
           }}

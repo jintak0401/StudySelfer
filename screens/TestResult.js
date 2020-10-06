@@ -60,6 +60,7 @@ export default (props) => {
     solutions: {},
   });
   const [result, setResult] = useState([0, 0, 0]);
+  const testTitle = getTestTitle(year, month);
 
   const getComments = async () => {
     const { correctAns } = await apiTestAns();
@@ -78,6 +79,7 @@ export default (props) => {
       studentAns,
       questData,
       bookmarks,
+      testTitle,
       ...comments,
     });
   };
@@ -103,7 +105,7 @@ export default (props) => {
       headerTitle: () => (
         <TitleContainer>
           <HeaderTitle>채점 결과</HeaderTitle>
-          <HeaderSubtitle>{getTestTitle(year, month)}</HeaderSubtitle>
+          <HeaderSubtitle>{testTitle}</HeaderSubtitle>
         </TitleContainer>
       ),
       headerRight: () => (

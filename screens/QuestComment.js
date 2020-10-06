@@ -92,6 +92,7 @@ export default (props) => {
     questData,
     bookmarks,
     solutions,
+    testTitle,
   } = props.route.params;
   const [questNum, setQuestNum] = useState(qNum);
   const [modalVisible, setModalVisible] = useState(false);
@@ -160,7 +161,7 @@ export default (props) => {
       headerTitle: () => (
         <TitleContainer>
           <HeaderTitle>해설 보기</HeaderTitle>
-          <HeaderSubtitle>2020년 7월 모의고사</HeaderSubtitle>
+          <HeaderSubtitle>{testTitle}</HeaderSubtitle>
         </TitleContainer>
       ),
       headerRight: () => (

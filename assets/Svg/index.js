@@ -12,6 +12,9 @@ import StudyingPerson from "./StudyingPerson.svg";
 import TestingPeople from "./TestingPeople.svg";
 import TimeLimit from "./TimeLimit.svg";
 import YesMark from "./YesMark.svg";
+import WalkingPerson from "./WalkingPerson.svg";
+import FlyingPapers from "./FlyingPapers.svg";
+import Kakao from "./Kakao.svg";
 
 export {
   BackMark,
@@ -28,4 +31,7 @@ export {
   TestingPeople,
   TimeLimit,
   YesMark,
+  WalkingPerson,
+  FlyingPapers,
+  Kakao,
 };
