@@ -44,7 +44,7 @@ const Container = styled.View`
 const AnsbtnSet = styled.View`
   flex-direction: row;
   align-items: center;
-  height: 90px;
+  height: 70px;
 `;
 
 const InputContainer = styled.View`

@@ -8,8 +8,10 @@ import Book from "../assets/Svg/Book.svg";
 import Profile from "../assets/Svg/Profile.svg";
 import { useFonts } from "expo-font";
 import { typoSsangmoon } from "../src/Fonts";
-import { Animated, Easing } from "react-native";
+import { Animated, Easing, View, StyleSheet } from "react-native";
 import GestureRecognizer from "react-native-swipe-gestures";
+import DoubleClick from "react-native-double-tap";
+import Swiper from "react-native-swiper";
 
 const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
@@ -55,45 +57,79 @@ const Text = styled.Text`
   padding-right: 5px;
 `;
 
-const RedBox = styled(Animated.View)`
-  height: 200px;
-  width: 50px;
-  background-color: red;
-  justify-content: center;
-  align-items: center;
+const Slide1 = styled.View`
+  background-color: black;
+  height: 100%;
 `;
 
-const BlueBox = styled(Animated.View)`
-  height: 100px;
-  width: 100px;
-  background-color: blue;
-  justify-content: center;
-  align-items: center;
+const Slide2 = styled.View`
+  background-color: orange;
+  height: 100%;
 `;
 
-const YellowBox = styled(Animated.View)`
-  height: 200px;
-  width: 200px;
-  background-color: yellow;
-`;
-
-const Wrapper = styled.View`
-  width: 90%;
-  justify-content: space-between;
-  flex-direction: row;
-`;
+const TmpText = styled.Text``;
 
 const TmpButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
+  background-color: black;
+  flex: 1;
 `;
 
-const TmpText = styled.Text`
-  font-size: 30px;
-  color: white;
-`;
+// const RedBox = styled(Animated.View)`
+//   height: 200px;
+//   width: 50px;
+//   background-color: red;
+//   justify-content: center;
+//   align-items: center;
+// `;
+
+// const BlueBox = styled(Animated.View)`
+//   height: 100px;
+//   width: 100px;
+//   background-color: blue;
+//   justify-content: center;
+//   align-items: center;
+// `;
+
+// const YellowBox = styled(Animated.View)`
+//   height: 200px;
+//   width: 200px;
+//   background-color: yellow;
+// `;
+
+// const Wrapper = styled.View`
+//   width: 90%;
+//   justify-content: space-between;
+//   flex-direction: row;
+// `;
+
+const styles = StyleSheet.create({
+  wrapper: {},
+  slide1: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#9DD6EB",
+  },
+  slide2: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#97CAE5",
+  },
+  slide3: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#92BBD9",
+  },
+  text: {
+    color: "#fff",
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+});
 
 export default ({ navigation, route }) => {
   const loaded = true;
@@ -121,8 +157,6 @@ export default ({ navigation, route }) => {
   //   }).start();
   // }, [isRed]);
 
-  const [color, setColor] = useState("red");
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => <Book marginLeft={30} width={50} height={50} />,
@@ -136,35 +170,42 @@ export default ({ navigation, route }) => {
     });
   }, [route]);
 
-  const onSwipeUp = () => {
-    setColor("red");
-    console.log("up");
-  };
-
-  const onSwipeRight = () => {
-    setColor("blue");
-    console.log("right");
-  };
-  const onSwipeDown = () => {
-    setColor("yellow");
-    console.log("down");
-  };
-  const onSwipeLeft = () => {
-    setColor("black");
-    console.log("left");
-  };
-  const config = { directionalOffsetThreshold: 500, gestureClickThreshold: 5 };
+  const [color, setColor] = useState("red");
+  const [double, setDouble] = useState(false);
 
   return loaded ? (
     <Container>
-      <GestureRecognizer
+      <Swiper
+        onIndexChanged={(idx) =>
+          idx === 1
+            ? console.log("Init.js, idx === 1")
+            : console.log("Init.js, idx !== 1")
+        }
+        loop={false}
+        style={styles.wrapper}
+        horizontal={false}
+      >
+        <View style={styles.slide1}>
+          <TmpText style={styles.text}>Hello Swiper</TmpText>
+        </View>
+        <View style={styles.slide2}>
+          <TmpText style={styles.text}>Beautiful</TmpText>
+        </View>
+        <View style={styles.slide3}>
+          <TmpText style={styles.text}>And simple</TmpText>
+        </View>
+        <TmpButton onPress={() => console.log("Init.js TmpButton")}>
+          <TmpText style={styles.text}>Button</TmpText>
+        </TmpButton>
+      </Swiper>
+      {/* <GestureRecognizer
         onSwipeUp={() => onSwipeUp()}
         onSwipeRight={() => onSwipeRight()}
         onSwipeDown={() => onSwipeDown()}
         onSwipeLeft={() => onSwipeLeft()}
         config={config}
         style={{ height: 200, backgroundColor: color }}
-      />
+      /> */}
       {/* <Wrapper>
         <RedBox
           style={{ opacity: redOpacity, transform: [{ rotate: spinning }] }}
