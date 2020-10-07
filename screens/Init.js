@@ -170,8 +170,7 @@ export default ({ navigation, route }) => {
     });
   }, [route]);
 
-  const [color, setColor] = useState("red");
-  const [double, setDouble] = useState(false);
+  const 
 
   return loaded ? (
     <Container>
