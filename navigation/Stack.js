@@ -14,6 +14,7 @@ import { Button, Text, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import StepUp from "../assets/Svg/StepUp.svg";
 import Book from "../assets/Svg/Book.svg";
+import SubjectSelect from "../screens/SubjectSelect";
 
 const Stack = createStackNavigator();
 
@@ -32,6 +33,7 @@ export default ({ navigation }) => (
       headerBackTitleVisible: false,
     }}
   >
+    <Stack.Screen name="과목선택" component={SubjectSelect} />
     <Stack.Screen name="초기화면" component={Init} />
     <Stack.Screen name="진단평가" component={Evaluation} />
     <Stack.Screen name="추천문제" component={Recommend} />

@@ -43,7 +43,7 @@ const Ansbtn = ({ ansNum, isSelected, selectAns, isRemoved, removeAns }) => {
       doubleTap={() => {
         isSelected ? null : removeAns(ansNum);
       }}
-      delay={200}
+      delay={185}
       style={{ flex: 1 }}
       activeOpacity={0.9}
     >

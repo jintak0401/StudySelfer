@@ -13,7 +13,7 @@ import {
   SelectTest,
   SelectYear,
 } from "../components/Test";
-import testInfo from "../testInfo";
+import { testInfo } from "../testInfo";
 
 const BookButton = styled.TouchableOpacity`
   margin-left: 30px;

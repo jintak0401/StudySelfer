@@ -8,10 +8,11 @@ import Book from "../assets/Svg/Book.svg";
 import Profile from "../assets/Svg/Profile.svg";
 import { useFonts } from "expo-font";
 import { typoSsangmoon } from "../src/Fonts";
-import { Animated, Easing, View, StyleSheet } from "react-native";
+import { Animated, Easing, View, StyleSheet, Linking } from "react-native";
 import GestureRecognizer from "react-native-swipe-gestures";
 import DoubleClick from "react-native-double-tap";
 import Swiper from "react-native-swiper";
+import * as WebBrowser from "expo-web-browser";
 
 const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
@@ -67,7 +68,9 @@ const Slide2 = styled.View`
   height: 100%;
 `;
 
-const TmpText = styled.Text``;
+const TmpText = styled.Text`
+  color: white;
+`;
 
 const TmpButton = styled.TouchableOpacity`
   justify-content: center;
@@ -170,33 +173,15 @@ export default ({ navigation, route }) => {
     });
   }, [route]);
 
-  const 
+  const handleRedirect = (url) => {
+    WebBrowser.openBrowserAsync(url);
+  };
 
   return loaded ? (
     <Container>
-      <Swiper
-        onIndexChanged={(idx) =>
-          idx === 1
-            ? console.log("Init.js, idx === 1")
-            : console.log("Init.js, idx !== 1")
-        }
-        loop={false}
-        style={styles.wrapper}
-        horizontal={false}
-      >
-        <View style={styles.slide1}>
-          <TmpText style={styles.text}>Hello Swiper</TmpText>
-        </View>
-        <View style={styles.slide2}>
-          <TmpText style={styles.text}>Beautiful</TmpText>
-        </View>
-        <View style={styles.slide3}>
-          <TmpText style={styles.text}>And simple</TmpText>
-        </View>
-        <TmpButton onPress={() => console.log("Init.js TmpButton")}>
-          <TmpText style={styles.text}>Button</TmpText>
-        </TmpButton>
-      </Swiper>
+      {/* <TmpButton onPress={() => handleRedirect("https://naver.com")}>
+        <TmpText>Naver</TmpText>
+      </TmpButton> */}
       {/* <GestureRecognizer
         onSwipeUp={() => onSwipeUp()}
         onSwipeRight={() => onSwipeRight()}
