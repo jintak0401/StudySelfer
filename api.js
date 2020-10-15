@@ -38,3 +38,27 @@ export const apiTestAns = async () => {
     return {};
   }
 };
+
+export const apiPostChapter = async (type, chapter) => {
+  const data = {type: type, chapter: chapter};
+  try {
+    const retval = await axios.post("http://211.43.12.24:9999/api/diagnose/chapters", data);
+    return retval;
+  }
+  catch (e) {
+    console.log(e);
+    return {};
+  }
+}
+
+export const apiPostAnswer = async (time, ans, removedAns) => {
+  const data = {time: time, answer: ans, removedAnswer: removedAns};
+  try {
+    retval = await axios.post("http://211.43.12.24:9999/api/diagnose/answer_data", data);
+    return retval;
+  }
+  catch (e) {
+    console.log(e);
+    return {};
+  }
+}

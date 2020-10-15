@@ -3,7 +3,9 @@ import {
   HeaderBackButton,
   createStackNavigator,
 } from "@react-navigation/stack";
-import Evaluation from "../screens/Evaluation";
+import Evaluation from "../screens/ChoiceChapter";
+import EvaluateQuestions from "../screens/EvaluateQuestions";
+import EvaluateResult from "../screens/EvaluateResult";
 import Recommend from "../screens/Recommend";
 import Test from "../screens/Test";
 import Init from "../screens/Init";
@@ -36,6 +38,8 @@ export default ({ navigation }) => (
     <Stack.Screen name="과목선택" component={SubjectSelect} />
     <Stack.Screen name="초기화면" component={Init} />
     <Stack.Screen name="진단평가" component={Evaluation} />
+    <Stack.Screen name="진단평가문제" component={EvaluateQuestions} />
+    <Stack.Screen name="진단평가해설" component={EvaluateResult} />
     <Stack.Screen name="추천문제" component={Recommend} />
     <Stack.Screen name="모의수능 및 모의고사" component={Test} />
     <Stack.Screen name="모의시험 문제" component={TestQuestions} />

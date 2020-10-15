@@ -13,6 +13,7 @@ import GestureRecognizer from "react-native-swipe-gestures";
 import DoubleClick from "react-native-double-tap";
 import Swiper from "react-native-swiper";
 import * as WebBrowser from "expo-web-browser";
+// import Networking from "react-native/Libraries/Network/RCTNetworking.android"
 
 const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
@@ -173,15 +174,20 @@ export default ({ navigation, route }) => {
     });
   }, [route]);
 
-  const handleRedirect = (url) => {
-    WebBrowser.openBrowserAsync(url);
+  const [cookie, setCookie] = useState();
+  const handleRedirect = async (url) => {
+    let tmp = await WebBrowser.openAuthSessionAsync(url, "https://naver.com");
+    setCookie(tmp);
+    console.log("Init.js", cookie);
   };
 
   return loaded ? (
     <Container>
-      {/* <TmpButton onPress={() => handleRedirect("https://naver.com")}>
-        <TmpText>Naver</TmpText>
-      </TmpButton> */}
+      <TmpButton
+        onPress={() => handleRedirect("http://211.43.12.24:9999/login/kakao")}
+      >
+        <TmpText>Kakao</TmpText>
+      </TmpButton>
       {/* <GestureRecognizer
         onSwipeUp={() => onSwipeUp()}
         onSwipeRight={() => onSwipeRight()}
