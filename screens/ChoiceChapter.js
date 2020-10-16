@@ -104,7 +104,7 @@ export default ({navigation, route}) => {
           console.log("ChoiceChapter.js -> apiPostChap", tmp);
         }} /> */}
         <Button title="답 보내기" onPress={() => {
-goToEvaluate();
+          goToEvaluate();
         }} />
       </View>
       <View style={{ flex: 10 }}>

@@ -11,23 +11,29 @@ const falseArr = [false, false, false, false, false];
 
 export default ({ questNum, questData, isTest, flexValue }) => {
   const [ratio, setRatio] = useState(1);
+  const [load, setLoad] = useState(false);
   useLayoutEffect(() => {
-    if (questData) {
-      Image.getSize(questData.questImageUrl, (width, height) => {
-        setRatio(width / height);
-      });
-    }
+    setLoad(false);
+    const loading = async () => {
+      if (questData) {
+        await Image.getSize(questData.questImageUrl, (width, height) => {
+          setRatio(width / height);
+        });
+        setLoad(true);
+      }
+    };
+    loading();
   }, [questData]);
   return (
     <ScrollContainer flexValue={flexValue} isTest={isTest}>
-      {questData ? (
+      {questData && load ? (
         <Image
           style={{ width: WIDTH * 0.9, height: undefined, aspectRatio: ratio }}
           source={{ uri: questData.questImageUrl }}
           resizeMode="cover"
         />
       ) : (
-        <Text>questNum</Text>
+        <Text></Text>
       )}
     </ScrollContainer>
   );

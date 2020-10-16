@@ -86,7 +86,7 @@ quest, solution, type
     };
   }, [time]);
 
-  console.log("\nEvaluateQuestion.js --> questNum\n", questNum, "\n");
+  // console.log("\nEvaluateQuestion.js --> questNum\n", questNum, "\n");
  // console.log("\nEvaluateQuestion.js --> quests\n", quests, "\n");
  // console.log("\nEvaluateQuestion.js --> quest\n", quests[questNum], "\n");
 

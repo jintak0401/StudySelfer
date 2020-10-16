@@ -17,7 +17,7 @@ const NumberInput = styled.TextInput`
 const Input = ({ placeholder, onSubmit, defaultValue, setMoveActive }) => {
   const [input, setInput] = useState("");
   const inputNum = (text) => {
-    setInput(text);
+    setInput(text.replace(/[^0-9]/g, ""));
   };
   useEffect(() => {
     setInput(defaultValue ? `${defaultValue}` : "");
@@ -28,10 +28,14 @@ const Input = ({ placeholder, onSubmit, defaultValue, setMoveActive }) => {
       returnKeyType={"done"}
       keyboardType="numeric"
       value={input}
-      onChangeText={(text) => setInput(text)}
+      onChangeText={(text) => inputNum(text)}
       onSubmitEditing={() => onSubmit(Number(input))}
       onFocus={() => setMoveActive(false)}
-      onEndEditing={() => setMoveActive(true)}
+      onEndEditing={() => {
+        onSubmit(Number(input));
+        setMoveActive(true);
+      }}
+      maxLength={3}
     />
   );
 };

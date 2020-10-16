@@ -183,11 +183,11 @@ export default ({ navigation, route }) => {
 
   return loaded ? (
     <Container>
-      <TmpButton
+      {/* <TmpButton
         onPress={() => handleRedirect("http://211.43.12.24:9999/login/kakao")}
       >
         <TmpText>Kakao</TmpText>
-      </TmpButton>
+      </TmpButton> */}
       {/* <GestureRecognizer
         onSwipeUp={() => onSwipeUp()}
         onSwipeRight={() => onSwipeRight()}
