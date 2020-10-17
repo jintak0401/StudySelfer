@@ -10,6 +10,7 @@ import { Feather } from "@expo/vector-icons";
 import { screenInfo, getGrade, getTestTitle } from "../utils";
 import { setSolvedData } from "../solvedData";
 import { timerFormat } from "./../utils";
+// import { NavigationEvents } from "react-navigation";
 
 const { isTablet } = screenInfo;
 
@@ -61,6 +62,7 @@ export default (props) => {
   });
   const [result, setResult] = useState([0, 0, 0]);
   const testTitle = getTestTitle(year, month);
+  const [focused, setFocused] = useState(true);
 
   const getComments = async () => {
     const { correctAns } = await apiTestAns();
@@ -74,6 +76,7 @@ export default (props) => {
     });
   };
   const goToComment = (questNum) => {
+    setFocused(false);
     navigation.navigate("해설", {
       qNum: questNum,
       studentAns,
@@ -83,16 +86,19 @@ export default (props) => {
       ...comments,
     });
   };
-  // const popBefore = () => {
-  //   navigation.pop(0);
-  // };
+  const popBefore = () => {
+    navigation.pop(1);
+  };
   useEffect(() => {
-    // BackHandler.addEventListener("hardwareBackPress", popBefore);
     getComments();
     setSolvedData(year, month, ...result);
-    // return () =>
-    //   BackHandler.removeEventListener("hardwareBackPress", popBefore);
   }, [comments.loading]);
+
+  // useEffect(() => {
+  //   BackHandler.addEventListener("hardwareBackPress", () => true);
+  //   return () =>
+  //     BackHandler.removeEventListener("hardwareBackPress", () => true);
+  // }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({

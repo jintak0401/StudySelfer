@@ -13,6 +13,7 @@ import GestureRecognizer from "react-native-swipe-gestures";
 import DoubleClick from "react-native-double-tap";
 import Swiper from "react-native-swiper";
 import * as WebBrowser from "expo-web-browser";
+import { DrawerActions } from "@react-navigation/native";
 // import Networking from "react-native/Libraries/Network/RCTNetworking.android"
 
 const { isTablet, WIDTH, HEIGHT } = screenInfo;
@@ -167,7 +168,10 @@ export default ({ navigation, route }) => {
       headerStyle: { backgroundColor: "#4F62C0", height: 100 },
       headerTitle: () => <HeaderTitle>수학노트</HeaderTitle>,
       headerRight: () => (
-        <ProfileButton>
+        <ProfileButton
+          // onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+          onPress={() => navigation.openDrawer()}
+        >
           <Profile width={30} height={30} />
         </ProfileButton>
       ),
@@ -213,6 +217,7 @@ export default ({ navigation, route }) => {
         </BlueBox>
         <YellowBox style={{ transform: [{ rotate: spinning }] }} />
       </Wrapper> */}
+
       <Button
         activeOpacity={0.8}
         onPress={() => navigation.navigate("진단평가")}
@@ -220,10 +225,7 @@ export default ({ navigation, route }) => {
         <StepUp width={100} height={100} />
         <Text>진단평가</Text>
       </Button>
-      <Button
-        activeOpacity={0.8}
-        onPress={() => navigation.navigate("추천문제")}
-      >
+      <Button activeOpacity={0.8} onPress={() => navigation.navigate("추천")}>
         <NoteAndPerson width={117.71} height={100} />
         <Text>추천문제</Text>
       </Button>

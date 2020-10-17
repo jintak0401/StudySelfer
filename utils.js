@@ -13,6 +13,12 @@ export const timerFormat = (secs, inProgress = false) => {
     : `${h_str}:${m_str}:${s_str}`;
 };
 
+export const timerFormatMinute = (secs) => {
+  const m = parseInt(secs / 60);
+  const s = secs % 60;
+  return `${m}분 ${s}초`;
+};
+
 export const getGrade = (studentAns, correctAns) => {
   const math = { 4: 3, 14: 4, 22: 3, 26: 4 };
   let allotedScore = 2;

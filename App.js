@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Animated, Easing, StatusBar, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import Stack from "./navigation/Stack";
+import Drawer from "./navigation/Drawer";
 import { fonts } from "./src/Fonts";
 import { useFonts } from "expo-font";
 import styled from "styled-components/native";
@@ -128,7 +129,8 @@ export default function App() {
   return isTimeToGo ? (
     <>
       <NavigationContainer>
-        <Stack />
+        {/* <Stack /> */}
+        <Drawer />
       </NavigationContainer>
       <StatusBar backgroundColor="#6c63ff" barStyle="light-content" />
     </>
