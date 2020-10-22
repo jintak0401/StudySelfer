@@ -10,6 +10,7 @@ import MoveQuestBtn from "./../components/MoveQuestBtn";
 import ModalAnsSheet from "./../components/ModalAnsSheet";
 import Collapsible from "react-native-collapsible";
 import ModalSubmit from "../components/TestQuestions/ModalSubmit";
+import ScrollContainer from "../components/ScrollContainer";
 
 const TitleContainer = styled.View`
   margin-left: -20px;
@@ -172,12 +173,9 @@ export default ({ navigation, route }) => {
       <Collapsible collapsed={!clock}>
         <ProgressBar time={time} totalTime={testTime + readyTime} />
       </Collapsible>
-      <Questions
-        isTest={true}
-        flexValue={6}
-        questNum={questNum}
-        questData={questData[questNum]}
-      />
+      <ScrollContainer flexValue={6}>
+        <Questions questNum={questNum} questData={questData[questNum]} />
+      </ScrollContainer>
       {questNum <= 21 ? (
         <AnsbtnSet>
           {[1, 2, 3, 4, 5].map((n) => (

@@ -68,7 +68,7 @@ const EvaluateQuestions = (props) => {
 
   const goToEvaluateSolution = () => {
     navigation.navigate("진단평가해설", {
-      questNum: questNum,
+      answer,
       quests,
       solutions,
     });

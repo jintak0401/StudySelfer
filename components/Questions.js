@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Image, ScrollView, Text } from "react-native";
 import ScrollContainer from "./ScrollContainer";
 import PropTypes from "prop-types";
@@ -7,47 +7,58 @@ import { screenInfo } from "../utils";
 
 const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
-const falseArr = [false, false, false, false, false];
+const Container = styled.View`
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
 
 export default ({ questNum, questData, isTest, flexValue }) => {
-  const [ratio, setRatio] = useState(1);
   const [load, setLoad] = useState(false);
-  useLayoutEffect(() => {
-    setLoad(false);
+  const [_0, set_0] = useState(0);
+  const [_1, set_1] = useState(0);
+  const [_2, set_2] = useState(0);
+  const setRatio = [set_0, set_1, set_2];
+  const ratio = [_0, _1, _2];
+  useEffect(() => {
+    if (questData) {
+      setLoad(false);
+    }
+  }, [questData]);
+
+  useEffect(() => {
     const loading = async () => {
       if (questData) {
-        await Image.getSize(questData.questImageUrl, (width, height) => {
-          setRatio(width / height);
+        await questData.questImageUrl.forEach(async (url, idx) => {
+          await Image.getSize(url, (width, height) => {
+            setRatio[idx](width / height);
+          });
         });
-        setLoad(true);
       }
     };
-    loading();
-  }, [questData]);
+    if (!load) {
+      loading().then(() => setLoad(true));
+    }
+  }, [load]);
+
   return (
-    <ScrollContainer flexValue={flexValue} isTest={isTest}>
-      {questData && load ? (
-        <Image
-          style={{ width: WIDTH * 0.9, height: undefined, aspectRatio: ratio }}
-          source={{ uri: questData.questImageUrl }}
-          resizeMode="cover"
-        />
-      ) : (
-        <Text></Text>
-      )}
-    </ScrollContainer>
+    <Container>
+      {questData && load
+        ? questData.questImageUrl.map((url, idx) => {
+            return (
+              <Image
+                key={idx}
+                style={{
+                  width: WIDTH * 0.96,
+                  height: undefined,
+                  aspectRatio: ratio[idx],
+                }}
+                source={{ uri: url }}
+                resizeMode="cover"
+              />
+            );
+          })
+        : null}
+    </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 15,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    justifyContent: "center",
-    alignContent: "center",
-    fontSize: 50,
-  },
-});

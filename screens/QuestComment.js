@@ -12,6 +12,7 @@ import { screenInfo } from "../utils";
 import Collapsible from "react-native-collapsible";
 import Dash from "react-native-dash";
 import { AntDesign } from "@expo/vector-icons";
+import Solutions from "../components/Solutions";
 
 const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
@@ -112,22 +113,22 @@ export default (props) => {
     outputRange: ["0deg", "180deg"],
   });
 
-  const [questRatio, setQuestRatio] = useState(1);
-  const [solutionRatio, setSolutionRatio] = useState(1);
-  useLayoutEffect(() => {
-    if (solutions) {
-      Image.getSize(solutions[questNum], (width, height) => {
-        setSolutionRatio(width / height);
-      });
-    }
-  }, [questNum]);
-  useLayoutEffect(() => {
-    if (questData) {
-      Image.getSize(questData[questNum].questImageUrl, (width, height) => {
-        setQuestRatio(width / height);
-      });
-    }
-  }, [questNum]);
+  // const [questRatio, setQuestRatio] = useState(1);
+  // const [solutionRatio, setSolutionRatio] = useState(1);
+  // useLayoutEffect(() => {
+  //   if (solutions) {
+  //     Image.getSize(solutions[questNum], (width, height) => {
+  //       setSolutionRatio(width / height);
+  //     });
+  //   }
+  // }, [questNum]);
+  // useLayoutEffect(() => {
+  //   if (questData) {
+  //     Image.getSize(questData[questNum].questImageUrl, (width, height) => {
+  //       setQuestRatio(width / height);
+  //     });
+  //   }
+  // }, [questNum]);
   useEffect(() => {
     setQuestCollapsed(false);
     setSolutionCollapsed(false);
@@ -221,15 +222,7 @@ export default (props) => {
             </FoldDirection>
           </CollapseButton>
           <Collapsible collapsed={questCollapsed}>
-            <Image
-              style={{
-                width: WIDTH * 0.9,
-                height: undefined,
-                aspectRatio: questRatio,
-              }}
-              source={{ uri: questData[questNum].questImageUrl }}
-              resizeMode="cover"
-            />
+            <Questions questData={questData[questNum]} />
           </Collapsible>
         </Wrapper>
         <Wrapper>
@@ -256,15 +249,7 @@ export default (props) => {
             </FoldDirection>
           </CollapseButton>
           <Collapsible collapsed={solutionCollapsed}>
-            <Image
-              style={{
-                width: WIDTH * 0.9,
-                height: undefined,
-                aspectRatio: solutionRatio,
-              }}
-              source={{ uri: solutions[questNum] }}
-              resizeMode="cover"
-            />
+            <Solutions solutionImageUrl={solutions[questNum]} />
           </Collapsible>
         </Wrapper>
       </ScrollContainer>
