@@ -40,39 +40,41 @@ export default ({ questNum, solutionImageUrl }) => {
     set_10,
   ];
   const ratio = [_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10];
+  // const [ratio, setRatio] = useState({});
   useEffect(() => {
     if (solutionImageUrl) {
       setLoad(false);
-      solutionImageUrl.forEach((url, idx) => {
-        setRatio[idx](0);
-      });
     }
   }, [solutionImageUrl]);
 
   useEffect(() => {
-    const loading = async () => {
+    const loading = () => {
       if (solutionImageUrl) {
-        await solutionImageUrl.forEach(async (url, idx) => {
+        solutionImageUrl.forEach(async (url, idx) => {
           await Image.getSize(url, (width, height) => {
+            setRatio[idx](0);
             setRatio[idx](width / height);
+            //setRatio({...ratio, [idx]: width / height});
           });
         });
+        setLoad(true);
       }
     };
     if (!load) {
       loading();
+      // loading().then(() => setNum((prev) => prev + 1));
     }
   }, [load]);
 
-  useEffect(() => {
-    if (solutionImageUrl) {
-      let tmp = 0;
-      solutionImageUrl.forEach((url, idx) => {
-        tmp += ratio[idx] ? 1 : 0;
-      });
-      setLoad(tmp === solutionImageUrl.length);
-    }
-  }, [_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10]);
+  // useEffect(() => {
+  //   if (solutionImageUrl) {
+  //     let i = 0;
+  //     for (; i < solutionImageUrl.length; i++) {
+  //       if (ratio[i] === 0) break;
+  //     }
+  //     setLoad(i === solutionImageUrl.length);
+  //   }
+  // }, [num]);
 
   return (
     <Container>

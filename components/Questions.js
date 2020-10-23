@@ -20,26 +20,37 @@ export default ({ questNum, questData, isTest, flexValue }) => {
   const [_2, set_2] = useState(0);
   const setRatio = [set_0, set_1, set_2];
   const ratio = [_0, _1, _2];
+  const [num, setNum] = useState(0);
   useEffect(() => {
     if (questData) {
+      // setNum(0);
       setLoad(false);
     }
   }, [questData]);
 
   useEffect(() => {
-    const loading = async () => {
+    const loading = () => {
       if (questData) {
-        await questData.questImageUrl.forEach(async (url, idx) => {
+        questData.questImageUrl.forEach(async (url, idx) => {
           await Image.getSize(url, (width, height) => {
+            setRatio[idx](0);
             setRatio[idx](width / height);
           });
         });
+        setLoad(true);
       }
     };
     if (!load) {
-      loading().then(() => setLoad(true));
+      // loading().then(() => setNum((prev) => prev + 1));
+      loading();
     }
   }, [load]);
+
+  // useEffect(() => {
+  //   if (questData) {
+  //     setLoad(num === questData.questImageUrl.length);
+  //   }
+  // }, [num]);
 
   return (
     <Container>
