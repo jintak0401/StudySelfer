@@ -43,6 +43,9 @@ export default ({ questNum, solutionImageUrl }) => {
   useEffect(() => {
     if (solutionImageUrl) {
       setLoad(false);
+      solutionImageUrl.forEach((url, idx) => {
+        setRatio[idx](0);
+      });
     }
   }, [solutionImageUrl]);
 
@@ -57,9 +60,19 @@ export default ({ questNum, solutionImageUrl }) => {
       }
     };
     if (!load) {
-      loading().then(() => setLoad(true));
+      loading();
     }
   }, [load]);
+
+  useEffect(() => {
+    if (solutionImageUrl) {
+      let tmp = 0;
+      solutionImageUrl.forEach((url, idx) => {
+        tmp += ratio[idx] ? 1 : 0;
+      });
+      setLoad(tmp === solutionImageUrl.length);
+    }
+  }, [_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10]);
 
   return (
     <Container>
