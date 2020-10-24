@@ -6,11 +6,13 @@ import Questions from "../components/Questions";
 import Ansbtn from "../components/TestQuestions/Ansbtn";
 import TimeAndNext from "../components/TimeAndNext";
 import Input from "../components/TestQuestions/Input";
+import ScrollContainer from "../components/ScrollContainer";
 
 const Container = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+  background-color: white;
 `;
 
 const InputContainer = styled.View`
@@ -42,6 +44,13 @@ const HeaderSubtitle = styled.Text`
   color: #999999;
 `;
 
+const BottomContainer = styled.View`
+  height: 150px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
 const EvaluateQuestions = (props) => {
   const { route, navigation } = props;
   const { quest, solution, type } = props.route.params;
@@ -54,6 +63,8 @@ const EvaluateQuestions = (props) => {
   const [removedAns, setRemovedAns] = useState({});
   const [isChoiceProb, setIsChoiceProb] = useState(type);
   const [questData, setQuestData] = useState(quest);
+  const [dontKnow, setDontKnow] = useState(false);
+  const [studentAns, setStudentAns] = useState({});
 
   const initAns = () => {
     setTime(0);
@@ -67,26 +78,49 @@ const EvaluateQuestions = (props) => {
   };
 
   const goToEvaluateSolution = () => {
-    navigation.navigate("진단평가해설", {
-      answer,
+    console.log("EvaluateQuestions.js", studentAns, quests, solutions);
+    navigation.navigate("진단평가결과", {
+      studentAns,
       quests,
       solutions,
     });
   };
 
-  const postAnswer = async () => {
-    const data = await apiPostAnswer(time, answer, removedAns);
-    // const quest = await apiPostChapter(part, data);
-    if (data.data === "diagnose finished") goToEvaluateSolution();
-    const { questionImageUrl, solution, type } = data.data;
-    setQuestNum((prev) => prev + 1);
-    setSolutions({ ...solutions, solution });
-    setIsChoiceProb(type);
-    setTime(0);
-    initAns();
-    setQuestData({ questImageUrl: questionImageUrl });
-    setQuests({ ...quests, [questNum]: { questImageUrl: questionImageUrl } });
+  const goToNext = () => {
+    setStudentAns({ ...studentAns, [questNum]: answer });
   };
+
+  useEffect(() => {
+    const postAnswer = async () => {
+      const data = await apiPostAnswer(time, answer, removedAns);
+      if (data.data === "diagnose finished") goToEvaluateSolution();
+      else {
+        const {
+          questionImageUrl,
+          solutionImageUrl: solution,
+          type,
+        } = data.data;
+        setSolutions({ ...solutions, [questNum + 1]: solution });
+        setQuests({
+          ...quests,
+          [questNum + 1]: { questImageUrl: questionImageUrl },
+        });
+        setQuestData({ questImageUrl: questionImageUrl });
+        setIsChoiceProb(type);
+        setTime(0);
+        initAns();
+        setDontKnow(false);
+        setQuestNum((prev) => prev + 1);
+      }
+    };
+    if (Object.keys(studentAns).length != 0) postAnswer();
+  }, [studentAns]);
+
+  // useEffect(() => {
+  //   setSolutions({ ...solutions, [questNum]: solution });
+  //   setQuests({ ...quests, [questNum]: questData });
+  //   console.log("EvaluateQuestions.js", solutions);
+  // }, [questNum]);
 
   const removingAns = (num) => {
     removedAns[num] = removedAns[num] ? false : true;
@@ -113,39 +147,46 @@ const EvaluateQuestions = (props) => {
     });
   }, [route, questNum]);
 
-  // console.log("\nEvaluateQuestion.js --> questNum\n", questNum, "\n");
-  // console.log("\nEvaluateQuestion.js --> quests\n", quests, "\n");
-  // console.log("\nEvaluateQuestion.js --> quest\n", quests[questNum], "\n");
-
   return (
     <Container>
-      <Questions isTest={true} flexValue={6} questData={questData} />
-      {isChoiceProb ? (
-        <AnsbtnSet>
-          {[1, 2, 3, 4, 5].map((n) => (
-            <Ansbtn
-              key={n}
-              ansNum={n}
-              isSelected={answer === n}
-              selectAns={selectAns}
-              isRemoved={removedAns[n]}
-              removeAns={removingAns}
+      <ScrollContainer flexValue={6}>
+        <Questions isTest={true} flexValue={6} questData={questData} />
+      </ScrollContainer>
+      <BottomContainer>
+        {isChoiceProb ? (
+          <AnsbtnSet>
+            {[1, 2, 3, 4, 5].map((n) => (
+              <Ansbtn
+                key={n}
+                ansNum={n}
+                isSelected={answer === n}
+                selectAns={selectAns}
+                isRemoved={removedAns[n]}
+                removeAns={removingAns}
+                dontKnow={dontKnow}
+              />
+            ))}
+          </AnsbtnSet>
+        ) : (
+          <InputContainer>
+            <Input
+              placeholder={"답을 입력해주세요"}
+              onSubmit={selectAns}
+              defaultValue={answer}
+              setMoveActive={setShowBottom}
+              dontKnow={dontKnow}
             />
-          ))}
-        </AnsbtnSet>
-      ) : (
-        <InputContainer>
-          <Input
-            placeholder={"답을 입력해주세요"}
-            onSubmit={selectAns}
-            defaultValue={answer}
-            setMoveActive={setShowBottom}
+          </InputContainer>
+        )}
+        {showBottom ? (
+          <TimeAndNext
+            time={time}
+            goToNext={goToNext}
+            dontKnow={dontKnow}
+            setDontKnow={setDontKnow}
           />
-        </InputContainer>
-      )}
-      {showBottom ? (
-        <TimeAndNext time={time} goToNext={() => postAnswer()} />
-      ) : null}
+        ) : null}
+      </BottomContainer>
     </Container>
   );
 };

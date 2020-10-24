@@ -12,9 +12,16 @@ const NumberInput = styled.TextInput`
   margin-bottom: 20px;
   border: 1px solid black;
   width: 80%;
+  opacity: ${(props) => (props.editable ? 1 : 0.2)};
 `;
 
-const Input = ({ placeholder, onSubmit, defaultValue, setMoveActive }) => {
+const Input = ({
+  placeholder,
+  onSubmit,
+  defaultValue,
+  setMoveActive,
+  dontKnow,
+}) => {
   const [input, setInput] = useState("");
   const inputNum = (text) => {
     setInput(text.replace(/[^0-9]/g, ""));
@@ -24,6 +31,7 @@ const Input = ({ placeholder, onSubmit, defaultValue, setMoveActive }) => {
   }, [defaultValue]);
   return (
     <NumberInput
+      editable={!dontKnow}
       placeholder={placeholder}
       returnKeyType={"done"}
       keyboardType="numeric"
@@ -47,4 +55,5 @@ Input.propTypes = {
   onChange: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
   setMoveActive: PropTypes.func.isRequired,
+  isDisable: PropTypes.bool,
 };

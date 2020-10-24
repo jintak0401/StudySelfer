@@ -62,7 +62,6 @@ export default (props) => {
   });
   const [result, setResult] = useState([0, 0, 0]);
   const testTitle = getTestTitle(year, month);
-  const [focused, setFocused] = useState(true);
 
   const getComments = async () => {
     const { correctAns } = await apiTestAns();
@@ -76,7 +75,6 @@ export default (props) => {
     });
   };
   const goToComment = (questNum) => {
-    setFocused(false);
     navigation.navigate("해설", {
       qNum: questNum,
       studentAns,

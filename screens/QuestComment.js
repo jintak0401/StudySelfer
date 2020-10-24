@@ -47,14 +47,6 @@ const Container = styled.View`
   background-color: white;
 `;
 
-const AnswersContainer = styled.View`
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  margin-right: 20px;
-  margin-vertical: 10px;
-`;
-
 const CollapseButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
@@ -113,22 +105,6 @@ export default (props) => {
     outputRange: ["0deg", "180deg"],
   });
 
-  // const [questRatio, setQuestRatio] = useState(1);
-  // const [solutionRatio, setSolutionRatio] = useState(1);
-  // useLayoutEffect(() => {
-  //   if (solutions) {
-  //     Image.getSize(solutions[questNum], (width, height) => {
-  //       setSolutionRatio(width / height);
-  //     });
-  //   }
-  // }, [questNum]);
-  // useLayoutEffect(() => {
-  //   if (questData) {
-  //     Image.getSize(questData[questNum].questImageUrl, (width, height) => {
-  //       setQuestRatio(width / height);
-  //     });
-  //   }
-  // }, [questNum]);
   useEffect(() => {
     setQuestCollapsed(false);
     setSolutionCollapsed(false);
@@ -261,19 +237,3 @@ export default (props) => {
     </Container>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  box: {
-    borderBottomWidth: 1,
-    borderColor: "gray",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-});

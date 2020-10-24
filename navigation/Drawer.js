@@ -12,6 +12,7 @@ export default ({ props }) => {
     <Drawer.Navigator
       backBehavior="history"
       drawerPosition="right"
+      navigationOptions={{ drawerLockMode: "locked-close" }}
       drawerStyle={{
         width: 240,
       }}

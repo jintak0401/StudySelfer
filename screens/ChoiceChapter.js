@@ -13,6 +13,7 @@ const HeaderTitle = styled.Text`
   font-size: 26px;
   color: white;
   margin-left: -15px;
+  font-family: Ssangmoon;
 `;
 const GotoDiagnose = styled.TouchableOpacity`
   height: 50px;
@@ -131,7 +132,7 @@ export default ({ navigation, route }) => {
             <Text
               style={{
                 ...styles.SectionListItemStyle,
-                backgroundColor: selectedChap[item.id] ? "#CEEAF2" : "#F5F5F5",
+                backgroundColor: selectedChap[item.id] ? "#CEEAF2" : "white",
               }}
               onPress={() => choiceChap(item.id)}
             >
@@ -166,6 +167,7 @@ const styles = StyleSheet.create({
   areaSet: {
     flexDirection: "row",
     justifyContent: "space-around",
+    backgroundColor: "white",
     padding: 10,
   },
   separator: {

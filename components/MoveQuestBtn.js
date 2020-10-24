@@ -27,11 +27,9 @@ const MoveQuestBtn = ({
   inTest,
   questNum,
   changeQuestNum,
-  // time,
-  // goToResult,
+  endQuestionNum,
   setModalVisible,
 }) => {
-  const navigation = useNavigation();
   const iconSize = isTablet ? 50 : 35;
   const moveQuestIcon = {
     left: "leftcircle",
@@ -39,9 +37,6 @@ const MoveQuestBtn = ({
     done: "checkcircle",
   };
   const color = "#A9E4EB";
-  // useEffect(() => {
-  //   if (time === 6004 && inTest) goToResult();
-  // }, [time]);
 
   return (
     <MoveQuestBtnSet>
@@ -60,7 +55,7 @@ const MoveQuestBtn = ({
           questNum === 30 ? setModalVisible(true) : changeQuestNum(questNum + 1)
         }
       >
-        {questNum !== 30 ? (
+        {questNum !== (endQuestionNum || 30) ? (
           <AntDesign
             style={{ opacity: 0.7 }}
             name={moveQuestIcon.right}
@@ -81,13 +76,10 @@ const MoveQuestBtn = ({
 };
 
 MoveQuestBtn.propTypes = {
-  inTest: PropTypes.bool.isRequired,
+  inTest: PropTypes.bool,
   questNum: PropTypes.number.isRequired,
   changeQuestNum: PropTypes.func.isRequired,
-  // time: PropTypes.number,
-  questData: PropTypes.object,
-  studentAns: PropTypes.object,
-  // goToResult: PropTypes.func,
+  endQuestionNum: PropTypes.number,
   setModalVisible: PropTypes.func,
 };
 

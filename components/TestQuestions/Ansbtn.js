@@ -34,7 +34,18 @@ const Text = styled.Text`
   text-align-vertical: center;
 `;
 
-const Ansbtn = ({ ansNum, isSelected, selectAns, isRemoved, removeAns }) => {
+const Ansbtn = ({
+  ansNum,
+  isSelected,
+  selectAns,
+  isRemoved,
+  removeAns,
+  dontKnow,
+}) => {
+  const [isDisable, setIsDisable] = useState(false);
+  useEffect(() => {
+    setIsDisable(dontKnow);
+  }, [dontKnow]);
   return (
     <DoubleClick
       singleTap={() => {
@@ -44,8 +55,9 @@ const Ansbtn = ({ ansNum, isSelected, selectAns, isRemoved, removeAns }) => {
         isSelected ? null : removeAns(ansNum);
       }}
       delay={185}
-      style={{ flex: 1 }}
+      style={{ flex: 1, opacity: isDisable ? 0.6 : 1 }}
       activeOpacity={0.9}
+      disabled={isDisable}
     >
       <Text
         isFirst={ansNum === 1}

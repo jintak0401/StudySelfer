@@ -20,10 +20,8 @@ export default ({ questNum, questData, isTest, flexValue }) => {
   const [_2, set_2] = useState(0);
   const setRatio = [set_0, set_1, set_2];
   const ratio = [_0, _1, _2];
-  const [num, setNum] = useState(0);
   useEffect(() => {
     if (questData) {
-      // setNum(0);
       setLoad(false);
     }
   }, [questData]);
@@ -33,7 +31,6 @@ export default ({ questNum, questData, isTest, flexValue }) => {
       if (questData) {
         questData.questImageUrl.forEach(async (url, idx) => {
           await Image.getSize(url, (width, height) => {
-            setRatio[idx](0);
             setRatio[idx](width / height);
           });
         });

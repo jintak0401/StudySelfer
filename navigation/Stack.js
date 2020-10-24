@@ -17,7 +17,7 @@ import StepUp from "../assets/Svg/StepUp.svg";
 import Book from "../assets/Svg/Book.svg";
 import SubjectSelect from "../screens/SubjectSelect";
 import Recommend from "../screens/Recommend";
-// import Drawer from "./Drawer";
+import EvaluateComment from "../screens/EvaluateComment";
 
 const Stack = createStackNavigator();
 
@@ -36,16 +36,17 @@ export default ({ navigation }) => (
       headerBackTitleVisible: false,
     }}
   >
-    <Stack.Screen name="과목선택" component={SubjectSelect} />
-    <Stack.Screen name="추천" component={Recommend} />
+    {/* <Stack.Screen name="과목선택" component={SubjectSelect} /> */}
     <Stack.Screen name="초기화면" component={Init} />
+    <Stack.Screen name="추천" component={Recommend} />
     <Stack.Screen name="진단평가" component={Evaluation} />
     <Stack.Screen name="진단평가문제" component={EvaluateQuestions} />
-    <Stack.Screen name="진단평가해설" component={EvaluateResult} />
+    <Stack.Screen name="진단평가결과" component={EvaluateResult} />
     <Stack.Screen name="모의수능 및 모의고사" component={Test} />
     <Stack.Screen name="모의시험 문제" component={TestQuestions} />
     <Stack.Screen name="모의시험 결과" component={TestResult} />
     <Stack.Screen name="해설" component={QuestComment} />
+    <Stack.Screen name="진단해설" component={EvaluateComment} />
   </Stack.Navigator>
 );
 

@@ -52,7 +52,6 @@ export default ({ questNum, solutionImageUrl }) => {
       if (solutionImageUrl) {
         solutionImageUrl.forEach(async (url, idx) => {
           await Image.getSize(url, (width, height) => {
-            setRatio[idx](0);
             setRatio[idx](width / height);
             //setRatio({...ratio, [idx]: width / height});
           });
