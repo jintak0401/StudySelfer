@@ -14,6 +14,8 @@ import DoubleClick from "react-native-double-tap";
 import Swiper from "react-native-swiper";
 import * as WebBrowser from "expo-web-browser";
 import { DrawerActions } from "@react-navigation/native";
+import { Svg, Line } from "react-native-svg";
+import { RecommendBack } from "../assets/Svg";
 // import Networking from "react-native/Libraries/Network/RCTNetworking.android"
 
 const { isTablet, WIDTH, HEIGHT } = screenInfo;
@@ -77,36 +79,24 @@ const TmpText = styled.Text`
 const TmpButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
-  background-color: black;
   flex: 1;
 `;
 
-// const RedBox = styled(Animated.View)`
+const LineContainer = styled.View`
+  width: 100%;
+  flex: 1;
+  background-color: black;
+`;
+
+// const Diagonal = styled.View`
+//   left: 0px;
 //   height: 200px;
-//   width: 50px;
-//   background-color: red;
-//   justify-content: center;
-//   align-items: center;
-// `;
-
-// const BlueBox = styled(Animated.View)`
-//   height: 100px;
-//   width: 100px;
-//   background-color: blue;
-//   justify-content: center;
-//   align-items: center;
-// `;
-
-// const YellowBox = styled(Animated.View)`
-//   height: 200px;
-//   width: 200px;
-//   background-color: yellow;
-// `;
-
-// const Wrapper = styled.View`
-//   width: 90%;
-//   justify-content: space-between;
-//   flex-direction: row;
+//   background-color: tomato;
+//   border-style: solid;
+//   border-left-width: ${WIDTH};
+//   border-bottom-width: 200px;
+//   border-left-color: transparent;
+//   border-bottom-color: white;
 // `;
 
 const styles = StyleSheet.create({
@@ -187,6 +177,22 @@ export default ({ navigation, route }) => {
 
   return loaded ? (
     <Container>
+      <TmpButton>
+        <RecommendBack width={300} height={500} />
+      </TmpButton>
+      {/* <LineContainer>
+        <Svg height="100%" width="100%">
+          <Line
+            x1="0"
+            y1="0"
+            x2="100%"
+            y2="100%"
+            stroke="white"
+            strokeWidth="10"
+          />
+        </Svg>
+      </LineContainer> */}
+      {/* <Diagonal /> */}
       {/* <TmpButton
         onPress={() => handleRedirect("http://211.43.12.24:9999/login/kakao")}
       >

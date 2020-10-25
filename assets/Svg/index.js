@@ -15,6 +15,13 @@ import YesMark from "./YesMark.svg";
 import WalkingPerson from "./WalkingPerson.svg";
 import FlyingPapers from "./FlyingPapers.svg";
 import Kakao from "./Kakao.svg";
+import Strong1 from "./Strong1.svg";
+import Strong2 from "./Strong2.svg";
+import Strong3 from "./Strong3.svg";
+import Weak1 from "./Weak1.svg";
+import Weak2 from "./Weak2.svg";
+import Weak3 from "./Weak3.svg";
+import RecommendBack from "./RecommendBack.svg";
 
 export {
   BackMark,
@@ -34,4 +41,11 @@ export {
   WalkingPerson,
   FlyingPapers,
   Kakao,
+  Strong1,
+  Strong2,
+  Strong3,
+  Weak1,
+  Weak2,
+  Weak3,
+  RecommendBack,
 };

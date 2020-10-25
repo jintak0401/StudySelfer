@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
+import { Strong1, Strong2, Strong3, Weak1, Weak2, Weak3 } from "../assets/Svg";
 
 const Container = styled.View`
   width: 100%;
@@ -52,18 +53,24 @@ const ContentText = styled.Text`
 `;
 
 const StrongAndWeak = ({ contents, isStrong }) => {
+  const box = isStrong ? [Strong1, Strong2, Strong3] : [Weak1, Weak2, Weak3];
   return (
     <Container isWeak={!isStrong}>
       <Title>{isStrong ? `내가 강한 단원` : `내가 약한 단원`} TOP3</Title>
       <SubContainer>
-        {contents.map((val, idx) => (
-          <ContentContainer key={idx}>
-            <ContentTitle>Top {idx + 1}</ContentTitle>
-            <ContentBox isStrong={isStrong}>
-              <ContentText>{val}</ContentText>
-            </ContentBox>
-          </ContentContainer>
-        ))}
+        {contents.map((val, idx) => {
+          const Box = box[idx];
+          return (
+            <ContentContainer key={idx}>
+              <Box width={"100%"} height={"100%"}>
+                <ContentTitle>Top {idx + 1}</ContentTitle>
+                <ContentBox isStrong={isStrong}>
+                  <ContentText>{val}</ContentText>
+                </ContentBox>
+              </Box>
+            </ContentContainer>
+          );
+        })}
       </SubContainer>
     </Container>
   );

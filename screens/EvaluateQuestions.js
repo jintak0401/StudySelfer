@@ -78,7 +78,6 @@ const EvaluateQuestions = (props) => {
   };
 
   const goToEvaluateSolution = () => {
-    console.log("EvaluateQuestions.js", studentAns, quests, solutions);
     navigation.navigate("진단평가결과", {
       studentAns,
       quests,

@@ -1,4 +1,5 @@
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useEffect, useState } from "react";
+import { Animated, Easing } from "react-native";
 import styled from "styled-components/native";
 import Home from "../assets/Svg/Home.svg";
 import { Feather } from "@expo/vector-icons";
@@ -7,6 +8,8 @@ import EvaluateTable from "../components/EvaluateTable";
 import ScrollContainer from "../components/ScrollContainer";
 import QuestResult from "../components/TestResult/QuestResult";
 import StrongAndWeak from "../components/StrongAndWeak";
+import Collapsible from "react-native-collapsible";
+import { AntDesign } from "@expo/vector-icons";
 
 const { isTablet } = screenInfo;
 
@@ -51,19 +54,35 @@ const DevideBox = styled.View`
   width: 120%;
 `;
 
-const DevideText = styled.Text`
-  align-self: center;
-  padding-horizontal: 10px;
-  background-color: white;
-  color: #4f62c0;
-`;
-
 const EndQuestReslut = styled.View`
   align-self: center;
   border-width: 0px;
   background-color: #95989a;
   height: 3px;
   width: 100%;
+`;
+
+const CollapseButton = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 100px;
+  background-color: white;
+  margin-bottom: 3px;
+`;
+
+const CollapseText = styled.Text`
+  text-align: center;
+  padding-right: 5px;
+  font-size: 16px;
+  color: #4f62c0;
+  font-weight: bold;
+  padding-left: 6px;
+`;
+
+const FoldDirection = styled(Animated.View)`
+  justify-content: center;
+  align-items: center;
 `;
 
 const DevideContainer = styled.View``;
@@ -104,8 +123,14 @@ const correctAns = {
 const EvaluateResult = (props) => {
   const { navigation, route } = props;
   const { studentAns, quests, solutions } = route.params;
+  const [collapsed, setCollapsed] = useState(false);
   const strong = ["수열의 극한", "적분", "미분"];
   const weak = ["지수함수와 로그함수", "삼각함수", "수열"];
+  const [direction, setdirection] = useState(new Animated.Value(0));
+  const rotate = direction.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "180deg"],
+  });
 
   const goToComment = (questNum) => {
     navigation.navigate("진단해설", {
@@ -117,6 +142,15 @@ const EvaluateResult = (props) => {
       endQuestionNum: Object.keys(studentAns).length,
     });
   };
+
+  useEffect(() => {
+    Animated.timing(direction, {
+      toValue: collapsed ? 1 : 0,
+      duration: 300,
+      useNativeDriver: true,
+      easing: Easing.easeInOutCubic,
+    }).start();
+  }, [collapsed]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -139,27 +173,47 @@ const EvaluateResult = (props) => {
       ),
     });
   }, [route]);
+
   return (
     <Container>
-      <ScrollContainer>
+      <ScrollContainer flexValue={1}>
         <EvaluateTable grade={93} />
         <DevideContainer>
           <DevideBox />
-          <DevideText>풀이 결과</DevideText>
+          <CollapseButton
+            activeOpacity={1}
+            onPress={() => setCollapsed(!collapsed)}
+          >
+            <CollapseText>풀이결과</CollapseText>
+            <FoldDirection style={{ transform: [{ rotate: rotate }] }}>
+              <AntDesign
+                style={{ marginTop: 3 }}
+                name="up"
+                size={20}
+                color="#4F62C0"
+              />
+            </FoldDirection>
+          </CollapseButton>
+          {/* <DevideText onPress={() => setCollapsed(!collapsed)}>
+            풀이 결과
+          </DevideText> */}
         </DevideContainer>
-        {[...Array(Object.keys(studentAns).length)]
-          .map((x, i) => i + 1)
-          .map((n) => (
-            <QuestResult
-              key={n}
-              questNum={n}
-              studentAns={studentAns[n]}
-              correctAns={correctAns[n]}
-              goToComment={goToComment}
-              isLast={n === Object.keys(studentAns).length}
-            />
-          ))}
-        <EndQuestReslut />
+        <Collapsible collapsed={collapsed}>
+          {[...Array(Object.keys(studentAns).length)]
+            .map((x, i) => i + 1)
+            .map((n) => (
+              <QuestResult
+                key={n}
+                questNum={n}
+                studentAns={studentAns[n]}
+                correctAns={correctAns[n]}
+                goToComment={goToComment}
+                isLast={n === Object.keys(studentAns).length}
+                isChoice={true}
+              />
+            ))}
+          <EndQuestReslut />
+        </Collapsible>
         <StrongAndWeak contents={strong} isStrong={true} />
         <StrongAndWeak contents={weak} isStrong={false} />
       </ScrollContainer>

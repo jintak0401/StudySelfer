@@ -5,6 +5,7 @@ import { apiPostChapter, apiPostAnswer } from "../api";
 import styled, { withTheme } from "styled-components/native";
 import Profile from "../assets/Svg/Profile.svg";
 import { sub2num, chapters, area } from "../chapterData";
+import { AntDesign } from "@expo/vector-icons";
 
 const ProfileButton = styled.TouchableOpacity`
   margin-right: 20px;
@@ -31,7 +32,7 @@ export default ({ navigation, route }) => {
   // const { navigation, route } = props;
   const [part, setPart] = useState("liberal");
   const [selectedChap, setSelectedChap] = useState({});
-  const flatListItemSeparator = () => <View style={styles.separator} />;
+  const flatListItemSeparator = () => <View /* style={styles.separator}*/ />;
 
   const changePart = (after) => {
     setPart(after);
@@ -120,19 +121,39 @@ export default ({ navigation, route }) => {
             })
           )}
           renderSectionHeader={({ section }) => (
-            <Text
-              onPress={() => choiceSection(section.title)}
-              style={styles.sectionHeaderStyle}
+            <View
+              style={{
+                width: "100%",
+                backgroundColor: "skyblue",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
             >
-              {" "}
-              {section.title}{" "}
-            </Text>
+              <Text
+                onPress={() => choiceSection(section.title)}
+                style={styles.sectionHeaderStyle}
+              >
+                {section.title}
+              </Text>
+              <AntDesign
+                style={{
+                  alignSelf: "flex-end",
+                  backgroundColor: "white",
+                  borderRadius: 200,
+                  paddingLeft: 200,
+                }}
+                name="checkcircle"
+                size={28}
+                color="#4f62c0"
+              />
+            </View>
           )}
           renderItem={({ item }) => (
             <Text
               style={{
                 ...styles.SectionListItemStyle,
-                backgroundColor: selectedChap[item.id] ? "#CEEAF2" : "white",
+                backgroundColor: selectedChap[item.id] ? "#ECECEC" : "white",
               }}
               onPress={() => choiceChap(item.id)}
             >
@@ -170,20 +191,28 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 10,
   },
-  separator: {
-    height: 0.5,
-    width: "100%",
-    backgroundColor: "skyblue",
+  // separator: {
+  //   height: 0.5,
+  //   width: "100%",
+  //   backgroundColor: "skyblue",
+  // },
+  iconBox: {
+    backgroundColor: "white",
+    width: 25,
+    height: 25,
+    borderRadius: 100,
   },
   sectionHeaderStyle: {
     backgroundColor: "skyblue",
     fontSize: 20,
-    paddingVertical: 5,
+    paddingVertical: 10,
+    paddingLeft: 20,
   },
   SectionListItemStyle: {
     fontSize: 15,
     padding: 15,
     color: "#000",
+    paddingLeft: 35,
     // backgroundColor: "#F5F5F5",
     // backgroundColor: "green",
   },
