@@ -22,6 +22,8 @@ import Weak1 from "./Weak1.svg";
 import Weak2 from "./Weak2.svg";
 import Weak3 from "./Weak3.svg";
 import RecommendBack from "./RecommendBack.svg";
+import BeforeRecommend from "./BeforeRecommend";
+import AfterRecommend from "./AfterRecommend";
 
 export {
   BackMark,
@@ -48,4 +50,6 @@ export {
   Weak2,
   Weak3,
   RecommendBack,
+  BeforeRecommend,
+  AfterRecommend,
 };

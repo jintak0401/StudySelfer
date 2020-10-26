@@ -27,27 +27,19 @@ export default ({ questNum, questData, isTest, flexValue }) => {
   }, [questData]);
 
   useEffect(() => {
-    const loading = () => {
+    const loading = async () => {
       if (questData) {
-        questData.questImageUrl.forEach(async (url, idx) => {
+        await questData.questImageUrl.forEach(async (url, idx) => {
           await Image.getSize(url, (width, height) => {
             setRatio[idx](width / height);
           });
         });
-        setLoad(true);
       }
     };
     if (!load) {
-      // loading().then(() => setNum((prev) => prev + 1));
-      loading();
+      loading().then(() => setLoad(true));
     }
   }, [load]);
-
-  // useEffect(() => {
-  //   if (questData) {
-  //     setLoad(num === questData.questImageUrl.length);
-  //   }
-  // }, [num]);
 
   return (
     <Container>

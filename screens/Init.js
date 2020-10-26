@@ -8,14 +8,22 @@ import Book from "../assets/Svg/Book.svg";
 import Profile from "../assets/Svg/Profile.svg";
 import { useFonts } from "expo-font";
 import { typoSsangmoon } from "../src/Fonts";
-import { Animated, Easing, View, StyleSheet, Linking } from "react-native";
+import {
+  Animated,
+  Easing,
+  View,
+  StyleSheet,
+  Linking,
+  Image,
+} from "react-native";
 import GestureRecognizer from "react-native-swipe-gestures";
 import DoubleClick from "react-native-double-tap";
 import Swiper from "react-native-swiper";
 import * as WebBrowser from "expo-web-browser";
 import { DrawerActions } from "@react-navigation/native";
 import { Svg, Line } from "react-native-svg";
-import { RecommendBack } from "../assets/Svg";
+import { BeforeRecommend, AfterRecommend, RecommendBack } from "../assets/Svg";
+import { string } from "prop-types";
 // import Networking from "react-native/Libraries/Network/RCTNetworking.android"
 
 const { isTablet, WIDTH, HEIGHT } = screenInfo;
@@ -77,9 +85,12 @@ const TmpText = styled.Text`
 `;
 
 const TmpButton = styled.TouchableOpacity`
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
-  flex: 1;
+  background-color: tomato;
+  height: 200px;
+  margin-top: 50px;
 `;
 
 const LineContainer = styled.View`
@@ -177,9 +188,10 @@ export default ({ navigation, route }) => {
 
   return loaded ? (
     <Container>
-      <TmpButton>
-        <RecommendBack width={300} height={500} />
-      </TmpButton>
+      {/* <TmpButton>
+        <BeforeRecommend width={100} height={100} />
+        <AfterRecommend width={100} height={100} />
+      </TmpButton> */}
       {/* <LineContainer>
         <Svg height="100%" width="100%">
           <Line
@@ -223,7 +235,6 @@ export default ({ navigation, route }) => {
         </BlueBox>
         <YellowBox style={{ transform: [{ rotate: spinning }] }} />
       </Wrapper> */}
-
       <Button
         activeOpacity={0.8}
         onPress={() => navigation.navigate("진단평가")}

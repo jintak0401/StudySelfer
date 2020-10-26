@@ -7,6 +7,8 @@ import Ansbtn from "../components/TestQuestions/Ansbtn";
 import TimeAndNext from "../components/TimeAndNext";
 import Input from "../components/TestQuestions/Input";
 import ScrollContainer from "../components/ScrollContainer";
+import Timer from "../components/Timer";
+import NextAndDontKnow from "../components/NextAndDontKnow";
 
 const Container = styled.View`
   flex: 1;
@@ -45,11 +47,23 @@ const HeaderSubtitle = styled.Text`
 `;
 
 const BottomContainer = styled.View`
-  height: 150px;
   width: 100%;
   justify-content: center;
   align-items: center;
 `;
+
+const TimeContainer = styled.View`
+  align-items: center;
+  margin-right: 20px;
+  margin-top: 10px;
+`;
+
+// const IconSet = styled.View`
+//   flex-direction: row;
+//   justify-content: flex-end;
+//   margin-right: 20px;
+//   margin-top: 10px;
+// `;
 
 const EvaluateQuestions = (props) => {
   const { route, navigation } = props;
@@ -143,13 +157,18 @@ const EvaluateQuestions = (props) => {
           <HeaderSubtitle>{questNum}번 문제</HeaderSubtitle>
         </TitleContainer>
       ),
+      headerRight: () => (
+        <TimeContainer>
+          <Timer time={time} />
+        </TimeContainer>
+      ),
     });
-  }, [route, questNum]);
+  }, [route, questNum, time]);
 
   return (
     <Container>
       <ScrollContainer flexValue={6}>
-        <Questions isTest={true} flexValue={6} questData={questData} />
+        <Questions isTest={true} questData={questData} />
       </ScrollContainer>
       <BottomContainer>
         {isChoiceProb ? (
@@ -177,15 +196,20 @@ const EvaluateQuestions = (props) => {
             />
           </InputContainer>
         )}
-        {showBottom ? (
+        {/* {showBottom ? (
           <TimeAndNext
             time={time}
             goToNext={goToNext}
             dontKnow={dontKnow}
             setDontKnow={setDontKnow}
           />
-        ) : null}
+        ) : null} */}
       </BottomContainer>
+      <NextAndDontKnow
+        goToNext={goToNext}
+        dontKnow={dontKnow}
+        setDontKnow={setDontKnow}
+      />
     </Container>
   );
 };

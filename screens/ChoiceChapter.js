@@ -1,5 +1,12 @@
 import React, { useState, useLayoutEffect } from "react";
-import { StyleSheet, View, Button, SectionList, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Button,
+  SectionList,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { sub } from "react-native-reanimated";
 import { apiPostChapter, apiPostAnswer } from "../api";
 import styled, { withTheme } from "styled-components/native";
@@ -33,6 +40,15 @@ export default ({ navigation, route }) => {
   const [part, setPart] = useState("liberal");
   const [selectedChap, setSelectedChap] = useState({});
   const flatListItemSeparator = () => <View /* style={styles.separator}*/ />;
+  const [allSelected, setAllSelected] = useState({});
+
+  const convertSection = (section) => {
+    let subj = "";
+    for (let i = 0; i < area[part].length; i++) {
+      subj = area[part][i][1] === section ? area[part][i][0] : subj;
+    }
+    return allSelected[subj];
+  };
 
   const changePart = (after) => {
     setPart(after);
@@ -51,13 +67,22 @@ export default ({ navigation, route }) => {
     ["_1", "_2", "_3"].forEach((tail) => {
       tmp[`${subj}${tail}`] = num !== 3;
     });
+    setAllSelected({ ...allSelected, [subj]: num !== 3 });
     setSelectedChap({ ...tmp });
   };
 
   const choiceChap = (chap) => {
     const tmp = { ...selectedChap };
+    const subj = chap.slice(0, -2);
+    let check = 0;
     if (tmp[chap] === undefined) tmp[chap] = false;
     tmp[chap] = !tmp[chap];
+    if (tmp[chap]) {
+      for (const ch in tmp) {
+        check += ch.slice(0, -2) === subj && tmp[ch] ? 1 : 0;
+      }
+    }
+    setAllSelected({ ...allSelected, [subj]: check === 3 });
     setSelectedChap({ ...tmp });
   };
 
@@ -97,6 +122,7 @@ export default ({ navigation, route }) => {
       ),
     });
   }, [route]);
+
   return (
     <View style={styles.container}>
       <View style={styles.areaSet}>
@@ -121,33 +147,56 @@ export default ({ navigation, route }) => {
             })
           )}
           renderSectionHeader={({ section }) => (
-            <View
+            <TouchableOpacity
+              onPress={() => {
+                choiceSection(section.title);
+              }}
+              activeOpacity={1}
               style={{
                 width: "100%",
-                backgroundColor: "skyblue",
+                backgroundColor: "#A9E4EB",
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
               }}
             >
-              <Text
-                onPress={() => choiceSection(section.title)}
-                style={styles.sectionHeaderStyle}
-              >
-                {section.title}
-              </Text>
-              <AntDesign
+              <Text style={styles.sectionHeaderStyle}>{section.title}</Text>
+              {convertSection(section.title) ? (
+                <AntDesign
+                  style={{
+                    backgroundColor: "white",
+                    borderRadius: 200,
+                    marginRight: 30,
+                  }}
+                  name="checkcircle"
+                  size={28}
+                  color="#4f62c0"
+                ></AntDesign>
+              ) : (
+                <AntDesign
+                  style={{
+                    backgroundColor: "white",
+                    borderRadius: 200,
+                    marginRight: 30,
+                  }}
+                  name="checkcircleo"
+                  size={28}
+                  color="#A9E4EB"
+                ></AntDesign>
+              )}
+              {/* <AntDesign
                 style={{
-                  alignSelf: "flex-end",
                   backgroundColor: "white",
                   borderRadius: 200,
-                  paddingLeft: 200,
+                  marginRight: 30,
                 }}
-                name="checkcircle"
+                name={
+                  convertSection(section.title) ? "checkcircleo" : "checkcircle"
+                }
                 size={28}
-                color="#4f62c0"
-              />
-            </View>
+                color={convertSection(section.title) ? "#A9E4EB" : "#4f62c0"}
+              /> */}
+            </TouchableOpacity>
           )}
           renderItem={({ item }) => (
             <Text
@@ -184,6 +233,7 @@ export default ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
   },
   areaSet: {
     flexDirection: "row",
@@ -203,7 +253,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   sectionHeaderStyle: {
-    backgroundColor: "skyblue",
+    backgroundColor: "#A9E4EB",
     fontSize: 20,
     paddingVertical: 10,
     paddingLeft: 20,

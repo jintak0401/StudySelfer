@@ -23,6 +23,7 @@ const HeaderTitle = styled.Text`
   font-size: 26px;
   color: white;
   margin-left: -15px;
+  font-family: Ssangmoon;
 `;
 
 const ProfileButton = styled.TouchableOpacity`

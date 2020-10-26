@@ -87,6 +87,13 @@ const FoldDirection = styled(Animated.View)`
 
 const DevideContainer = styled.View``;
 
+const TmpBox = styled.View`
+  width: 95%;
+  margin-left: 12px;
+  align-items: center;
+  justify-content: center;
+`;
+
 const correctAns = {
   1: 5,
   2: 4,
@@ -194,24 +201,23 @@ const EvaluateResult = (props) => {
               />
             </FoldDirection>
           </CollapseButton>
-          {/* <DevideText onPress={() => setCollapsed(!collapsed)}>
-            풀이 결과
-          </DevideText> */}
         </DevideContainer>
         <Collapsible collapsed={collapsed}>
-          {[...Array(Object.keys(studentAns).length)]
-            .map((x, i) => i + 1)
-            .map((n) => (
-              <QuestResult
-                key={n}
-                questNum={n}
-                studentAns={studentAns[n]}
-                correctAns={correctAns[n]}
-                goToComment={goToComment}
-                isLast={n === Object.keys(studentAns).length}
-                isChoice={true}
-              />
-            ))}
+          <TmpBox>
+            {[...Array(Object.keys(studentAns).length)]
+              .map((x, i) => i + 1)
+              .map((n) => (
+                <QuestResult
+                  key={n}
+                  questNum={n}
+                  studentAns={studentAns[n]}
+                  correctAns={correctAns[n]}
+                  goToComment={goToComment}
+                  isLast={n === Object.keys(studentAns).length}
+                  isChoice={true}
+                />
+              ))}
+          </TmpBox>
           <EndQuestReslut />
         </Collapsible>
         <StrongAndWeak contents={strong} isStrong={true} />

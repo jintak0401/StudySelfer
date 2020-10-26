@@ -56,3 +56,10 @@ export const answerFormat = (ans, isChoice) => {
   const mark = { 1: "①", 2: "②", 3: "③", 4: "④", 5: "⑤" };
   return ans ? (isChoice ? mark[ans] : ans) : "미입력";
 };
+
+export const convertRecommendTitle = (key) => {
+  const year = `20${parseInt(key / 10000)}`;
+  const month = `${parseInt((key % 10000) / 100)}`;
+  const day = `${key % 100}`;
+  return `${year}년 ${month}월 ${day}일`;
+};

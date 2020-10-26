@@ -1,23 +1,30 @@
 import React from "react";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
-import { Strong1, Strong2, Strong3, Weak1, Weak2, Weak3 } from "../assets/Svg";
+import { ScrollView } from "react-native";
+import { screenInfo } from "../utils";
+
+const { WIDTH } = screenInfo;
 
 const Container = styled.View`
   width: 100%;
-  height: 130px;
+  height: 240px;
   justify-content: center;
   align-items: center;
-  margin-vertical: 20px;
-  ${(props) => props.isWeak && "margin-bottom : 30px"};
+  margin-bottom: 20px;
 `;
+// margin-bottom: ${(props) => (props.isWeak ? 70 : 50)}px;
+// margin-vertical: 30px;
 
-const SubContainer = styled.View`
+const SubContainer = styled.ScrollView`
   flex-direction: row;
+  width: 100%;
+  height: 300px;
 `;
 
 const ContentContainer = styled.View`
-  flex: 1;
+  height: 100%;
+  background-color: tomato;
   margin-horizontal: 5px;
   justify-content: center;
   align-items: center;
@@ -26,7 +33,7 @@ const ContentContainer = styled.View`
 const Title = styled.Text`
   font-weight: bold;
   font-size: 22px;
-  color: black;
+  color: ${(props) => (props.isStrong ? "#4F62C0" : "#EA726C")};
   align-self: flex-start;
   margin-left: 30px;
   margin-vertical: 20px;
@@ -46,29 +53,57 @@ const ContentTitle = styled.Text`
 `;
 
 const ContentText = styled.Text`
-  color: black;
-  font-size: 13px;
-  font-family: Ssangmoon;
+  color: ${(props) => (props.isStrong ? "#4F62C0" : "white")};
+  font-size: 23px;
   font-weight: bold;
 `;
 
+const RankText = styled.Text`
+  color: ${(props) => (props.isStrong ? "#4F62C0" : "white")};
+  font-size: 18px;
+  font-weight: bold;
+  position: absolute;
+  top: 18px;
+  left: 27px;
+`;
+
+const Box = styled.ImageBackground`
+  width: 220px;
+  height: 160px;
+  margin-horizontal: 5px;
+  justify-content: center;
+  align-items: center;
+`;
+
 const StrongAndWeak = ({ contents, isStrong }) => {
-  const box = isStrong ? [Strong1, Strong2, Strong3] : [Weak1, Weak2, Weak3];
+  const src = {
+    Strong1: require("../assets/Png/Strong1.png"),
+    Strong2: require("../assets/Png/Strong2.png"),
+    Strong3: require("../assets/Png/Strong3.png"),
+    Weak1: require("../assets/Png/Weak1.png"),
+    Weak2: require("../assets/Png/Weak2.png"),
+    Weak3: require("../assets/Png/Weak3.png"),
+  };
   return (
     <Container isWeak={!isStrong}>
-      <Title>{isStrong ? `내가 강한 단원` : `내가 약한 단원`} TOP3</Title>
-      <SubContainer>
+      <Title isStrong={isStrong}>
+        {isStrong ? `내가 강한 단원` : `내가 약한 단원`}
+      </Title>
+      <SubContainer
+        contentContainerStyle={{
+          flex: 0,
+          paddingHorizontal: 20,
+        }}
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+      >
         {contents.map((val, idx) => {
-          const Box = box[idx];
+          const path = src[isStrong ? `Strong${idx + 1}` : `Weak${idx + 1}`];
           return (
-            <ContentContainer key={idx}>
-              <Box width={"100%"} height={"100%"}>
-                <ContentTitle>Top {idx + 1}</ContentTitle>
-                <ContentBox isStrong={isStrong}>
-                  <ContentText>{val}</ContentText>
-                </ContentBox>
-              </Box>
-            </ContentContainer>
+            <Box key={idx} source={path}>
+              <RankText isStrong={isStrong}>TOP {idx + 1}</RankText>
+              <ContentText isStrong={isStrong}>{val}</ContentText>
+            </Box>
           );
         })}
       </SubContainer>

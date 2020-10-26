@@ -48,19 +48,18 @@ export default ({ questNum, solutionImageUrl }) => {
   }, [solutionImageUrl]);
 
   useEffect(() => {
-    const loading = () => {
+    const loading = async () => {
       if (solutionImageUrl) {
-        solutionImageUrl.forEach(async (url, idx) => {
+        await solutionImageUrl.forEach(async (url, idx) => {
           await Image.getSize(url, (width, height) => {
             setRatio[idx](width / height);
             //setRatio({...ratio, [idx]: width / height});
           });
         });
-        setLoad(true);
       }
     };
     if (!load) {
-      loading();
+      loading().then(() => setLoad(true));
       // loading().then(() => setNum((prev) => prev + 1));
     }
   }, [load]);
