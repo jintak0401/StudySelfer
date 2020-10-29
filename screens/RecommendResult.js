@@ -3,13 +3,14 @@ import { Animated, Easing } from "react-native";
 import styled from "styled-components/native";
 import Home from "../assets/Svg/Home.svg";
 import { Feather } from "@expo/vector-icons";
-import { screenInfo } from "../utils";
+import { getCorrectUnit, screenInfo, timerFormat } from "../utils";
 import EvaluateTable from "../components/EvaluateTable";
 import ScrollContainer from "../components/ScrollContainer";
 import QuestResult from "../components/TestResult/QuestResult";
 import StrongAndWeak from "../components/StrongAndWeak";
 import Collapsible from "react-native-collapsible";
 import { AntDesign } from "@expo/vector-icons";
+import RecommendTable from "../components/RecommendTable";
 
 const { isTablet } = screenInfo;
 
@@ -34,6 +35,7 @@ const HeaderLeftButton = styled.TouchableOpacity`
 const HeaderTitle = styled.Text`
   font-size: 23px;
   color: #4f62c0;
+  font-weight: bold;
 `;
 
 const HeaderSubtitle = styled.Text`
@@ -61,7 +63,6 @@ const EndQuestReslut = styled.View`
   background-color: #95989a;
   height: 3px;
   width: 100%;
-  opacity: 0.3;
 `;
 
 const CollapseButton = styled.TouchableOpacity`
@@ -96,57 +97,36 @@ const TmpBox = styled.View`
   justify-content: center;
 `;
 
-const correctAns = {
-  1: 5,
-  2: 4,
-  3: 1,
-  4: 2,
-  5: 3,
-  6: 1,
-  7: 4,
-  8: 1,
-  9: 5,
-  10: 2,
-  11: 5,
-  12: 4,
-  13: 1,
-  14: 2,
-  15: 3,
-  16: 1,
-  17: 4,
-  18: 1,
-  19: 5,
-  20: 2,
-  21: 5,
-  22: 4,
-  23: 1,
-  24: 2,
-  25: 3,
-  26: 1,
-  27: 4,
-  28: 1,
-  29: 5,
-  30: 2,
-};
-
-const EvaluateResult = (props) => {
+const RecommendResult = (props) => {
   const { navigation, route } = props;
-  const { studentAns, quests, solutions } = route.params;
+  const {
+    studentAns,
+    quests,
+    solutions,
+    isChoice,
+    correctAns,
+    monthKey,
+    dayKey,
+  } = route.params;
   const [collapsed, setCollapsed] = useState(false);
-  const strong = ["수열의 극한", "적분", "미분"];
-  const weak = ["지수함수와 로그함수", "삼각함수", "수열"];
   const [direction, setdirection] = useState(new Animated.Value(0));
   const rotate = direction.interpolate({
     inputRange: [0, 1],
     outputRange: ["0deg", "180deg"],
   });
+  const questData = {
+    1: { questImageUrl: quests[1] },
+    2: { questImageUrl: quests[2] },
+    3: { questImageUrl: quests[3] },
+  };
+  const result = `${getCorrectUnit(studentAns, correctAns)}/3 문제`;
 
   const goToComment = (questNum) => {
     navigation.navigate("진단해설", {
       qNum: questNum,
       studentAns,
       correctAns,
-      questData: quests,
+      questData,
       solutions,
       endQuestionNum: Object.keys(studentAns).length,
     });
@@ -162,6 +142,9 @@ const EvaluateResult = (props) => {
   }, [collapsed]);
 
   useLayoutEffect(() => {
+    const title = `20${monthKey.slice(0, 2)}년 ${monthKey.slice(
+      2
+    )}월 ${dayKey}일`;
     navigation.setOptions({
       headerLeft: () => (
         <HeaderLeftButton onPress={() => navigation.pop(2)}>
@@ -171,8 +154,8 @@ const EvaluateResult = (props) => {
       headerStyle: { backgroundColor: "white", height: 80, elevation: 0 },
       headerTitle: () => (
         <TitleContainer>
-          <HeaderTitle>진단 결과</HeaderTitle>
-          <HeaderSubtitle>1회차</HeaderSubtitle>
+          <HeaderTitle>추천문제 풀이결과</HeaderTitle>
+          <HeaderSubtitle>{title}</HeaderSubtitle>
         </TitleContainer>
       ),
       headerRight: () => (
@@ -186,7 +169,7 @@ const EvaluateResult = (props) => {
   return (
     <Container>
       <ScrollContainer flexValue={1}>
-        <EvaluateTable grade={93} />
+        <RecommendTable time={timerFormat(1231)} result={result} />
         <DevideContainer>
           <DevideBox />
           <CollapseButton
@@ -216,17 +199,14 @@ const EvaluateResult = (props) => {
                   correctAns={correctAns[n]}
                   goToComment={goToComment}
                   isLast={n === Object.keys(studentAns).length}
-                  isChoice={true}
+                  isChoice={isChoice[n]}
                 />
               ))}
           </TmpBox>
-          <EndQuestReslut />
         </Collapsible>
-        <StrongAndWeak contents={strong} isStrong={true} />
-        <StrongAndWeak contents={weak} isStrong={false} />
       </ScrollContainer>
     </Container>
   );
 };
 
-export default EvaluateResult;
+export default RecommendResult;

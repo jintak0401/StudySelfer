@@ -26,12 +26,13 @@ const Text = styled.Text`
   font-weight: bold;
 `;
 
-const SelectRecommend = ({ selectedTab, setSelectedTab }) => {
+const SelectRecommend = ({ selectedTab, setSelectedTab, resetKey }) => {
   return (
     <Container>
       <Button
         isSelected={selectedTab === "today"}
         onPress={() => {
+          if (selectedTab === "past") resetKey();
           setSelectedTab("today");
         }}
       >
@@ -40,6 +41,7 @@ const SelectRecommend = ({ selectedTab, setSelectedTab }) => {
       <Button
         isSelected={selectedTab === "past"}
         onPress={() => {
+          if (selectedTab === "today") resetKey();
           setSelectedTab("past");
         }}
       >
@@ -52,6 +54,7 @@ const SelectRecommend = ({ selectedTab, setSelectedTab }) => {
 SelectRecommend.propTypes = {
   selectedTab: PropTypes.string,
   setSelectedTab: PropTypes.func.isRequired,
+  resetKey: PropTypes.func.isRequired,
 };
 
 export default SelectRecommend;

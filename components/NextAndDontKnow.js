@@ -10,7 +10,8 @@ const MoveQuestBtnSet = styled.View`
   flex-direction: row;
   position: absolute;
   bottom: ${parseInt(HEIGHT * 0.12)}px;
-  justify-content: space-between;
+  justify-content: ${(props) =>
+    props.turn === "q" ? "space-between" : "flex-end"};
   width: 100%;
 `;
 
@@ -22,7 +23,7 @@ const LeftBtn = styled.TouchableOpacity`
   margin-left: 10px;
 `;
 
-const NextAndDontKnow = ({ goToNext, dontKnow, setDontKnow }) => {
+const NextAndDontKnow = ({ goToNext, dontKnow, setDontKnow, turn = "q" }) => {
   const iconSize = isTablet ? 50 : 35;
   const iconName = {
     left: "questioncircle",
@@ -35,15 +36,17 @@ const NextAndDontKnow = ({ goToNext, dontKnow, setDontKnow }) => {
   };
 
   return (
-    <MoveQuestBtnSet>
-      <LeftBtn onPress={() => setDontKnow(!dontKnow)}>
-        <AntDesign
-          style={{ opacity: 0.7 }}
-          name={iconName.left}
-          size={iconSize}
-          color={dontKnow ? iconColor.dontKnow : iconColor.know}
-        />
-      </LeftBtn>
+    <MoveQuestBtnSet turn={turn}>
+      {turn === "q" ? (
+        <LeftBtn onPress={() => setDontKnow(!dontKnow)}>
+          <AntDesign
+            style={{ opacity: 0.7 }}
+            name={iconName.left}
+            size={iconSize}
+            color={dontKnow ? iconColor.dontKnow : iconColor.know}
+          />
+        </LeftBtn>
+      ) : null}
       <RightBtn onPress={() => goToNext()}>
         <AntDesign
           style={{ opacity: 0.7 }}
@@ -60,6 +63,7 @@ NextAndDontKnow.propTypes = {
   goToNext: PropTypes.func.isRequired,
   dontKnow: PropTypes.bool.isRequired,
   setDontKnow: PropTypes.func.isRequired,
+  turn: PropTypes.string,
 };
 
 export default NextAndDontKnow;

@@ -31,6 +31,14 @@ export const getGrade = (studentAns, correctAns) => {
   return ret;
 };
 
+export const getCorrectUnit = (studentAns, correctAns) => {
+  let retval = 0;
+  for (let i = 1; i <= Object.keys(studentAns).length; i++) {
+    retval += studentAns[i] === correctAns[i] ? 1 : 0;
+  }
+  return retval;
+};
+
 export const screenInfo = {
   isTablet: HEIGHT > 1000,
   WIDTH: WIDTH,

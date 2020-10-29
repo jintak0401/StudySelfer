@@ -2,11 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
 import Collapsible from "react-native-collapsible";
-import { getSolvedMonth, solvedData } from "../../solvedData";
-import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import Dash from "react-native-dash";
-import { getTestTitle } from "../../utils";
-import { convertRecommendTitle } from "../utils";
+import { solvedData } from "../solvedData";
 
 const DisplayFirstContainer = styled.View`
   border-width: 2px;
@@ -119,34 +117,33 @@ const DisplaySolvedData = ({ time, result, goToResult, goToQuestions }) => {
   );
 };
 
-const SelectMonth = ({
-  key,
-  selectedPast,
-  selectPast,
+const SelectRecommendDay = ({
+  monthKey,
+  dayKey,
+  keyValue,
+  selectDay,
   goToResult,
   goToQuestions,
 }) => {
   const [selected, setSelected] = useState(false);
-  const [time, result] = solvedData.recommend[key];
-  const title = convertRecommendTitle(key);
-
+  const [time, result] = solvedData.recommend[monthKey][keyValue];
   useEffect(() => {
-    setSelected(selectedPast === key);
-  }, [selectedPast]);
+    setSelected(dayKey === keyValue);
+  }, [dayKey]);
 
   return (
-    <Container isSat={true}>
+    <Container>
       <TestTitleContainer>
         <TestTitleButton
           onPress={() => {
-            selectPast(key);
+            selectDay(keyValue);
           }}
         >
-          <ContainerText selected={selected}>{title}</ContainerText>
+          <ContainerText selected={selected}>{keyValue}일</ContainerText>
         </TestTitleButton>
       </TestTitleContainer>
       <Dash
-        style={{ position: "absolute", top: 22.8, width: "100%", height: 1 }}
+        style={{ position: "absolute", top: 22, width: "100%", height: 1 }}
         dashGap={3}
         dashLength={5}
         dashThickness={1}
@@ -156,20 +153,21 @@ const SelectMonth = ({
         <DisplaySolvedData
           time={time}
           result={result}
-          goToResult={() => goToResult(key)}
-          goToQuestions={() => goToQuestions(key)}
+          goToResult={goToResult}
+          goToQuestions={goToQuestions}
         />
       </Collapsible>
     </Container>
   );
 };
 
-SelectMonth.propTypes = {
-  key: PropTypes.number.isRequired,
-  selectedPast: PropTypes.number,
-  selectPast: PropTypes.func.isRequired,
+SelectRecommendDay.propTypes = {
+  monthKey: PropTypes.string.isRequired,
+  dayKey: PropTypes.string,
+  keyValue: PropTypes.string.isRequired,
+  selectDay: PropTypes.func.isRequired,
   goToResult: PropTypes.func.isRequired,
   goToQuestions: PropTypes.func.isRequired,
 };
 
-export default SelectMonth;
+export default SelectRecommendDay;

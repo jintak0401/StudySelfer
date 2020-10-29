@@ -1,12 +1,13 @@
-import axios from 'axios';
-import { Dimensions } from 'react-native';
+import axios from "axios";
+import { array } from "prop-types";
+import { Dimensions } from "react-native";
 
-const { width: WIDTH, height: HEIGHT } = Dimensions.get('screen');
+const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
 
 export const apiTestQuests = async () => {
   try {
     const { data } = await axios.get(
-      'http://211.43.12.24:9999/api/try_test/19년수능'
+      "http://211.43.12.24:9999/api/try_test/19년수능"
     );
     return data;
   } catch (e) {
@@ -18,7 +19,7 @@ export const apiTestQuests = async () => {
 export const apiTestSolutions = async () => {
   try {
     const { data } = await axios.get(
-      'http://211.43.12.24:9999/api/solutions/19년수능'
+      "http://211.43.12.24:9999/api/solutions/19년수능"
     );
     return data;
   } catch (e) {
@@ -30,7 +31,7 @@ export const apiTestSolutions = async () => {
 export const apiTestAns = async () => {
   try {
     const { data } = await axios.get(
-      'http://211.43.12.24:9999/api/answers/19년수능'
+      "http://211.43.12.24:9999/api/answers/19년수능"
     );
     return data;
   } catch (e) {
@@ -40,25 +41,52 @@ export const apiTestAns = async () => {
 };
 
 export const apiPostChapter = async (type, chapter) => {
-  const data = {type: type, chapter: chapter};
+  const data = { type: type, chapter: chapter };
   try {
-    const retval = await axios.post("http://211.43.12.24:9999/api/diagnose/chapters", data);
+    const retval = await axios.post(
+      "http://211.43.12.24:9999/api/diagnose/chapters",
+      data
+    );
     return retval;
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e);
     return {};
   }
-}
+};
 
 export const apiPostAnswer = async (time, ans, removedAns) => {
-  const data = {time: time, answer: ans, removedAnswer: removedAns};
+  const data = { time: time, answer: ans, removedAnswer: removedAns };
   try {
-    retval = await axios.post("http://211.43.12.24:9999/api/diagnose/answer_data", data);
+    retval = await axios.post(
+      "http://211.43.12.24:9999/api/diagnose/answer_data",
+      data
+    );
     return retval;
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e);
     return {};
   }
-}
+};
+
+export const apiGetRecommend = async () => {
+  try {
+    const { data } = await axios.get("http://211.43.12.24:9999/recommendation");
+    const tmp = { 1: undefined, 2: undefined, 3: undefined };
+    const retval = {
+      quests: { ...tmp },
+      solutions: { ...tmp },
+      correctAns: { ...tmp },
+      isChoice: { ...tmp },
+    };
+    data.forEach((x, idx) => {
+      retval.quests[idx + 1] = x.question_image_url;
+      retval.solutions[idx + 1] = x.solution_image_url;
+      retval.correctAns[idx + 1] = x.correct_answer;
+      retval.isChoice[idx + 1] = x.type;
+    });
+    return retval;
+  } catch (e) {
+    console.log(e);
+    return {};
+  }
+};

@@ -10,11 +10,26 @@ import {
 import styled from "styled-components/native";
 import Profile from "../assets/Svg/Profile.svg";
 import SelectRecommend from "../components/SelectRecommend";
-import { getTodayRecommend } from "../solvedData";
+import {
+  getRecommendData,
+  getTodayDateKey,
+  solvedData,
+  getRecommendStudentData,
+} from "../solvedData";
 import { screenInfo } from "../utils";
 import { AfterRecommend, BeforeRecommend } from "../assets/Svg";
+import SelectRecommendMonth from "../components/SelectRecommendMonth";
+import SelectRecommendDay from "../components/SelectRecommendDay";
+import { BackMark } from "../assets/Svg";
+import {
+  apiGetRecommend,
+  apiTestAns,
+  apiTestQuests,
+  apiTestSolutions,
+} from "../api";
 
 const { WIDTH } = screenInfo;
+const { recommend: recommendData } = solvedData;
 
 const BookButton = styled.TouchableOpacity`
   margin-left: 30px;
@@ -44,7 +59,7 @@ const SelectYearMonthContainer = styled.View`
   align-items: center;
 `;
 
-const ListContainer = styled.View`
+const ListContainer = styled.ScrollView`
   flex: 7;
   width: 100%;
 `;
@@ -128,25 +143,57 @@ export default (props) => {
   const [todaySolved, setTodaySolved] = useState(true);
   const [chaps, setChaps] = useState([
     "여러가지 함수의 극한",
-    "확률의 뜻과 활용",
     "미분계수와 도함수",
     "평면벡터의 성분과 내적",
-    "직선과 평면",
   ]);
-  const [selectedPast, setSelectedPast] = useState(undefined);
-  const [selectedYear, setSelectedYear] = useState(undefined);
-  const [selectedMonth, setSelectedMonth] = useState(undefined);
+  const [monthKey, setMonthKey] = useState(undefined);
+  const [dayKey, setDayKey] = useState(undefined);
 
-  const selectPast = (key) => {
-    setSelectedPast((prev) => (prev === key ? undefined : key));
+  const resetKey = () => {
+    setMonthKey(undefined);
+    setDayKey(undefined);
   };
 
-  const goToResult = (key) => {
-    console.log("Recommend.js", key);
+  const selectDay = (keyValue) => {
+    setDayKey((prev) => (prev === keyValue ? undefined : keyValue));
   };
 
-  const goToQuestions = (key) => {
-    console.log("Recommend.js", key);
+  const goToResult = async () => {
+    const data = await apiGetRecommend();
+    if (!(monthKey && dayKey)) {
+      const [_monthKey, _dayKey] = getTodayDateKey();
+      setMonthKey(_monthKey);
+      setDayKey(_dayKey);
+    }
+    const studentAns = getRecommendStudentData(monthKey, dayKey);
+    navigation.navigate("추천문제결과", {
+      ...data,
+      monthKey: monthKey,
+      dayKey: dayKey,
+      studentAns: studentAns,
+    });
+  };
+
+  const goToQuestions = async () => {
+    // 오늘의 추천문제
+    if (!monthKey) {
+      const data = await apiGetRecommend();
+      const [_monthKey, _dayKey] = getTodayDateKey();
+      navigation.navigate("추천문제", {
+        ...data,
+        monthKey: _monthKey,
+        dayKey: _dayKey,
+      });
+    }
+    // 지난 추천문제
+    else {
+      const data = await apiGetRecommend();
+      navigation.navigate("추천문제", {
+        ...data,
+        monthKey: monthKey,
+        dayKey: dayKey,
+      });
+    }
   };
   // const [show, setShow] = useState({ 2020: true, 2019: true, 2018: true });
   // const todaySolvedData = getTodayRecommend();
@@ -167,9 +214,26 @@ export default (props) => {
   //   });
   // };
 
+  // const getData = async () => {
+  //   const quests = await apiTestQuests();
+  //   const solutions = await apiTestSolutions();
+  //   const correctAns = apiTestAns();
+  // }
+
+  // const goToEvaluate = async () => {
+  //   const data = getData();
+  //   const quest = await apiPostChapter(part, data);
+  //   navigation.navigate("진단평가문제", {
+  //     type: quest.data.type,
+  //     quest: { questImageUrl: quest.data.questionImageUrl },
+  //     solution: quest.data.solutionImageUrl,
+  //   });
+  // };
+
   useEffect(() => {
     const refresh = navigation.addListener("focus", () => {
-      setTodaySolved(getTodayRecommend());
+      setTodaySolved(getRecommendData());
+      resetKey();
     });
     return refresh;
   }, [navigation]);
@@ -192,10 +256,20 @@ export default (props) => {
       <SelectRecommend
         selectedTab={selectedTab}
         setSelectedTab={setSelectedTab}
+        resetKey={resetKey}
       />
       <SelectYearMonthContainer>
         {selectedTab === "today" ? (
-          <TodayButton activeOpacity={0.7}>
+          <TodayButton
+            onPress={() => {
+              if (!todaySolved) {
+                goToQuestions();
+              } else if (todaySolved) {
+                goToResult();
+              }
+            }}
+            activeOpacity={0.7}
+          >
             <RecommendBack source={require("../assets/Png/RecommendBack.png")}>
               {todaySolved ? (
                 <>
@@ -226,81 +300,60 @@ export default (props) => {
               )}
             </RecommendBack>
           </TodayButton>
-        ) : selectedTab === "past" ? null : null}
-
-        {/* {selectedYear === 0 && selectedTest === "mockTest" ? (
-          <>
-            <EmptyBox />
-            <ListContainer>
-              {Object.keys(testInfo.mockTest).map((year, idx) => (
-                <SectionContainer key={parseInt(year)}>
-                  <SelectYear
-                    year={parseInt(year)}
-                    setSelectedYear={setSelectedYear}
-                    needMarginTop={idx === 0}
-                  />
-                </SectionContainer>
-              ))}
-            </ListContainer>
-          </>
+        ) : selectedTab === "past" ? (
+          monthKey ? (
+            <>
+              <SelectedYearContainer>
+                <BackButton
+                  onPress={() => {
+                    resetKey();
+                  }}
+                >
+                  <BackMark width={18} height={18} />
+                </BackButton>
+                <SelectedYearText>{`20${monthKey.slice(
+                  0,
+                  2
+                )}년 ${monthKey.slice(2)}월`}</SelectedYearText>
+              </SelectedYearContainer>
+              <ListContainer>
+                {Object.keys(recommendData[monthKey]).map((keyValue, idx) => (
+                  <SectionContainer key={idx}>
+                    <SelectRecommendDay
+                      monthKey={monthKey}
+                      dayKey={dayKey}
+                      keyValue={keyValue}
+                      selectDay={selectDay}
+                      goToResult={goToResult}
+                      goToQuestions={goToQuestions}
+                    />
+                  </SectionContainer>
+                ))}
+              </ListContainer>
+            </>
+          ) : (
+            <>
+              <EmptyBox />
+              <ListContainer showsVerticalScrollIndicator={false}>
+                {Object.keys(recommendData).map((keyValue, idx) => (
+                  <SectionContainer key={idx}>
+                    <SelectRecommendMonth
+                      keyValue={keyValue}
+                      setMonthKey={setMonthKey}
+                    />
+                  </SectionContainer>
+                ))}
+              </ListContainer>
+            </>
+          )
         ) : null}
-        {selectedYear !== 0 && selectedTest === "mockTest" ? (
-          <>
-            <SelectedYearContainer>
-              <BackButton
-                onPress={() => {
-                  setSelectedYear(0);
-                  setSelectedMonth(0);
-                }}
-              >
-                <BackMark width={18} height={18} />
-              </BackButton>
-              <SelectedYearText>{selectedYear}년 모의고사</SelectedYearText>
-            </SelectedYearContainer>
-            <ListContainer>
-              {testInfo.mockTest[selectedYear].map((month) => (
-                <SectionContainer key={month}>
-                  <SelectMonth
-                    selectedMonth={selectedMonth}
-                    selectedYear={selectedYear}
-                    setSelectedMonth={setSelectedMonth}
-                    setSelectedYear={setSelectedYear}
-                    setRestudyModalVisible={setRestudyModalVisible}
-                    setModeModalVisible={setModeModalVisible}
-                    year={selectedYear}
-                    month={month}
-                  />
-                </SectionContainer>
-              ))}
-            </ListContainer>
-          </>
-        ) : null}
-        {selectedTest === "sat" ? (
-          <>
-            <EmptyBox />
-            <ListContainer>
-              {testInfo.sat.map((year) => (
-                <SectionContainer key={year}>
-                  <SelectMonth
-                    selectedMonth={selectedMonth}
-                    selectedYear={selectedYear}
-                    setSelectedMonth={setSelectedMonth}
-                    setSelectedYear={setSelectedYear}
-                    setRestudyModalVisible={setRestudyModalVisible}
-                    setModeModalVisible={setModeModalVisible}
-                    year={year}
-                    month={11}
-                  />
-                </SectionContainer>
-              ))}
-            </ListContainer>
-          </>
-        ) : null} */}
       </SelectYearMonthContainer>
       <Button
         title="RESET"
         onPress={() => {
           setTodaySolved((prev) => !prev);
+          setMonthKey(undefined);
+          setDayKey(undefined);
         }}
       />
     </Container>

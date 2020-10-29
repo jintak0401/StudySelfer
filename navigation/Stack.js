@@ -18,6 +18,8 @@ import Book from "../assets/Svg/Book.svg";
 import SubjectSelect from "../screens/SubjectSelect";
 import Recommend from "../screens/Recommend";
 import EvaluateComment from "../screens/EvaluateComment";
+import RecommendQuestions from "../screens/RecommendQuestions";
+import RecommendResult from "../screens/RecommendResult";
 
 const Stack = createStackNavigator();
 
@@ -47,6 +49,8 @@ export default ({ navigation }) => (
     <Stack.Screen name="모의시험 결과" component={TestResult} />
     <Stack.Screen name="해설" component={QuestComment} />
     <Stack.Screen name="진단해설" component={EvaluateComment} />
+    <Stack.Screen name="추천문제" component={RecommendQuestions} />
+    <Stack.Screen name="추천문제결과" component={RecommendResult} />
   </Stack.Navigator>
 );
 

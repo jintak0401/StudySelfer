@@ -1,18 +1,15 @@
-import React, { useLayoutEffect, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Animated, Easing } from "react-native";
 import styled from "styled-components/native";
 import Questions from "../components/Questions";
 import ScrollContainer from "../components/ScrollContainer";
-import MoveQuestBtn from "./../components/MoveQuestBtn";
-import ModalAnsSheet from "./../components/ModalAnsSheet";
-import Home from "../assets/Svg/Home.svg";
-import TestAdditionalFunc from "../components/TestAdditionalFunc";
 import QuestSummary from "../components/QuestComment/QuestSummary";
 import { screenInfo } from "../utils";
 import Collapsible from "react-native-collapsible";
 import Dash from "react-native-dash";
 import { AntDesign } from "@expo/vector-icons";
 import Solutions from "../components/Solutions";
+import PropTypes from "prop-types";
 
 const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
@@ -24,7 +21,6 @@ const TitleContainer = styled.View`
 const HeaderTitle = styled.Text`
   font-size: 23px;
   color: #4f62c0;
-  font-weight: bold;
 `;
 
 const HeaderSubtitle = styled.Text`
@@ -40,7 +36,7 @@ const IconSet = styled.View`
 `;
 
 const HomeButton = styled.TouchableOpacity`
-  margin-right: 25px;
+  margin-right: 15px;
 `;
 
 const Container = styled.View`
@@ -77,17 +73,14 @@ const Wrapper = styled.View`
   align-items: center;
 `;
 
-export default (props) => {
-  const { navigation, route } = props;
-  const {
-    qNum,
-    studentAns,
-    correctAns,
-    questData,
-    solutions,
-    endQuestionNum,
-  } = props.route.params;
-  const [questNum, setQuestNum] = useState(qNum);
+const Comment = ({
+  questNum,
+  studentAns,
+  correctAns,
+  questData,
+  solutions,
+  isChoice,
+}) => {
   const [questCollapsed, setQuestCollapsed] = useState(false);
   const [solutionCollapsed, setSolutionCollapsed] = useState(false);
   const [questDirection, setQuestDirection] = useState(new Animated.Value(0));
@@ -124,38 +117,13 @@ export default (props) => {
     }).start();
   }, [solutionCollapsed]);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerStyle: {
-        backgroundColor: "white",
-        height: 80,
-        elevation: 1,
-        borderBottomWidth: 3,
-        borderColor: "#95989A",
-      },
-      headerTitle: () => (
-        <TitleContainer>
-          <HeaderTitle>해설 보기</HeaderTitle>
-          <HeaderSubtitle>진단 평가 {questNum}번 문제</HeaderSubtitle>
-        </TitleContainer>
-      ),
-      headerRight: () => (
-        // <IconSet>
-        <HomeButton onPress={() => navigation.popToTop()}>
-          <Home width={28} height={28} />
-        </HomeButton>
-        // </IconSet>
-      ),
-    });
-  }, [route, questNum]);
-
   return (
     <Container>
       <QuestSummary
         questNum={questNum}
-        studentAns={studentAns[questNum]}
-        correctAns={correctAns[questNum]}
-        isChoice={false}
+        studentAns={studentAns}
+        correctAns={correctAns}
+        isChoice={isChoice}
       />
       <ScrollContainer>
         <Wrapper>
@@ -181,7 +149,7 @@ export default (props) => {
             </FoldDirection>
           </CollapseButton>
           <Collapsible collapsed={questCollapsed}>
-            <Questions questData={questData[questNum]} />
+            <Questions questData={questData} />
           </Collapsible>
         </Wrapper>
         <Wrapper>
@@ -208,16 +176,27 @@ export default (props) => {
             </FoldDirection>
           </CollapseButton>
           <Collapsible collapsed={solutionCollapsed}>
-            <Solutions solutionImageUrl={solutions[questNum]} />
+            <Solutions solutionImageUrl={solutions} />
           </Collapsible>
         </Wrapper>
       </ScrollContainer>
-      <MoveQuestBtn
+      {/* <MoveQuestBtn
         inTest={false}
         questNum={questNum}
         changeQuestNum={(qNum) => setQuestNum(qNum)}
         endQuestionNum={endQuestionNum}
-      />
+      /> */}
     </Container>
   );
 };
+
+Comment.propTypes = {
+  questNum: PropTypes.number.isRequired,
+  studentAns: PropTypes.number,
+  correctAns: PropTypes.number.isRequired,
+  questData: PropTypes.object.isRequired,
+  solutions: PropTypes.array.isRequired,
+  isChoice: PropTypes.bool.isRequired,
+};
+
+export default Comment;

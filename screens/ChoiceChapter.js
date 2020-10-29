@@ -104,6 +104,7 @@ export default ({ navigation, route }) => {
   const goToEvaluate = async () => {
     const data = getData();
     const quest = await apiPostChapter(part, data);
+    console.log("ChoiceChapter.js", quest.data);
     navigation.navigate("진단평가문제", {
       type: quest.data.type,
       quest: { questImageUrl: quest.data.questionImageUrl },

@@ -25,6 +25,9 @@ import { Svg, Line } from "react-native-svg";
 import { BeforeRecommend, AfterRecommend, RecommendBack } from "../assets/Svg";
 import { string } from "prop-types";
 // import Networking from "react-native/Libraries/Network/RCTNetworking.android"
+import * as AuthSession from "expo-auth-session";
+import axios from "axios";
+import WebView from "react-native-webview";
 
 const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
@@ -179,12 +182,46 @@ export default ({ navigation, route }) => {
     });
   }, [route]);
 
-  const [cookie, setCookie] = useState();
-  const handleRedirect = async (url) => {
-    let tmp = await WebBrowser.openAuthSessionAsync(url, "https://naver.com");
-    setCookie(tmp);
-    console.log("Init.js", cookie);
+  const [cookie, setCookie] = useState({
+    token: "",
+    code: "",
+    user: "",
+    result: "",
+  });
+
+  const handleMessage = (message) => {
+    console.log(message.nativeEvent.data);
   };
+
+  const handleRedirect = async (url) => {
+    // let redirectUrl = AuthSession.getRedirectUrl();
+    // console.log(redirectUrl);
+    // const result = await AuthSession.startAsync({
+    //   authUrl: url,
+    //   returnUrl: redirectUrl,
+    // });
+    // setCookie({ result });
+
+    const handleMessage = (message) => {
+      console.log(message.nativeEvent.data);
+    };
+
+    return (
+      <WebView
+        source={{ uri: url }}
+        injectedJavaScript="window.postMessage(document.title)"
+        onMessage={handleMessage}
+      />
+    );
+    // let tmp = await WebBrowser.openAuthSessionAsync(url, redirectUrl);
+    // setCookie(tmp);
+    // console.log("Init.js", cookie);
+  };
+
+  useState(() => {
+    console.log("Init.js", cookie);
+  }, [cookie]);
+  console.log("Init.js", cookie);
 
   return loaded ? (
     <Container>
@@ -206,10 +243,16 @@ export default ({ navigation, route }) => {
       </LineContainer> */}
       {/* <Diagonal /> */}
       {/* <TmpButton
-        onPress={() => handleRedirect("http://211.43.12.24:9999/login/kakao")}
+        onPress={() => handleRedirect("http://3.35.52.211:9696/auth/kakao")}
       >
         <TmpText>Kakao</TmpText>
       </TmpButton> */}
+
+      <WebView
+        source={{ uri: "http://3.35.52.211:9696/auth/kakao" }}
+        injectedJavaScript="window.postMessage(document.title)"
+        onMessage={handleMessage}
+      />
       {/* <GestureRecognizer
         onSwipeUp={() => onSwipeUp()}
         onSwipeRight={() => onSwipeRight()}
@@ -235,7 +278,7 @@ export default ({ navigation, route }) => {
         </BlueBox>
         <YellowBox style={{ transform: [{ rotate: spinning }] }} />
       </Wrapper> */}
-      <Button
+      {/* <Button
         activeOpacity={0.8}
         onPress={() => navigation.navigate("진단평가")}
       >
@@ -252,7 +295,7 @@ export default ({ navigation, route }) => {
       >
         <TestingPeople width={97.76} height={100} />
         <Text>모의고사</Text>
-      </Button>
+      </Button> */}
     </Container>
   ) : null;
 };

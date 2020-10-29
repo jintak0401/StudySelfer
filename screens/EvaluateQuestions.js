@@ -168,7 +168,7 @@ const EvaluateQuestions = (props) => {
   return (
     <Container>
       <ScrollContainer flexValue={6}>
-        <Questions isTest={true} questData={questData} />
+        <Questions questData={questData} />
       </ScrollContainer>
       <BottomContainer>
         {isChoiceProb ? (

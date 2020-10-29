@@ -13,7 +13,7 @@ const Container = styled.View`
   width: 100%;
 `;
 
-export default ({ questNum, questData, isTest, flexValue }) => {
+export default ({ questData, questNum }) => {
   const [load, setLoad] = useState(false);
   const [_0, set_0] = useState(0);
   const [_1, set_1] = useState(0);

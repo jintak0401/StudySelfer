@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { ScrollView } from "react-native";
 
 const ScrollContainer = ({
-  isTest = false,
+  // isTest = false,
   children,
   contentContainerStyle,
   flexValue,
