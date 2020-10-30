@@ -107,6 +107,8 @@ const RecommendResult = (props) => {
     correctAns,
     monthKey,
     dayKey,
+    chapter,
+    time,
   } = route.params;
   const [collapsed, setCollapsed] = useState(false);
   const [direction, setdirection] = useState(new Animated.Value(0));
@@ -169,7 +171,10 @@ const RecommendResult = (props) => {
   return (
     <Container>
       <ScrollContainer flexValue={1}>
-        <RecommendTable time={timerFormat(1231)} result={result} />
+        <RecommendTable
+          time={timerFormat(time[1] + time[2] + time[3])}
+          result={result}
+        />
         <DevideContainer>
           <DevideBox />
           <CollapseButton
@@ -200,8 +205,8 @@ const RecommendResult = (props) => {
                   goToComment={goToComment}
                   isLast={n === Object.keys(studentAns).length}
                   isChoice={isChoice[n]}
-                  chapter={"공간도형과 공간좌표"}
-                  time={"00:30:19"}
+                  chapter={chapter[n]}
+                  time={timerFormat(time[n], true)}
                 />
               ))}
           </TmpBox>

@@ -141,11 +141,11 @@ export default (props) => {
   const { navigation, route } = props;
   const [selectedTab, setSelectedTab] = useState(undefined);
   const [todaySolved, setTodaySolved] = useState(true);
-  const [chaps, setChaps] = useState([
-    "여러가지 함수의 극한",
-    "미분계수와 도함수",
-    "평면벡터의 성분과 내적",
-  ]);
+  const [chaps, setChaps] = useState({
+    1: "여러가지 함수의 극한",
+    2: "미분계수와 도함수",
+    3: "평면벡터의 성분과 내적",
+  });
   const [monthKey, setMonthKey] = useState(undefined);
   const [dayKey, setDayKey] = useState(undefined);
 
@@ -183,6 +183,7 @@ export default (props) => {
         ...data,
         monthKey: _monthKey,
         dayKey: _dayKey,
+        chapter: chaps,
       });
     }
     // 지난 추천문제

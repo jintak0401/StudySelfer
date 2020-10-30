@@ -74,8 +74,9 @@ const RecommendQuestions = (props) => {
     correctAns,
     monthKey,
     dayKey,
+    chapter,
   } = props.route.params;
-  const [time, setTime] = useState(0);
+  const [time, setTime] = useState({ 1: 0, 2: 0, 3: 0 });
   const [studentAns, setStudentAns] = useState({
     1: undefined,
     2: undefined,
@@ -103,6 +104,8 @@ const RecommendQuestions = (props) => {
       correctAns,
       monthKey,
       dayKey,
+      chapter,
+      time: time,
     });
   };
 
@@ -114,10 +117,11 @@ const RecommendQuestions = (props) => {
       if (questNum != 3) {
         setQuestData({ questImageUrl: quests[questNum + 1] });
         setQuestNum((prev) => prev + 1);
-        setTime(0);
       } else goToRecommendResult();
     }
   };
+
+  console.log("RecommendQuestions.js", time);
 
   const selectAns = (num) => {
     if (isChoice[questNum])
@@ -135,12 +139,12 @@ const RecommendQuestions = (props) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      turn === "q" && setTime((prevTime) => prevTime + 1);
+      turn === "q" && setTime({ ...time, [questNum]: time[questNum] + 1 });
     }, 1000);
     return () => {
       clearInterval(interval);
     };
-  }, [time]);
+  }, [time, questNum]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -153,7 +157,7 @@ const RecommendQuestions = (props) => {
       ),
       headerRight: () => (
         <TimeContainer>
-          <Timer time={time} />
+          <Timer time={time[questNum]} />
         </TimeContainer>
       ),
     });
