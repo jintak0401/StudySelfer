@@ -11,7 +11,7 @@ export const apiTestQuests = async () => {
     );
     return data;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return {};
   }
 };
@@ -35,7 +35,7 @@ export const apiTestAns = async () => {
     );
     return data;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return {};
   }
 };
@@ -49,7 +49,7 @@ export const apiPostChapter = async (type, chapter) => {
     );
     return retval;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return {};
   }
 };
@@ -63,12 +63,12 @@ export const apiPostAnswer = async (time, ans, removedAns) => {
     );
     return retval;
   } catch (e) {
-    console.log(e);
+    console.erro(e);
     return {};
   }
 };
 
-apiPostOneAnswer = async ({
+export const apiPostOneAnswer = async ({
   removedAns,
   time,
   studentAns,
@@ -83,6 +83,11 @@ apiPostOneAnswer = async ({
     test_type: testType,
     question_id: questId,
   };
+  try {
+    await axios.post("http://211.43.12.24:9999/api/diagnose/answer_data", data);
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const apiGetRecommend = async () => {
@@ -103,7 +108,7 @@ export const apiGetRecommend = async () => {
     });
     return retval;
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return {};
   }
 };

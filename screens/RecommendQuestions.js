@@ -1,3 +1,9 @@
+/*
+Program id: STS-A-2000-S
+Writer: HanJinTak(jintak0401@naver.com)
+Date: 2020-11-12
+Version: 1.0
+*/
 import React, { useLayoutEffect, useEffect, useState } from "react";
 import { View } from "react-native";
 import styled from "styled-components/native";
@@ -8,7 +14,6 @@ import ScrollContainer from "../components/ScrollContainer";
 import Timer from "../components/Timer";
 import NextAndDontKnow from "../components/NextAndDontKnow";
 import Comment from "../components/Comment";
-import { getRecommendStudentData, getTodayDateKey } from "../solvedData";
 
 const Container = styled.View`
   flex: 1;
@@ -58,13 +63,6 @@ const TimeContainer = styled.View`
   margin-right: 20px;
   margin-top: 10px;
 `;
-
-// const IconSet = styled.View`
-//   flex-direction: row;
-//   justify-content: flex-end;
-//   margin-right: 20px;
-//   margin-top: 10px;
-// `;
 
 const RecommendQuestions = (props) => {
   const { route, navigation } = props;
@@ -121,8 +119,6 @@ const RecommendQuestions = (props) => {
       } else goToRecommendResult();
     }
   };
-
-  console.log("RecommendQuestions.js", time);
 
   const selectAns = (num) => {
     if (isChoice[questNum])

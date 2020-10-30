@@ -11,6 +11,7 @@ import StrongAndWeak from "../components/StrongAndWeak";
 import Collapsible from "react-native-collapsible";
 import { AntDesign } from "@expo/vector-icons";
 import RecommendTable from "../components/RecommendTable";
+import { getRecommendData } from "../solvedData";
 
 const { isTablet } = screenInfo;
 
@@ -97,6 +98,17 @@ const TmpBox = styled.View`
   justify-content: center;
 `;
 
+const BottomButton = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+`;
+
+const BottomBackImage = styled.ImageBackground`
+  width: 200px;
+  height: 100px;
+`;
+
 const RecommendResult = (props) => {
   const { navigation, route } = props;
   const {
@@ -122,6 +134,7 @@ const RecommendResult = (props) => {
     3: { questImageUrl: quests[3] },
   };
   const result = `${getCorrectUnit(studentAns, correctAns)}/3 문제`;
+  const todaySolved = getRecommendData(monthKey, dayKey) ? true : false;
 
   const goToComment = (questNum) => {
     navigation.navigate("진단해설", {
@@ -211,6 +224,17 @@ const RecommendResult = (props) => {
               ))}
           </TmpBox>
         </Collapsible>
+        <BottomButton
+          onPress={() =>
+            todaySolved
+              ? console.log("RecommendResult", true)
+              : console.log("RecommendResult", false)
+          }
+        >
+          <BottomBackImage
+            source={require("../assets/Png/TodayRecommendButton.png")}
+          ></BottomBackImage>
+        </BottomButton>
       </ScrollContainer>
     </Container>
   );

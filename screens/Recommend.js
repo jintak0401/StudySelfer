@@ -193,6 +193,7 @@ export default (props) => {
         ...data,
         monthKey: monthKey,
         dayKey: dayKey,
+        chapter: chaps,
       });
     }
   };

@@ -210,11 +210,13 @@ const EvaluateQuestions = (props) => {
           />
         ) : null} */}
       </BottomContainer>
-      <NextAndDontKnow
-        goToNext={goToNext}
-        dontKnow={dontKnow}
-        setDontKnow={setDontKnow}
-      />
+      {showBottom ? (
+        <NextAndDontKnow
+          goToNext={goToNext}
+          dontKnow={dontKnow}
+          setDontKnow={setDontKnow}
+        />
+      ) : null}
     </Container>
   );
 };
