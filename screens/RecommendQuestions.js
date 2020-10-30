@@ -1,4 +1,5 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
+import { View } from "react-native";
 import styled from "styled-components/native";
 import Questions from "../components/Questions";
 import Ansbtn from "../components/TestQuestions/Ansbtn";
@@ -104,7 +105,7 @@ const RecommendQuestions = (props) => {
       correctAns,
       monthKey,
       dayKey,
-      chapter,
+      chapter: chapter,
       time: time,
     });
   };
@@ -167,7 +168,12 @@ const RecommendQuestions = (props) => {
     <Container>
       {turn === "q" ? (
         <>
-          <ScrollContainer flexValue={6}>
+          <ScrollContainer
+            flexValue={6}
+            ListFooterComponent={() => (
+              <View style={{ height: 70, backgroundColor: "white" }} />
+            )}
+          >
             <Questions questData={questData} />
           </ScrollContainer>
           <BottomContainer>

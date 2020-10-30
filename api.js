@@ -68,6 +68,23 @@ export const apiPostAnswer = async (time, ans, removedAns) => {
   }
 };
 
+apiPostOneAnswer = async ({
+  removedAns,
+  time,
+  studentAns,
+  testType,
+  questId,
+}) => {
+  const data = {
+    excluded_option: removedAns,
+    time_taken: time,
+    choice: studentAns,
+    exited: 0,
+    test_type: testType,
+    question_id: questId,
+  };
+};
+
 export const apiGetRecommend = async () => {
   try {
     const { data } = await axios.get("http://211.43.12.24:9999/recommendation");

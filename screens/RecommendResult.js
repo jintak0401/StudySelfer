@@ -65,7 +65,7 @@ const EndQuestReslut = styled.View`
   width: 100%;
 `;
 
-const CollapseButton = styled.TouchableOpacity`
+const CollapseButton = styled.View`
   justify-content: center;
   align-items: center;
   flex-direction: row;
@@ -111,11 +111,11 @@ const RecommendResult = (props) => {
     time,
   } = route.params;
   const [collapsed, setCollapsed] = useState(false);
-  const [direction, setdirection] = useState(new Animated.Value(0));
-  const rotate = direction.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["0deg", "180deg"],
-  });
+  // const [direction, setdirection] = useState(new Animated.Value(0));
+  // const rotate = direction.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: ["0deg", "180deg"],
+  // });
   const questData = {
     1: { questImageUrl: quests[1] },
     2: { questImageUrl: quests[2] },
@@ -134,14 +134,14 @@ const RecommendResult = (props) => {
     });
   };
 
-  useEffect(() => {
-    Animated.timing(direction, {
-      toValue: collapsed ? 1 : 0,
-      duration: 300,
-      useNativeDriver: true,
-      easing: Easing.easeInOutCubic,
-    }).start();
-  }, [collapsed]);
+  // useEffect(() => {
+  //   Animated.timing(direction, {
+  //     toValue: collapsed ? 1 : 0,
+  //     duration: 300,
+  //     useNativeDriver: true,
+  //     easing: Easing.easeInOutCubic,
+  //   }).start();
+  // }, [collapsed]);
 
   useLayoutEffect(() => {
     const title = `20${monthKey.slice(0, 2)}년 ${monthKey.slice(
@@ -178,18 +178,18 @@ const RecommendResult = (props) => {
         <DevideContainer>
           <DevideBox />
           <CollapseButton
-            activeOpacity={1}
-            onPress={() => setCollapsed(!collapsed)}
+          // activeOpacity={1}
+          // onPress={() => setCollapsed(!collapsed)}
           >
             <CollapseText>풀이결과</CollapseText>
-            <FoldDirection style={{ transform: [{ rotate: rotate }] }}>
+            {/* <FoldDirection style={{ transform: [{ rotate: rotate }] }}>
               <AntDesign
                 style={{ marginTop: 3 }}
                 name="up"
                 size={20}
                 color="#4F62C0"
               />
-            </FoldDirection>
+            </FoldDirection> */}
           </CollapseButton>
         </DevideContainer>
         <Collapsible collapsed={collapsed}>

@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
-import { Switch } from "react-native";
+import { Switch, View } from "react-native";
 import styled from "styled-components/native";
 import { apiPostAnswer } from "../api";
 import Questions from "../components/Questions";
@@ -167,7 +167,12 @@ const EvaluateQuestions = (props) => {
 
   return (
     <Container>
-      <ScrollContainer flexValue={6}>
+      <ScrollContainer
+        flexValue={6}
+        ListFooterComponent={() => (
+          <View style={{ height: 70, backgroundColor: "white" }} />
+        )}
+      >
         <Questions questData={questData} />
       </ScrollContainer>
       <BottomContainer>

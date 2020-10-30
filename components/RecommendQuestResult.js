@@ -40,7 +40,7 @@ const ChapContainer = styled.View`
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
-  margin-left: 10px;
+  padding-left: 10px;
 `;
 
 const TimeContainer = styled.View`

@@ -292,9 +292,9 @@ export default (props) => {
                     height={200}
                   />
                   <RecommendTitle>오늘의 추천문제 단원</RecommendTitle>
-                  {chaps.map((val, idx) => (
+                  {Object.keys(chaps).map((val, idx) => (
                     <RecommendChap key={idx} isFirst={idx === 0}>
-                      {val}
+                      {chaps[val]}
                     </RecommendChap>
                   ))}
                 </>

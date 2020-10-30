@@ -42,10 +42,6 @@ const Ansbtn = ({
   removeAns,
   dontKnow,
 }) => {
-  const [isDisable, setIsDisable] = useState(false);
-  useEffect(() => {
-    setIsDisable(dontKnow);
-  }, [dontKnow]);
   return (
     <DoubleClick
       singleTap={() => {
@@ -54,10 +50,10 @@ const Ansbtn = ({
       doubleTap={() => {
         isSelected ? null : removeAns(ansNum);
       }}
-      delay={185}
-      style={{ flex: 1, opacity: isDisable ? 0.6 : 1 }}
+      delay={200}
+      style={{ flex: 1, opacity: dontKnow ? 0.6 : 1 }}
       activeOpacity={0.9}
-      disabled={isDisable}
+      disabled={dontKnow}
     >
       <Text
         isFirst={ansNum === 1}
@@ -67,35 +63,6 @@ const Ansbtn = ({
         {ansNum}
       </Text>
     </DoubleClick>
-    // <Text isFirst={ansNum === 1} isSelected={isSelected} isRemoved={isRemoved}>
-    //   <Wrapper style={{ transform: [{ translateY: goDown }] }}>
-    //     <RemoveTag
-    //       activeOpacity={0.9}
-    //       onPress={() => (isSelected ? null : removeAns(ansNum))}
-    //     >
-    //       <TagContainer style={{ transform: [{ rotate: rotation }] }}>
-    //         <AntDesign name="down" size={18} color="white" />
-    //       </TagContainer>
-    //     </RemoveTag>
-    //     <Button
-    //       onPress={() => {
-    //         isRemoved ? null : selectAns(ansNum);
-    //       }}
-    //     >
-    //       <Text isSelected={isSelected}>{ansNum}</Text>
-    //     </Button>
-    //   </Wrapper>
-    // </Container>
-    //  {/* <Button
-    //   isFirst={ansNum === 1}
-    //   onPress={() => {
-    //     selectAns(ansNum);
-    //   }}
-    // >
-    //   <Text isRemoved={isRemoved} isSelected={isSelected}>
-    //     {ansNum}
-    //   </Text>
-    // </Button> */}
   );
 };
 
