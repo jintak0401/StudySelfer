@@ -6,7 +6,7 @@ import { Feather } from "@expo/vector-icons";
 import { getCorrectUnit, screenInfo, timerFormat } from "../utils";
 import EvaluateTable from "../components/EvaluateTable";
 import ScrollContainer from "../components/ScrollContainer";
-import QuestResult from "../components/TestResult/QuestResult";
+import RecommendQuestResult from "../components/RecommendQuestResult";
 import StrongAndWeak from "../components/StrongAndWeak";
 import Collapsible from "react-native-collapsible";
 import { AntDesign } from "@expo/vector-icons";
@@ -192,7 +192,7 @@ const RecommendResult = (props) => {
             {[...Array(Object.keys(studentAns).length)]
               .map((x, i) => i + 1)
               .map((n) => (
-                <QuestResult
+                <RecommendQuestResult
                   key={n}
                   questNum={n}
                   studentAns={studentAns[n]}
@@ -200,6 +200,8 @@ const RecommendResult = (props) => {
                   goToComment={goToComment}
                   isLast={n === Object.keys(studentAns).length}
                   isChoice={isChoice[n]}
+                  chapter={"공간도형과 공간좌표"}
+                  time={"00:30:19"}
                 />
               ))}
           </TmpBox>

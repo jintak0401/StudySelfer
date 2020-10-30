@@ -248,11 +248,11 @@ export default ({ navigation, route }) => {
         <TmpText>Kakao</TmpText>
       </TmpButton> */}
 
-      <WebView
+      {/* <WebView
         source={{ uri: "http://3.35.52.211:9696/auth/kakao" }}
         injectedJavaScript="window.postMessage(document.title)"
         onMessage={handleMessage}
-      />
+      /> */}
       {/* <GestureRecognizer
         onSwipeUp={() => onSwipeUp()}
         onSwipeRight={() => onSwipeRight()}
@@ -278,7 +278,7 @@ export default ({ navigation, route }) => {
         </BlueBox>
         <YellowBox style={{ transform: [{ rotate: spinning }] }} />
       </Wrapper> */}
-      {/* <Button
+      <Button
         activeOpacity={0.8}
         onPress={() => navigation.navigate("진단평가")}
       >
@@ -295,7 +295,7 @@ export default ({ navigation, route }) => {
       >
         <TestingPeople width={97.76} height={100} />
         <Text>모의고사</Text>
-      </Button> */}
+      </Button>
     </Container>
   ) : null;
 };
