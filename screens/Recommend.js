@@ -16,7 +16,7 @@ import {
   solvedData,
   getRecommendStudentData,
 } from "../solvedData";
-import { screenInfo } from "../utils";
+import { screenInfo, getIsGoBack, resetIsGoBack } from "../utils";
 import { AfterRecommend, BeforeRecommend } from "../assets/Svg";
 import SelectRecommendMonth from "../components/SelectRecommendMonth";
 import SelectRecommendDay from "../components/SelectRecommendDay";
@@ -141,11 +141,11 @@ export default (props) => {
   const { navigation, route } = props;
   const [selectedTab, setSelectedTab] = useState(undefined);
   const [todaySolved, setTodaySolved] = useState(true);
-  const [chaps, setChaps] = useState({
-    1: "여러가지 함수의 극한",
-    2: "미분계수와 도함수",
-    3: "평면벡터의 성분과 내적",
-  });
+  const [chaps, setChaps] = useState([
+    "여러가지 함수의 극한",
+    "미분계수와 도함수",
+    "평면벡터의 성분과 내적",
+  ]);
   const [monthKey, setMonthKey] = useState(undefined);
   const [dayKey, setDayKey] = useState(undefined);
 
@@ -160,17 +160,23 @@ export default (props) => {
 
   const goToResult = async () => {
     const data = await apiGetRecommend();
+    const [_monthKey, _dayKey] = getTodayDateKey();
     if (!(monthKey && dayKey)) {
-      const [_monthKey, _dayKey] = getTodayDateKey();
       setMonthKey(_monthKey);
       setDayKey(_dayKey);
     }
-    const studentAns = getRecommendStudentData(monthKey, dayKey);
+    const { studentAns, time } = getRecommendStudentData(monthKey, dayKey);
     navigation.navigate("추천문제결과", {
       ...data,
-      monthKey: monthKey,
-      dayKey: dayKey,
+      monthKey: _monthKey,
+      dayKey: _dayKey,
       studentAns: studentAns,
+      time: time,
+      chapter: {
+        1: chaps[0],
+        2: chaps[1],
+        3: chaps[2],
+      },
     });
   };
 
@@ -183,7 +189,11 @@ export default (props) => {
         ...data,
         monthKey: _monthKey,
         dayKey: _dayKey,
-        chapter: chaps,
+        chapter: {
+          1: chaps[0],
+          2: chaps[1],
+          3: chaps[2],
+        },
       });
     }
     // 지난 추천문제
@@ -193,49 +203,23 @@ export default (props) => {
         ...data,
         monthKey: monthKey,
         dayKey: dayKey,
-        chapter: chaps,
+        chapter: {
+          1: chaps[0],
+          2: chaps[1],
+          3: chaps[2],
+        },
       });
     }
   };
-  // const [show, setShow] = useState({ 2020: true, 2019: true, 2018: true });
-  // const todaySolvedData = getTodayRecommend();
-  // const [restudyModalVisible, setRestudyModalVisible] = useState(false);
-  // const [modeModalVisible, setModeModalVisible] = useState(false);
-  // const [selectedTest, setSelectedTest] = useState(undefined);
-
-  // const changeShow = (year) => {
-  //   const tmp = { ...show };
-  //   tmp[year] = !tmp[year];
-  //   setShow(tmp);
-  // };
-  // const goToTest = (title) => {
-  //   navigation.navigate("모의시험 문제", {
-  //     subtitle: title,
-  //     year: selectedYear,
-  //     month: selectedMonth,
-  //   });
-  // };
-
-  // const getData = async () => {
-  //   const quests = await apiTestQuests();
-  //   const solutions = await apiTestSolutions();
-  //   const correctAns = apiTestAns();
-  // }
-
-  // const goToEvaluate = async () => {
-  //   const data = getData();
-  //   const quest = await apiPostChapter(part, data);
-  //   navigation.navigate("진단평가문제", {
-  //     type: quest.data.type,
-  //     quest: { questImageUrl: quest.data.questionImageUrl },
-  //     solution: quest.data.solutionImageUrl,
-  //   });
-  // };
 
   useEffect(() => {
     const refresh = navigation.addListener("focus", () => {
       setTodaySolved(getRecommendData());
       resetKey();
+      if (getIsGoBack()) {
+        resetIsGoBack();
+        setSelectedTab("today");
+      }
     });
     return refresh;
   }, [navigation]);

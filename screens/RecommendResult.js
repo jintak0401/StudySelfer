@@ -3,15 +3,18 @@ import { Animated, Easing } from "react-native";
 import styled from "styled-components/native";
 import Home from "../assets/Svg/Home.svg";
 import { Feather } from "@expo/vector-icons";
-import { getCorrectUnit, screenInfo, timerFormat } from "../utils";
-import EvaluateTable from "../components/EvaluateTable";
+import { getCorrectUnit, screenInfo, setIsGoBack, timerFormat } from "../utils";
 import ScrollContainer from "../components/ScrollContainer";
 import RecommendQuestResult from "../components/RecommendQuestResult";
-import StrongAndWeak from "../components/StrongAndWeak";
 import Collapsible from "react-native-collapsible";
-import { AntDesign } from "@expo/vector-icons";
 import RecommendTable from "../components/RecommendTable";
-import { getRecommendData } from "../solvedData";
+import {
+  getRecommendData,
+  getTodayDateKey,
+  setRecommendData,
+  solvedData,
+} from "../solvedData";
+import RecommendBottom from "../components/RecommendBottom";
 
 const { isTablet } = screenInfo;
 
@@ -98,17 +101,6 @@ const TmpBox = styled.View`
   justify-content: center;
 `;
 
-const BottomButton = styled.TouchableOpacity`
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-`;
-
-const BottomBackImage = styled.ImageBackground`
-  width: 200px;
-  height: 100px;
-`;
-
 const RecommendResult = (props) => {
   const { navigation, route } = props;
   const {
@@ -123,18 +115,20 @@ const RecommendResult = (props) => {
     time,
   } = route.params;
   const [collapsed, setCollapsed] = useState(false);
-  // const [direction, setdirection] = useState(new Animated.Value(0));
-  // const rotate = direction.interpolate({
-  //   inputRange: [0, 1],
-  //   outputRange: ["0deg", "180deg"],
-  // });
   const questData = {
     1: { questImageUrl: quests[1] },
     2: { questImageUrl: quests[2] },
     3: { questImageUrl: quests[3] },
   };
   const result = `${getCorrectUnit(studentAns, correctAns)}/3 문제`;
-  const todaySolved = getRecommendData(monthKey, dayKey) ? true : false;
+  const totalTime = time[1] + time[2] + time[3];
+  const [todayDone] = useState(() => {
+    const [todayMonthKey, todayDayKey] = getTodayDateKey();
+    const isToday = todayMonthKey === monthKey && todayDayKey === dayKey;
+    return isToday || solvedData.recommend[todayMonthKey]?.[todayDayKey]
+      ? true
+      : false;
+  });
 
   const goToComment = (questNum) => {
     navigation.navigate("진단해설", {
@@ -147,14 +141,10 @@ const RecommendResult = (props) => {
     });
   };
 
-  // useEffect(() => {
-  //   Animated.timing(direction, {
-  //     toValue: collapsed ? 1 : 0,
-  //     duration: 300,
-  //     useNativeDriver: true,
-  //     easing: Easing.easeInOutCubic,
-  //   }).start();
-  // }, [collapsed]);
+  const goBackTodayRecommend = () => {
+    setIsGoBack();
+    navigation.pop(2);
+  };
 
   useLayoutEffect(() => {
     const title = `20${monthKey.slice(0, 2)}년 ${monthKey.slice(
@@ -181,13 +171,14 @@ const RecommendResult = (props) => {
     });
   }, [route]);
 
+  useEffect(() => {
+    setRecommendData(timerFormat(totalTime), result, monthKey, dayKey);
+  }, []);
+
   return (
     <Container>
       <ScrollContainer flexValue={1}>
-        <RecommendTable
-          time={timerFormat(time[1] + time[2] + time[3])}
-          result={result}
-        />
+        <RecommendTable time={timerFormat(totalTime, true)} result={result} />
         <DevideContainer>
           <DevideBox />
           <CollapseButton
@@ -224,17 +215,10 @@ const RecommendResult = (props) => {
               ))}
           </TmpBox>
         </Collapsible>
-        <BottomButton
-          onPress={() =>
-            todaySolved
-              ? console.log("RecommendResult", true)
-              : console.log("RecommendResult", false)
-          }
-        >
-          <BottomBackImage
-            source={require("../assets/Png/TodayRecommendButton.png")}
-          ></BottomBackImage>
-        </BottomButton>
+        <RecommendBottom
+          goBackTodayRecommend={goBackTodayRecommend}
+          todayDone={todayDone}
+        />
       </ScrollContainer>
     </Container>
   );

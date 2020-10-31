@@ -22,7 +22,12 @@ import Swiper from "react-native-swiper";
 import * as WebBrowser from "expo-web-browser";
 import { DrawerActions } from "@react-navigation/native";
 import { Svg, Line } from "react-native-svg";
-import { BeforeRecommend, AfterRecommend, RecommendBack } from "../assets/Svg";
+import {
+  BeforeRecommend,
+  AfterRecommend,
+  RecommendBack,
+  Kakao,
+} from "../assets/Svg";
 import { string } from "prop-types";
 // import Networking from "react-native/Libraries/Network/RCTNetworking.android"
 import * as AuthSession from "expo-auth-session";
@@ -182,46 +187,64 @@ export default ({ navigation, route }) => {
     });
   }, [route]);
 
-  const [cookie, setCookie] = useState({
-    token: "",
-    code: "",
-    user: "",
-    result: "",
-  });
+  // const [cookie, setCookie] = useState({
+  //   token: "",
+  //   code: "",
+  //   user: "",
+  //   result: "",
+  // });
 
-  const handleMessage = (message) => {
-    console.log(message.nativeEvent.data);
-  };
+  // const kakao = async () => {
+  //   let redirectUrl = AuthSession.getRedirectUrl();
+  //   console.log(redirectUrl);
+  //   console.log(encodeURIComponent(redirectUrl));
+  //   const KAKAO_APP_KEY = "c6606e49f87720ff16ee1569942dc047";
+  //   let result = await AuthSession.startAsync({
+  //     authUrl:
+  //       `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_APP_KEY}` +
+  //       `&redirect_uri=${encodeURIComponent(redirectUrl)}` +
+  //       `&response_type=code`,
+  //   });
+  //   let body =
+  //     `grant_type=authorization_code` +
+  //     `&client_id=${KAKAO_APP_KEY}` +
+  //     `&code=${result.params.code}` +
+  //     `&redirect_uri=${encodeURIComponent(redirectUrl)}`;
+  //   let response = await fetch("https://kauth.kakao.com/oauth/token", {
+  //     method: "POST",
+  //     headers: {
+  //       Accept: "application/json;charset=UTF-8",
+  //       "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+  //     },
+  //     body: body,
+  //   });
+  //   let json = await response.json();
 
-  const handleRedirect = async (url) => {
-    // let redirectUrl = AuthSession.getRedirectUrl();
-    // console.log(redirectUrl);
-    // const result = await AuthSession.startAsync({
-    //   authUrl: url,
-    //   returnUrl: redirectUrl,
-    // });
-    // setCookie({ result });
+  //   console.log("Init.js", json);
+  // };
 
-    const handleMessage = (message) => {
-      console.log(message.nativeEvent.data);
-    };
-
-    return (
-      <WebView
-        source={{ uri: url }}
-        injectedJavaScript="window.postMessage(document.title)"
-        onMessage={handleMessage}
-      />
-    );
-    // let tmp = await WebBrowser.openAuthSessionAsync(url, redirectUrl);
-    // setCookie(tmp);
-    // console.log("Init.js", cookie);
-  };
-
-  useState(() => {
-    console.log("Init.js", cookie);
-  }, [cookie]);
-  console.log("Init.js", cookie);
+  // const handleRedirect = async (url) => {
+  // let redirectUrl = AuthSession.getRedirectUrl();
+  // console.log(redirectUrl);
+  // const result = await AuthSession.startAsync({
+  //   authUrl: url,
+  //   returnUrl: redirectUrl,
+  // });
+  // setCookie({ result });
+  // const handleMessage = (message) => {
+  //   console.log(message.nativeEvent.data);
+  // };
+  // return (
+  //   <WebView
+  //     source={{ uri: url }}
+  //     injectedJavaScript="window.postMessage(document.title)"
+  //     onMessage={handleMessage}
+  //   />
+  // );
+  // let tmp = await WebBrowser.openAuthSessionAsync(url, redirectUrl);
+  // setCookie(tmp);
+  // console.log("Init.js", cookie);
+  // };
 
   return loaded ? (
     <Container>
@@ -242,9 +265,7 @@ export default ({ navigation, route }) => {
         </Svg>
       </LineContainer> */}
       {/* <Diagonal /> */}
-      {/* <TmpButton
-        onPress={() => handleRedirect("http://3.35.52.211:9696/auth/kakao")}
-      >
+      {/* <TmpButton onPress={kakao}>
         <TmpText>Kakao</TmpText>
       </TmpButton> */}
 

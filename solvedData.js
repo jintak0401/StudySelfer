@@ -159,6 +159,11 @@ export const studentSolveData = {
       2: 1,
       3: 5,
     },
+    time: {
+      1: 215,
+      2: 201,
+      3: 103,
+    },
   },
 };
 
@@ -193,10 +198,10 @@ export const setRecommendData = (
 ) => {
   if (!monthKey && !dayKey) [monthKey, dayKey] = getTodayDateKey();
   if (!solvedData.recommend[monthKey]) solvedData.recommend[monthKey] = {};
-  solvedData.recommend[monthKey] = {
-    ...solvedData.recommend[monthKey],
-    [dayKey]: [time, `${result}/3 문제`],
-  };
+  solvedData.recommend[monthKey][dayKey] = [time, result];
+  // solvedData.recommend[monthKey] = {
+  //   ...solvedData.recommend[monthKey],
+  //   [dayKey]: [time, result],
 };
 
 export const getRecommendData = (monthKey = undefined, dayKey = undefined) => {
@@ -209,5 +214,21 @@ export const getRecommendStudentData = (
   dayKey = undefined
 ) => {
   if (!monthKey && !dayKey) [monthKey, dayKey] = getTodayDateKey();
-  return studentSolveData.recommend.studentAns;
+  return studentSolveData.recommend;
+};
+
+export const getRecommendContinuity = () => {
+  let date = new Date();
+  let retval = 1;
+  while (true) {
+    date.setDate(date.getDate() - 1);
+    let [y, m, d] = [
+      date.getFullYear() % 100,
+      date.getMonth() + 1,
+      date.getDate(),
+    ];
+    if (solvedData.recommend[`${y}${m}`]?.[`${d}`]) {
+      retval += 1;
+    } else return retval;
+  }
 };

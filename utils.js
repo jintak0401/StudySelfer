@@ -71,3 +71,17 @@ export const convertRecommendTitle = (key) => {
   const day = `${key % 100}`;
   return `${year}년 ${month}월 ${day}일`;
 };
+
+export let recommendGoBack = false;
+
+export const getIsGoBack = () => {
+  return recommendGoBack;
+};
+
+export const resetIsGoBack = () => {
+  recommendGoBack = false;
+};
+
+export const setIsGoBack = () => {
+  recommendGoBack = true;
+};

@@ -1,12 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 
 const ScrollContainer = ({
   // isTest = false,
   children,
   contentContainerStyle,
   flexValue,
+  footer,
 }) => {
   return (
     <ScrollView
@@ -25,6 +26,9 @@ const ScrollContainer = ({
       }}
     >
       {children}
+      {footer && (
+        <View style={{ height: footer || 0, backgroundColor: "white" }} />
+      )}
     </ScrollView>
   );
 };
@@ -35,4 +39,5 @@ ScrollContainer.protoTypes = {
   children: PropTypes.node.isRequired,
   contentContainerSytle: PropTypes.object,
   flexValue: PropTypes.number,
+  footer: PropTypes.number,
 };

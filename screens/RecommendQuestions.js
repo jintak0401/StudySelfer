@@ -87,6 +87,7 @@ const RecommendQuestions = (props) => {
   const [questNum, setQuestNum] = useState(1);
   const [questData, setQuestData] = useState({ questImageUrl: quests[1] });
   const [show, setShow] = useState(true);
+  const [tmpTime, setTmpTime] = useState(0);
 
   const initAns = () => {
     setTime(0);
@@ -109,6 +110,7 @@ const RecommendQuestions = (props) => {
   };
 
   const goToNext = () => {
+    setTmpTime(0);
     if (turn === "q") {
       setTurn("s");
     } else if (turn === "s") {
@@ -136,12 +138,18 @@ const RecommendQuestions = (props) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      turn === "q" && setTime({ ...time, [questNum]: time[questNum] + 1 });
+      if (turn === "q") {
+        setTmpTime(tmpTime + 1);
+      }
     }, 1000);
     return () => {
       clearInterval(interval);
     };
-  }, [time, questNum]);
+  }, [tmpTime, questNum]);
+
+  useEffect(() => {
+    if (turn === "q") setTime({ ...time, [questNum]: tmpTime });
+  }, [tmpTime]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -164,12 +172,7 @@ const RecommendQuestions = (props) => {
     <Container>
       {turn === "q" ? (
         <>
-          <ScrollContainer
-            flexValue={6}
-            ListFooterComponent={() => (
-              <View style={{ height: 70, backgroundColor: "white" }} />
-            )}
-          >
+          <ScrollContainer flexValue={6} footer={70}>
             <Questions questData={questData} />
           </ScrollContainer>
           <BottomContainer>
