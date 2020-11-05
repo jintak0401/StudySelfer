@@ -113,6 +113,7 @@ const RecommendResult = (props) => {
     dayKey,
     chapter,
     time,
+    popNum,
   } = route.params;
   const [collapsed, setCollapsed] = useState(false);
   const questData = {
@@ -135,15 +136,16 @@ const RecommendResult = (props) => {
       qNum: questNum,
       studentAns,
       correctAns,
-      questData,
+      questData: quests,
       solutions,
       endQuestionNum: Object.keys(studentAns).length,
+      isChoice: isChoice,
     });
   };
 
   const goBackTodayRecommend = () => {
     setIsGoBack();
-    navigation.pop(2);
+    navigation.pop(popNum);
   };
 
   useLayoutEffect(() => {
@@ -152,7 +154,7 @@ const RecommendResult = (props) => {
     )}월 ${dayKey}일`;
     navigation.setOptions({
       headerLeft: () => (
-        <HeaderLeftButton onPress={() => navigation.pop(2)}>
+        <HeaderLeftButton onPress={() => navigation.pop(popNum)}>
           <Feather name="x" size={isTablet ? 34 : 24} color="#4F62C0" />
         </HeaderLeftButton>
       ),

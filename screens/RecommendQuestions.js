@@ -5,7 +5,7 @@ Date: 2020-11-12
 Version: 1.0
 */
 import React, { useLayoutEffect, useEffect, useState } from "react";
-import { View } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
 import styled from "styled-components/native";
 import Questions from "../components/Questions";
 import Ansbtn from "../components/TestQuestions/Ansbtn";
@@ -14,6 +14,7 @@ import ScrollContainer from "../components/ScrollContainer";
 import Timer from "../components/Timer";
 import NextAndDontKnow from "../components/NextAndDontKnow";
 import Comment from "../components/Comment";
+import { apiPostRecommend } from "../api";
 
 const Container = styled.View`
   flex: 1;
@@ -74,6 +75,7 @@ const RecommendQuestions = (props) => {
     monthKey,
     dayKey,
     chapter,
+    id,
   } = props.route.params;
   const [time, setTime] = useState({ 1: 0, 2: 0, 3: 0 });
   const [studentAns, setStudentAns] = useState({
@@ -88,6 +90,7 @@ const RecommendQuestions = (props) => {
   const [questData, setQuestData] = useState({ questImageUrl: quests[1] });
   const [show, setShow] = useState(true);
   const [tmpTime, setTmpTime] = useState(0);
+  const [load, setLoad] = useState(false);
 
   const initAns = () => {
     setTime(0);
@@ -95,7 +98,9 @@ const RecommendQuestions = (props) => {
     setRemovedAns({});
   };
 
-  const goToRecommendResult = () => {
+  const goToRecommendResult = async () => {
+    setLoad(true);
+    const tmp = await apiPostRecommend(removedAns, time, studentAns, id);
     navigation.navigate("추천문제결과", {
       quests,
       solutions,
@@ -106,6 +111,7 @@ const RecommendQuestions = (props) => {
       dayKey,
       chapter: chapter,
       time: time,
+      popNum: 2,
     });
   };
 
@@ -142,9 +148,7 @@ const RecommendQuestions = (props) => {
         setTmpTime(tmpTime + 1);
       }
     }, 1000);
-    return () => {
-      clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, [tmpTime, questNum]);
 
   useEffect(() => {
@@ -170,57 +174,68 @@ const RecommendQuestions = (props) => {
 
   return (
     <Container>
-      {turn === "q" ? (
-        <>
-          <ScrollContainer flexValue={6} footer={70}>
-            <Questions questData={questData} />
-          </ScrollContainer>
-          <BottomContainer>
-            {isChoice[questNum] ? (
-              <AnsbtnSet>
-                {[1, 2, 3, 4, 5].map((n) => (
-                  <Ansbtn
-                    key={n}
-                    ansNum={n}
-                    isSelected={studentAns[questNum] === n}
-                    selectAns={selectAns}
-                    isRemoved={removedAns[questNum]?.[n]}
-                    removeAns={removingAns}
-                    dontKnow={dontKnow}
-                  />
-                ))}
-              </AnsbtnSet>
-            ) : (
-              <InputContainer>
-                <Input
-                  placeholder={"답을 입력해주세요"}
-                  onSubmit={selectAns}
-                  defaultValue={studentAns[questNum]}
-                  setMoveActive={setShow}
-                  dontKnow={dontKnow}
-                />
-              </InputContainer>
-            )}
-          </BottomContainer>
-        </>
+      {load ? (
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <ActivityIndicator color="#4f62c0" size="large" />
+          <Text style={{ fontSize: 30 }}> 로딩중 </Text>
+        </View>
       ) : (
-        <Comment
-          questNum={questNum}
-          studentAns={studentAns[questNum]}
-          correctAns={correctAns[questNum]}
-          questData={{ questImageUrl: quests[questNum] }}
-          solutions={solutions[questNum]}
-          isChoice={isChoice[questNum]}
-        />
+        <>
+          {turn === "q" ? (
+            <>
+              <ScrollContainer flexValue={6} footer={70}>
+                <Questions questData={quests[questNum]} />
+              </ScrollContainer>
+              <BottomContainer>
+                {isChoice[questNum] ? (
+                  <AnsbtnSet>
+                    {[1, 2, 3, 4, 5].map((n) => (
+                      <Ansbtn
+                        key={n}
+                        ansNum={n}
+                        isSelected={studentAns[questNum] === n}
+                        selectAns={selectAns}
+                        isRemoved={removedAns[questNum]?.[n]}
+                        removeAns={removingAns}
+                        dontKnow={dontKnow}
+                      />
+                    ))}
+                  </AnsbtnSet>
+                ) : (
+                  <InputContainer>
+                    <Input
+                      placeholder={"답을 입력해주세요"}
+                      onSubmit={selectAns}
+                      defaultValue={studentAns[questNum]}
+                      setMoveActive={setShow}
+                      dontKnow={dontKnow}
+                    />
+                  </InputContainer>
+                )}
+              </BottomContainer>
+            </>
+          ) : (
+            <Comment
+              questNum={questNum}
+              studentAns={studentAns[questNum]}
+              correctAns={correctAns[questNum]}
+              questData={quests[questNum]}
+              solutions={solutions[questNum]}
+              isChoice={isChoice[questNum]}
+            />
+          )}
+          {show ? (
+            <NextAndDontKnow
+              goToNext={goToNext}
+              dontKnow={dontKnow}
+              setDontKnow={setDontKnow}
+              turn={turn}
+            />
+          ) : null}
+        </>
       )}
-      {show ? (
-        <NextAndDontKnow
-          goToNext={goToNext}
-          dontKnow={dontKnow}
-          setDontKnow={setDontKnow}
-          turn={turn}
-        />
-      ) : null}
     </Container>
   );
 };

@@ -52,8 +52,8 @@ export default (props) => {
     year,
     month,
     studentAns,
-    questData,
     bookmarks,
+    ...data
   } = props.route.params;
   const [comments, setComments] = useState({
     loading: true,
@@ -66,26 +66,23 @@ export default (props) => {
   const getComments = async () => {
     const { correctAns } = await apiTestAns();
     const { solutionImageUrl: solutions } = await apiTestSolutions();
-    const testResult = getGrade(studentAns, correctAns);
+    const testResult = getGrade(studentAns, data.correctAns);
     setResult([timerFormat(time), `${testResult.totalScore}점`, "2등급"]);
     setComments({
       loading: false,
-      correctAns,
-      solutions,
+      correctAns: data.correctAns,
+      solutions: data.solutionImageUrl,
     });
   };
   const goToComment = (questNum) => {
     navigation.navigate("해설", {
       qNum: questNum,
       studentAns,
-      questData,
+      questData: data.questionImageUrl,
       bookmarks,
       testTitle,
       ...comments,
     });
-  };
-  const popBefore = () => {
-    navigation.pop(1);
   };
   useEffect(() => {
     getComments();
@@ -137,6 +134,7 @@ export default (props) => {
             borderBottomWidth: 3,
             height: "50%",
             width: "120%",
+            opacity: 0.3,
           }}
         />
         <Text

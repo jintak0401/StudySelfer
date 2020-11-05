@@ -86,6 +86,7 @@ export default (props) => {
     questData,
     solutions,
     endQuestionNum,
+    isChoice,
   } = props.route.params;
   const [questNum, setQuestNum] = useState(qNum);
   const [questCollapsed, setQuestCollapsed] = useState(false);
@@ -149,13 +150,15 @@ export default (props) => {
     });
   }, [route, questNum]);
 
+  console.log("EvaluateComment.js", questData, solutions);
+
   return (
     <Container>
       <QuestSummary
         questNum={questNum}
         studentAns={studentAns[questNum]}
         correctAns={correctAns[questNum]}
-        isChoice={false}
+        isChoice={isChoice?.[questNum]}
       />
       <ScrollContainer>
         <Wrapper>

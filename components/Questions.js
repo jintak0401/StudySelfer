@@ -29,7 +29,7 @@ export default ({ questData, questNum }) => {
   useEffect(() => {
     const loading = async () => {
       if (questData) {
-        await questData.questImageUrl.forEach(async (url, idx) => {
+        await questData.forEach(async (url, idx) => {
           await Image.getSize(url, (width, height) => {
             setRatio[idx](width / height);
           });
@@ -44,7 +44,7 @@ export default ({ questData, questNum }) => {
   return (
     <Container>
       {questData && load
-        ? questData.questImageUrl.map((url, idx) => {
+        ? questData.map((url, idx) => {
             return (
               <Image
                 key={idx}

@@ -22,7 +22,7 @@ import SelectRecommendMonth from "../components/SelectRecommendMonth";
 import SelectRecommendDay from "../components/SelectRecommendDay";
 import { BackMark } from "../assets/Svg";
 import {
-  apiGetRecommend,
+  apiGetRecommendNode,
   apiTestAns,
   apiTestQuests,
   apiTestSolutions,
@@ -139,13 +139,9 @@ const RecommendComment = styled.Text`
 
 export default (props) => {
   const { navigation, route } = props;
+  const { ...todayData } = props.route.params;
   const [selectedTab, setSelectedTab] = useState(undefined);
-  const [todaySolved, setTodaySolved] = useState(true);
-  const [chaps, setChaps] = useState([
-    "여러가지 함수의 극한",
-    "미분계수와 도함수",
-    "평면벡터의 성분과 내적",
-  ]);
+  const [todaySolved, setTodaySolved] = useState(false);
   const [monthKey, setMonthKey] = useState(undefined);
   const [dayKey, setDayKey] = useState(undefined);
 
@@ -159,55 +155,40 @@ export default (props) => {
   };
 
   const goToResult = async () => {
-    const data = await apiGetRecommend();
+    const data = await apiGetRecommendNode();
     const [_monthKey, _dayKey] = getTodayDateKey();
-    if (!(monthKey && dayKey)) {
-      setMonthKey(_monthKey);
-      setDayKey(_dayKey);
-    }
-    const { studentAns, time } = getRecommendStudentData(monthKey, dayKey);
+    const [mKey, dKey] = [monthKey || _monthKey, dayKey || _dayKey];
+    const { studentAns, time } = getRecommendStudentData(mKey, dKey);
     navigation.navigate("추천문제결과", {
       ...data,
-      monthKey: _monthKey,
-      dayKey: _dayKey,
+      monthKey: mKey,
+      dayKey: dKey,
       studentAns: studentAns,
       time: time,
-      chapter: {
-        1: chaps[0],
-        2: chaps[1],
-        3: chaps[2],
-      },
+      chapter: todayData.chapter,
+      popNum: 1,
     });
   };
 
   const goToQuestions = async () => {
     // 오늘의 추천문제
     if (!monthKey) {
-      const data = await apiGetRecommend();
+      console.log("Recommend.js", todayData);
       const [_monthKey, _dayKey] = getTodayDateKey();
       navigation.navigate("추천문제", {
-        ...data,
+        ...todayData,
         monthKey: _monthKey,
         dayKey: _dayKey,
-        chapter: {
-          1: chaps[0],
-          2: chaps[1],
-          3: chaps[2],
-        },
       });
     }
     // 지난 추천문제
     else {
-      const data = await apiGetRecommend();
+      const data = await apiGetRecommendNode();
       navigation.navigate("추천문제", {
         ...data,
         monthKey: monthKey,
         dayKey: dayKey,
-        chapter: {
-          1: chaps[0],
-          2: chaps[1],
-          3: chaps[2],
-        },
+        chapter: todayData.chapter,
       });
     }
   };
@@ -215,9 +196,10 @@ export default (props) => {
   useEffect(() => {
     const refresh = navigation.addListener("focus", () => {
       setTodaySolved(getRecommendData());
-      resetKey();
+      // resetKey();
       if (getIsGoBack()) {
         resetIsGoBack();
+        resetKey();
         setSelectedTab("today");
       }
     });
@@ -277,9 +259,9 @@ export default (props) => {
                     height={200}
                   />
                   <RecommendTitle>오늘의 추천문제 단원</RecommendTitle>
-                  {Object.keys(chaps).map((val, idx) => (
+                  {Object.keys(todayData.chapter).map((val, idx) => (
                     <RecommendChap key={idx} isFirst={idx === 0}>
-                      {chaps[val]}
+                      {todayData.chapter[val]}
                     </RecommendChap>
                   ))}
                 </>

@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
 import { Switch, View } from "react-native";
 import styled from "styled-components/native";
-import { apiPostAnswer } from "../api";
+import { apiPostAnswer, apiPostEvaluation } from "../api";
 import Questions from "../components/Questions";
 import Ansbtn from "../components/TestQuestions/Ansbtn";
 import TimeAndNext from "../components/TimeAndNext";
@@ -9,6 +9,7 @@ import Input from "../components/TestQuestions/Input";
 import ScrollContainer from "../components/ScrollContainer";
 import Timer from "../components/Timer";
 import NextAndDontKnow from "../components/NextAndDontKnow";
+import { solvedData } from "../solvedData";
 
 const Container = styled.View`
   flex: 1;
@@ -67,7 +68,13 @@ const TimeContainer = styled.View`
 
 const EvaluateQuestions = (props) => {
   const { route, navigation } = props;
-  const { quest, solution, type } = props.route.params;
+  const {
+    questionImageUrl: quest,
+    solutionImageUrl: solution,
+    isChoice: _isChoice,
+    correctAns: _correctAns,
+    id: qid,
+  } = props.route.params;
   const [showBottom, setShowBottom] = useState(true);
   const [quests, setQuests] = useState({ 1: quest });
   const [solutions, setSolutions] = useState({ 1: solution });
@@ -75,10 +82,13 @@ const EvaluateQuestions = (props) => {
   const [time, setTime] = useState(0);
   const [answer, setAnswer] = useState(0);
   const [removedAns, setRemovedAns] = useState({});
-  const [isChoiceProb, setIsChoiceProb] = useState(type);
+  const [isChoiceProb, setIsChoiceProb] = useState(_isChoice);
   const [questData, setQuestData] = useState(quest);
   const [dontKnow, setDontKnow] = useState(false);
   const [studentAns, setStudentAns] = useState({});
+  const [isChoice, setIsChoice] = useState({ 1: _isChoice });
+  const [correctAns, setCorrectAns] = useState({ 1: _correctAns });
+  const [id, setId] = useState(qid);
 
   const initAns = () => {
     setTime(0);
@@ -91,11 +101,15 @@ const EvaluateQuestions = (props) => {
     else setAnswer(num);
   };
 
-  const goToEvaluateSolution = () => {
+  const goToEvaluateSolution = (data) => {
+    solvedData.diagnose = true;
     navigation.navigate("진단평가결과", {
-      studentAns,
-      quests,
-      solutions,
+      studentAns: studentAns,
+      quests: quests,
+      solutions: solutions,
+      correctAns: correctAns,
+      isChoice: isChoice,
+      ...data,
     });
   };
 
@@ -105,21 +119,33 @@ const EvaluateQuestions = (props) => {
 
   useEffect(() => {
     const postAnswer = async () => {
-      const data = await apiPostAnswer(time, answer, removedAns);
-      if (data.data === "diagnose finished") goToEvaluateSolution();
+      const data = await apiPostEvaluation(
+        removedAns,
+        time,
+        studentAns[questNum],
+        id
+      );
+      // 진단이 끝난 경우
+      if (data.good) goToEvaluateSolution(data);
+      // 진단이 아직 안 끝난 경우
       else {
         const {
           questionImageUrl,
           solutionImageUrl: solution,
-          type,
-        } = data.data;
+          isChoice: _isChoice,
+          correctAns: _correctAns,
+          id: _qid,
+        } = data;
         setSolutions({ ...solutions, [questNum + 1]: solution });
+        setIsChoice({ ...isChoice, [questNum + 1]: _isChoice });
+        setCorrectAns({ ...correctAns, [questNum + 1]: _correctAns });
+        setId(_qid);
         setQuests({
           ...quests,
-          [questNum + 1]: { questImageUrl: questionImageUrl },
+          [questNum + 1]: questionImageUrl,
         });
-        setQuestData({ questImageUrl: questionImageUrl });
-        setIsChoiceProb(type);
+        setQuestData(questionImageUrl);
+        setIsChoiceProb(_isChoice);
         setTime(0);
         initAns();
         setDontKnow(false);

@@ -40,7 +40,11 @@ export default ({ navigation }) => (
   >
     {/* <Stack.Screen name="과목선택" component={SubjectSelect} /> */}
     <Stack.Screen name="초기화면" component={Init} />
-    <Stack.Screen name="추천" component={Recommend} />
+    <Stack.Screen
+      name="추천"
+      component={Recommend}
+      headerStyle={{ backgroundColor: "tomato" }}
+    />
     <Stack.Screen name="진단평가" component={Evaluation} />
     <Stack.Screen name="진단평가문제" component={EvaluateQuestions} />
     <Stack.Screen name="진단평가결과" component={EvaluateResult} />

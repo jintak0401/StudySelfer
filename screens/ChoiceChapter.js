@@ -8,10 +8,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { sub } from "react-native-reanimated";
-import { apiPostChapter, apiPostAnswer } from "../api";
+import {
+  apiPostChapter,
+  apiPostAnswer,
+  apiPostEvaluation,
+  apiPostEvaluationInit,
+} from "../api";
 import styled, { withTheme } from "styled-components/native";
 import Profile from "../assets/Svg/Profile.svg";
-import { sub2num, chapters, area } from "../chapterData";
+import { sub2num, chapters, area, chap2id } from "../chapterData";
 import { AntDesign } from "@expo/vector-icons";
 
 const ProfileButton = styled.TouchableOpacity`
@@ -61,19 +66,23 @@ export default ({ navigation, route }) => {
     for (let i = 0; i < area[part].length; i++) {
       subj = area[part][i][1] === section ? area[part][i][0] : subj;
     }
+    const len = chapters[subj].length;
     for (const chap in selectedChap) {
       num += selectedChap[chap] && chap.slice(0, -2) === subj ? 1 : 0;
     }
-    ["_1", "_2", "_3"].forEach((tail) => {
-      tmp[`${subj}${tail}`] = num !== 3;
-    });
-    setAllSelected({ ...allSelected, [subj]: num !== 3 });
+    [...Array(len)]
+      .map((_, idx) => `_${idx + 1}`)
+      .forEach((tail) => {
+        tmp[`${subj}${tail}`] = num !== len;
+      });
+    setAllSelected({ ...allSelected, [subj]: num !== len });
     setSelectedChap({ ...tmp });
   };
 
   const choiceChap = (chap) => {
     const tmp = { ...selectedChap };
     const subj = chap.slice(0, -2);
+    const len = chapters[subj].length;
     let check = 0;
     if (tmp[chap] === undefined) tmp[chap] = false;
     tmp[chap] = !tmp[chap];
@@ -82,33 +91,25 @@ export default ({ navigation, route }) => {
         check += ch.slice(0, -2) === subj && tmp[ch] ? 1 : 0;
       }
     }
-    setAllSelected({ ...allSelected, [subj]: check === 3 });
+    setAllSelected({ ...allSelected, [subj]: check === len });
     setSelectedChap({ ...tmp });
   };
 
-  const getData = () => {
-    const ret = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+  const getChap = () => {
+    const parts = [];
     for (const key in selectedChap) {
-      const [subject, num] = [
-        key.slice(0, key.length - 2),
-        key[key.length - 1],
-      ];
-      if (selectedChap[key]) ret[sub2num[subject]].push(num);
+      if (selectedChap[key]) parts.push(chap2id[key]);
     }
-    for (const key in ret) {
-      ret[key].sort();
-    }
-    return ret;
+    return parts;
   };
 
   const goToEvaluate = async () => {
-    const data = getData();
-    const quest = await apiPostChapter(part, data);
-    console.log("ChoiceChapter.js", quest.data);
+    const chapter = getChap();
+    // const data = await apiPostEvaluation(part, chapter);
+    const data = await apiPostEvaluationInit(part, chapter);
+    console.log("ChoiceChapter.js", data);
     navigation.navigate("진단평가문제", {
-      type: quest.data.type,
-      quest: { questImageUrl: quest.data.questionImageUrl },
-      solution: quest.data.solutionImageUrl,
+      ...data,
     });
   };
   useLayoutEffect(() => {
@@ -129,12 +130,12 @@ export default ({ navigation, route }) => {
       <View style={styles.areaSet}>
         <Button
           title="        문과        "
-          color={part === "liberal" ? "blue" : "gray"}
+          color={part === "liberal" ? "#4F62C0" : "#999999"}
           onPress={() => changePart("liberal")}
         />
         <Button
           title="        이과        "
-          color={part === "natural" ? "blue" : "gray"}
+          color={part === "natural" ? "#4F62C0" : "#999999"}
           onPress={() => changePart("natural")}
         />
       </View>

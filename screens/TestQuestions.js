@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import Questions from "../components/Questions";
-import { apiTestQuests } from "./../api";
+import { apiGetTest, apiGetTestList, apiTestQuests } from "./../api";
 import ProgressBar from "../components/TestQuestions/ProgressBar";
 import styled from "styled-components/native";
 import TestAdditionalFunc from "./../components/TestAdditionalFunc";
@@ -73,13 +73,15 @@ export default ({ navigation, route }) => {
   const [studentAns, setStudentAns] = useState({});
   const [bookmarks, setBookmarks] = useState({});
   const [questData, setQuestData] = useState({});
-  const [testTime, readyTime] = [6000, 5];
+  const [testTime, readyTime] = [6000, 0];
   const [time, setTime] = useState(testTime + readyTime);
   const [clock, setClock] = useState(false);
   const [answersheetModalVisible, setAnswersheetModalVisible] = useState(false);
   const [submitModalVisible, setSubmitModalVisible] = useState(false);
   const [moveActive, setMoveActive] = useState(true);
   const [removedAns, setRemovedAns] = useState({});
+  const [data, setData] = useState({});
+  const [load, setLoad] = useState(false);
 
   const removingAns = (ans) => {
     const tmp = { ...removedAns };
@@ -90,8 +92,11 @@ export default ({ navigation, route }) => {
   };
 
   const getQuestData = async () => {
-    const tmp = await apiTestQuests();
-    setQuestData({ ...tmp });
+    // const tmp = await apiTestQuests();
+    // setQuestData({ ...tmp });
+    const tmp = await apiGetTest(route.params.subtitle);
+    setData(tmp);
+    setLoad(true);
   };
   const bookmarking = (n) => {
     const tmp = { ...bookmarks };
@@ -117,9 +122,9 @@ export default ({ navigation, route }) => {
       time: time,
       year: route.params.year,
       month: route.params.month,
-      questData,
       studentAns,
       bookmarks,
+      ...data,
     });
   };
 
@@ -170,61 +175,68 @@ export default ({ navigation, route }) => {
 
   return (
     <Container>
-      <Collapsible collapsed={!clock}>
-        <ProgressBar time={time} totalTime={testTime + readyTime} />
-      </Collapsible>
-      <ScrollContainer flexValue={6}>
-        <Questions questNum={questNum} questData={questData[questNum]} />
-      </ScrollContainer>
-      {questNum <= 21 ? (
-        <AnsbtnSet>
-          {[1, 2, 3, 4, 5].map((n) => (
-            <Ansbtn
-              key={n}
-              ansNum={n}
-              isSelected={studentAns[questNum] === n}
-              selectAns={selectAns}
-              isRemoved={removedAns[questNum]?.[n]}
-              removeAns={removingAns}
+      {load ? (
+        <>
+          <Collapsible collapsed={!clock}>
+            <ProgressBar time={time} totalTime={testTime + readyTime} />
+          </Collapsible>
+          <ScrollContainer flexValue={6}>
+            <Questions
+              questNum={questNum}
+              questData={data.questionImageUrl[questNum]}
             />
-          ))}
-        </AnsbtnSet>
-      ) : (
-        <InputContainer>
-          <Input
-            placeholder={"답을 입력해주세요"}
-            onSubmit={selectAns}
-            defaultValue={studentAns[questNum]}
-            setMoveActive={setMoveActive}
+          </ScrollContainer>
+          {questNum <= 21 ? (
+            <AnsbtnSet>
+              {[1, 2, 3, 4, 5].map((n) => (
+                <Ansbtn
+                  key={n}
+                  ansNum={n}
+                  isSelected={studentAns[questNum] === n}
+                  selectAns={selectAns}
+                  isRemoved={removedAns[questNum]?.[n]}
+                  removeAns={removingAns}
+                />
+              ))}
+            </AnsbtnSet>
+          ) : (
+            <InputContainer>
+              <Input
+                placeholder={"답을 입력해주세요"}
+                onSubmit={selectAns}
+                defaultValue={studentAns[questNum]}
+                setMoveActive={setMoveActive}
+              />
+            </InputContainer>
+          )}
+          {moveActive ? (
+            <MoveQuestBtn
+              inTest={true}
+              questNum={questNum}
+              changeQuestNum={changeQuestNum}
+              time={readyTime + testTime - time}
+              goToResult={goToResult}
+              setModalVisible={setSubmitModalVisible}
+            />
+          ) : null}
+          <ModalAnsSheet
+            inTest={true}
+            answersheetModalVisible={answersheetModalVisible}
+            setAnswersheetModalVisible={setAnswersheetModalVisible}
+            studentAns={studentAns}
+            bookmarks={bookmarks}
+            time={readyTime + testTime - time}
+            changeQuestNum={changeQuestNum}
+            goToResult={goToResult}
+            setSubmitModalVisible={setSubmitModalVisible}
           />
-        </InputContainer>
-      )}
-      {moveActive ? (
-        <MoveQuestBtn
-          inTest={true}
-          questNum={questNum}
-          changeQuestNum={changeQuestNum}
-          time={readyTime + testTime - time}
-          goToResult={goToResult}
-          setModalVisible={setSubmitModalVisible}
-        />
+          <ModalSubmit
+            modalVisible={submitModalVisible}
+            setModalVisible={setSubmitModalVisible}
+            goToResult={goToResult}
+          />
+        </>
       ) : null}
-      <ModalAnsSheet
-        inTest={true}
-        answersheetModalVisible={answersheetModalVisible}
-        setAnswersheetModalVisible={setAnswersheetModalVisible}
-        studentAns={studentAns}
-        bookmarks={bookmarks}
-        time={readyTime + testTime - time}
-        changeQuestNum={changeQuestNum}
-        goToResult={goToResult}
-        setSubmitModalVisible={setSubmitModalVisible}
-      />
-      <ModalSubmit
-        modalVisible={submitModalVisible}
-        setModalVisible={setSubmitModalVisible}
-        goToResult={goToResult}
-      />
     </Container>
   );
 };

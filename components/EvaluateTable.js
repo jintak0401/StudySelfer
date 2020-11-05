@@ -13,10 +13,10 @@ const Container = styled.View`
   width: 80%;
 `;
 
-const EvaluateTable = ({ grade }) => {
+const EvaluateTable = ({ standardScore, grade, rawScore }) => {
   const [table, setTable] = useState({
-    tableHead: ["백분율", "원점수", "등급", "표준점수"],
-    tableData: [["7%", "94점", "2등급", "113점"]],
+    tableHead: ["원점수", "등급", "표준점수"],
+    tableData: [[`${rawScore}점`, `${grade}등급`, `${standardScore}점`]],
   });
   return (
     <Container>
@@ -40,6 +40,12 @@ const EvaluateTable = ({ grade }) => {
       </Table>
     </Container>
   );
+};
+
+EvaluateTable.propTypes = {
+  grade: PropTypes.number.isRequired,
+  standardScore: PropTypes.number.isRequired,
+  rawScore: PropTypes.number.isRequired,
 };
 
 export default EvaluateTable;

@@ -15,6 +15,7 @@ import {
   StyleSheet,
   Linking,
   Image,
+  ToastAndroid,
 } from "react-native";
 import GestureRecognizer from "react-native-swipe-gestures";
 import DoubleClick from "react-native-double-tap";
@@ -33,6 +34,8 @@ import { string } from "prop-types";
 import * as AuthSession from "expo-auth-session";
 import axios from "axios";
 import WebView from "react-native-webview";
+import { apiGetRecommendNode } from "../api";
+import { solvedData } from "../solvedData";
 
 const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
@@ -147,6 +150,25 @@ const styles = StyleSheet.create({
 
 export default ({ navigation, route }) => {
   const loaded = true;
+  const msg = "먼저 진단평가를 봐주세요!";
+
+  const getData = async () => {
+    const data = await apiGetRecommendNode();
+    return data;
+  };
+
+  const goToRecommend = async () => {
+    const data = await apiGetRecommendNode();
+    console.log("Init.js", data);
+    navigation.navigate("추천", {
+      ...data,
+    });
+  };
+
+  const showMsg = () => {
+    ToastAndroid.showWithGravity(msg, ToastAndroid.SHORT, ToastAndroid.CENTER);
+  };
+
   // const boxOpaicity = useRef(new Animated.Value(0)).current;
   // const redOpacity = boxOpaicity.interpolate({
   //   inputRange: [0, 0.5, 0.75, 1],
@@ -306,13 +328,22 @@ export default ({ navigation, route }) => {
         <StepUp width={100} height={100} />
         <Text>진단평가</Text>
       </Button>
-      <Button activeOpacity={0.8} onPress={() => navigation.navigate("추천")}>
+      <Button
+        activeOpacity={0.8}
+        onPress={() => {
+          solvedData.diagnose ? goToRecommend() : showMsg();
+        }}
+      >
         <NoteAndPerson width={117.71} height={100} />
         <Text>추천문제</Text>
       </Button>
       <Button
         activeOpacity={0.8}
-        onPress={() => navigation.navigate("모의수능 및 모의고사")}
+        onPress={() =>
+          solvedData.diagnose
+            ? navigation.navigate("모의수능 및 모의고사")
+            : showMsg()
+        }
       >
         <TestingPeople width={97.76} height={100} />
         <Text>모의고사</Text>
