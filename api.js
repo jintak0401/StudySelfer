@@ -268,6 +268,7 @@ export const apiPostEvaluationInit = async (type, chapter) => {
 };
 
 export const apiPostEvaluation = async (removedAns, time, studentAns, id) => {
+  // POST를 하는 데이터의 형식
   const postData = {
     try: {
       excluded_option: convertRemovedAns(removedAns),
@@ -277,12 +278,14 @@ export const apiPostEvaluation = async (removedAns, time, studentAns, id) => {
       question_id: id,
     },
   };
+  // 데이터 요청
   try {
     const { data } = await axios.post(
       "http://3.35.52.211:9696/evaluation",
       postData
     );
     const retval = {};
+    // 진단평가가 끝난 경우
     if (data.expected_grade) {
       retval.grade = data.expected_grade;
       retval.rawScore = data.raw_score;
