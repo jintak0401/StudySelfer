@@ -96,39 +96,6 @@ const TmpBox = styled.View`
   justify-content: center;
 `;
 
-// const correctAns = {
-//   1: 5,
-//   2: 4,
-//   3: 1,
-//   4: 2,
-//   5: 3,
-//   6: 1,
-//   7: 4,
-//   8: 1,
-//   9: 5,
-//   10: 2,
-//   11: 5,
-//   12: 4,
-//   13: 1,
-//   14: 2,
-//   15: 3,
-//   16: 1,
-//   17: 4,
-//   18: 1,
-//   19: 5,
-//   20: 2,
-//   21: 5,
-//   22: 4,
-//   23: 1,
-//   24: 2,
-//   25: 3,
-//   26: 1,
-//   27: 4,
-//   28: 1,
-//   29: 5,
-//   30: 2,
-// };
-
 const EvaluateResult = (props) => {
   const { navigation, route } = props;
   const {
@@ -144,8 +111,6 @@ const EvaluateResult = (props) => {
     standardScore,
   } = route.params;
   const [collapsed, setCollapsed] = useState(false);
-  // const strong = ["수열의 극한", "적분", "미분"];
-  // const weak = ["지수함수와 로그함수", "삼각함수", "수열"];
   const [direction, setdirection] = useState(new Animated.Value(0));
   const rotate = direction.interpolate({
     inputRange: [0, 1],

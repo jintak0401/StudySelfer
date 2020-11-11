@@ -16,9 +16,7 @@ const ModalAnsSheet = ({
 }) => {
   return (
     <Modal
-      //isVisible Props에 State 값을 물려주어 On/off control
       isVisible={answersheetModalVisible}
-      //아이폰에서 모달창 동작시 깜박임이 있었는데, useNativeDriver Props를 True로 주니 해결되었다.
       useNativeDriver={true}
       onBackButtonPress={() => setAnswersheetModalVisible(false)}
       onBackdropPress={() => setAnswersheetModalVisible(false)}

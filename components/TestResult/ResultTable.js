@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Table, Row, Rows } from "react-native-table-component";
 import styled from "styled-components/native";
 import { screenInfo } from "../../utils";
 
-const { isTablet, WIDTH, HEIGHT } = screenInfo;
+const { isTablet, WIDTH } = screenInfo;
 
 const Container = styled.View`
   margin-vertical: 5px;

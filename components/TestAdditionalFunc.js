@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import { screenInfo } from "../utils";
 
-const { isTablet, WIDTH, HEIGHT } = screenInfo;
+const { isTablet, WIDTH } = screenInfo;
 
 const TestAdditionalFunc = ({ funcName, isActive, setActive, questNum }) => {
   const iconName = `${funcName}-outline`;

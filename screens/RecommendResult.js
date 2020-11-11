@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
-import { Animated, Easing } from "react-native";
+import { Animated } from "react-native";
 import styled from "styled-components/native";
 import Home from "../assets/Svg/Home.svg";
 import { Feather } from "@expo/vector-icons";
@@ -8,12 +8,7 @@ import ScrollContainer from "../components/ScrollContainer";
 import RecommendQuestResult from "../components/RecommendQuestResult";
 import Collapsible from "react-native-collapsible";
 import RecommendTable from "../components/RecommendTable";
-import {
-  getRecommendData,
-  getTodayDateKey,
-  setRecommendData,
-  solvedData,
-} from "../solvedData";
+import { getTodayDateKey, setRecommendData, solvedData } from "../solvedData";
 import RecommendBottom from "../components/RecommendBottom";
 
 const { isTablet } = screenInfo;
@@ -61,14 +56,6 @@ const DevideBox = styled.View`
   opacity: 0.3;
 `;
 
-const EndQuestReslut = styled.View`
-  align-self: center;
-  border-width: 0px;
-  background-color: #95989a;
-  height: 3px;
-  width: 100%;
-`;
-
 const CollapseButton = styled.View`
   justify-content: center;
   align-items: center;
@@ -113,7 +100,6 @@ const RecommendResult = (props) => {
     dayKey,
     chapter,
     time,
-    popNum,
   } = route.params;
   const [collapsed, setCollapsed] = useState(false);
   const questData = {
@@ -136,16 +122,15 @@ const RecommendResult = (props) => {
       qNum: questNum,
       studentAns,
       correctAns,
-      questData: quests,
+      questData,
       solutions,
       endQuestionNum: Object.keys(studentAns).length,
-      isChoice: isChoice,
     });
   };
 
   const goBackTodayRecommend = () => {
     setIsGoBack();
-    navigation.pop(popNum);
+    navigation.pop(2);
   };
 
   useLayoutEffect(() => {
@@ -154,7 +139,7 @@ const RecommendResult = (props) => {
     )}월 ${dayKey}일`;
     navigation.setOptions({
       headerLeft: () => (
-        <HeaderLeftButton onPress={() => navigation.pop(popNum)}>
+        <HeaderLeftButton onPress={() => navigation.pop(2)}>
           <Feather name="x" size={isTablet ? 34 : 24} color="#4F62C0" />
         </HeaderLeftButton>
       ),
@@ -183,19 +168,8 @@ const RecommendResult = (props) => {
         <RecommendTable time={timerFormat(totalTime, true)} result={result} />
         <DevideContainer>
           <DevideBox />
-          <CollapseButton
-          // activeOpacity={1}
-          // onPress={() => setCollapsed(!collapsed)}
-          >
+          <CollapseButton>
             <CollapseText>풀이결과</CollapseText>
-            {/* <FoldDirection style={{ transform: [{ rotate: rotate }] }}>
-              <AntDesign
-                style={{ marginTop: 3 }}
-                name="up"
-                size={20}
-                color="#4F62C0"
-              />
-            </FoldDirection> */}
           </CollapseButton>
         </DevideContainer>
         <Collapsible collapsed={collapsed}>

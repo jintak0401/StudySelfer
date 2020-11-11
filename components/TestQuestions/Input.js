@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
-import { screenInfo } from "../../utils";
-
-const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
 const NumberInput = styled.TextInput`
   background-color: white;

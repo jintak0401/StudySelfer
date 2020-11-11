@@ -4,7 +4,7 @@ import { Text } from "react-native";
 import styled from "styled-components/native";
 import { timerFormat, screenInfo } from "./../../utils";
 
-const { isTablet, WIDTH, HEIGHT } = screenInfo;
+const { isTablet, WIDTH } = screenInfo;
 
 const Container = styled.View`
   padding-top: 2px;

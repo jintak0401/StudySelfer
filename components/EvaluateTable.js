@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Table, Row, Rows } from "react-native-table-component";
 import { screenInfo } from "../utils";
 
-const { isTablet, WIDTH, HEIGHT } = screenInfo;
+const { isTablet } = screenInfo;
 
 const Container = styled.View`
   justify-content: center;

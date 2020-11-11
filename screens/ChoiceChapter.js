@@ -7,16 +7,10 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { sub } from "react-native-reanimated";
-import {
-  apiPostChapter,
-  apiPostAnswer,
-  apiPostEvaluation,
-  apiPostEvaluationInit,
-} from "../api";
-import styled, { withTheme } from "styled-components/native";
+import { apiPostEvaluationInit } from "../api";
+import styled from "styled-components/native";
 import Profile from "../assets/Svg/Profile.svg";
-import { sub2num, chapters, area, chap2id } from "../chapterData";
+import { chapters, area, chap2id } from "../chapterData";
 import { AntDesign } from "@expo/vector-icons";
 
 const ProfileButton = styled.TouchableOpacity`
@@ -41,10 +35,9 @@ const GotoDiagnose = styled.TouchableOpacity`
 `;
 
 export default ({ navigation, route }) => {
-  // const { navigation, route } = props;
   const [part, setPart] = useState("liberal");
   const [selectedChap, setSelectedChap] = useState({});
-  const flatListItemSeparator = () => <View /* style={styles.separator}*/ />;
+  const flatListItemSeparator = () => <View />;
   const [allSelected, setAllSelected] = useState({});
 
   const convertSection = (section) => {
@@ -105,7 +98,6 @@ export default ({ navigation, route }) => {
 
   const goToEvaluate = async () => {
     const chapter = getChap();
-    // const data = await apiPostEvaluation(part, chapter);
     const data = await apiPostEvaluationInit(part, chapter);
     console.log("ChoiceChapter.js", data);
     navigation.navigate("진단평가문제", {
@@ -186,18 +178,6 @@ export default ({ navigation, route }) => {
                   color="#A9E4EB"
                 ></AntDesign>
               )}
-              {/* <AntDesign
-                style={{
-                  backgroundColor: "white",
-                  borderRadius: 200,
-                  marginRight: 30,
-                }}
-                name={
-                  convertSection(section.title) ? "checkcircleo" : "checkcircle"
-                }
-                size={28}
-                color={convertSection(section.title) ? "#A9E4EB" : "#4f62c0"}
-              /> */}
             </TouchableOpacity>
           )}
           renderItem={({ item }) => (
@@ -217,14 +197,6 @@ export default ({ navigation, route }) => {
           keyExtractor={(item, index) => index}
         />
       </View>
-      {/* <View style={{ flex: 1 }}>
-        <Button
-          title="답 보내기"
-          onPress={() => {
-            goToEvaluate();
-          }}
-        />
-      </View> */}
       <GotoDiagnose onPress={() => goToEvaluate()}>
         <Text style={{ color: "white", fontSize: 20 }}>진단평가 시작</Text>
       </GotoDiagnose>
@@ -243,11 +215,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 10,
   },
-  // separator: {
-  //   height: 0.5,
-  //   width: "100%",
-  //   backgroundColor: "skyblue",
-  // },
   iconBox: {
     backgroundColor: "white",
     width: 25,
@@ -265,7 +232,5 @@ const styles = StyleSheet.create({
     padding: 15,
     color: "#000",
     paddingLeft: 35,
-    // backgroundColor: "#F5F5F5",
-    // backgroundColor: "green",
   },
 });
