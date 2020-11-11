@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { ScrollView, View } from "react-native";
 
 const ScrollContainer = ({
-  // isTest = false,
   children,
   contentContainerStyle,
   flexValue,
@@ -16,7 +15,6 @@ const ScrollContainer = ({
         flexGrow: flexValue || 0,
         backgroundColor: "white",
         width: "100%",
-        // maxHeight: isTest ? "85%" : "100%",
       }}
       contentContainerStyle={{
         flex: 0,

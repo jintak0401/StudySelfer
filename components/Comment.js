@@ -4,40 +4,11 @@ import styled from "styled-components/native";
 import Questions from "../components/Questions";
 import ScrollContainer from "../components/ScrollContainer";
 import QuestSummary from "../components/QuestComment/QuestSummary";
-import { screenInfo } from "../utils";
 import Collapsible from "react-native-collapsible";
 import Dash from "react-native-dash";
 import { AntDesign } from "@expo/vector-icons";
 import Solutions from "../components/Solutions";
 import PropTypes from "prop-types";
-
-const { isTablet, WIDTH, HEIGHT } = screenInfo;
-
-const TitleContainer = styled.View`
-  margin-left: -20px;
-  justify-content: center;
-`;
-
-const HeaderTitle = styled.Text`
-  font-size: 23px;
-  color: #4f62c0;
-`;
-
-const HeaderSubtitle = styled.Text`
-  font-size: 15px;
-  color: #999999;
-`;
-
-const IconSet = styled.View`
-  flex-direction: row;
-  justify-content: flex-end;
-  margin-right: 20px;
-  margin-top: 10px;
-`;
-
-const HomeButton = styled.TouchableOpacity`
-  margin-right: 15px;
-`;
 
 const Container = styled.View`
   flex: 1;
@@ -180,12 +151,6 @@ const Comment = ({
           </Collapsible>
         </Wrapper>
       </ScrollContainer>
-      {/* <MoveQuestBtn
-        inTest={false}
-        questNum={questNum}
-        changeQuestNum={(qNum) => setQuestNum(qNum)}
-        endQuestionNum={endQuestionNum}
-      /> */}
     </Container>
   );
 };

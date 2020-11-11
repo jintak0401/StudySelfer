@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components/native";
 import { AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import PropTypes from "prop-types";
 import { screenInfo } from "../utils";
 
-const { isTablet, WIDTH, HEIGHT } = screenInfo;
+const { isTablet, HEIGHT } = screenInfo;
 
 const MoveQuestBtnSet = styled.View`
   flex-direction: row;

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import styled from "styled-components/native";
-import PropTypes from "prop-types";
 import { Table, Row, Rows } from "react-native-table-component";
 import { screenInfo } from "../utils";
 
-const { isTablet, WIDTH, HEIGHT } = screenInfo;
+const { isTablet } = screenInfo;
 
 const Container = styled.View`
   justify-content: center;
@@ -14,7 +13,7 @@ const Container = styled.View`
 `;
 
 const RecommendTable = ({ time, result }) => {
-  const [table, setTable] = useState({
+  const [table] = useState({
     tableHead: ["시간", "결과"],
     tableData: [[time, result]],
   });

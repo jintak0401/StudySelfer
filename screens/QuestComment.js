@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
-import { Animated, Easing, Image, StyleSheet, Text, View } from "react-native";
+import { Animated, Easing } from "react-native";
 import styled from "styled-components/native";
 import Questions from "../components/Questions";
 import ScrollContainer from "../components/ScrollContainer";
@@ -8,13 +8,10 @@ import ModalAnsSheet from "./../components/ModalAnsSheet";
 import Home from "../assets/Svg/Home.svg";
 import TestAdditionalFunc from "../components/TestAdditionalFunc";
 import QuestSummary from "../components/QuestComment/QuestSummary";
-import { screenInfo } from "../utils";
 import Collapsible from "react-native-collapsible";
 import Dash from "react-native-dash";
 import { AntDesign } from "@expo/vector-icons";
 import Solutions from "../components/Solutions";
-
-const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
 const TitleContainer = styled.View`
   margin-left: -20px;
