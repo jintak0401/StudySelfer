@@ -99,7 +99,6 @@ export default ({ navigation, route }) => {
   const goToEvaluate = async () => {
     const chapter = getChap();
     const data = await apiPostEvaluationInit(part, chapter);
-    console.log("ChoiceChapter.js", data);
     navigation.navigate("진단평가문제", {
       ...data,
     });

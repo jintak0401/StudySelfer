@@ -74,11 +74,6 @@ const CollapseText = styled.Text`
   padding-left: 6px;
 `;
 
-const FoldDirection = styled(Animated.View)`
-  justify-content: center;
-  align-items: center;
-`;
-
 const DevideContainer = styled.View``;
 
 const TmpBox = styled.View`

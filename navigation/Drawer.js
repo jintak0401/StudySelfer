@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
-import { Platform, ToastAndroid, Alert, BackHandler } from "react-native";
+import { ToastAndroid, BackHandler } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import Init from "../screens/Init";
-import Tmp from "../screens/tmp";
 import Stack from "./Stack";
-import { AntDesign } from "@expo/vector-icons";
 import ChoiceChapter from "../screens/ChoiceChapter";
 import Recommend from "../screens/Recommend";
 import Test from "../screens/Test";

@@ -1,5 +1,4 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { Button } from "react-native";
 import styled from "styled-components/native";
 import Profile from "../assets/Svg/Profile.svg";
 import SelectRecommend from "../components/SelectRecommend";
@@ -300,14 +299,6 @@ export default (props) => {
           )
         ) : null}
       </SelectYearMonthContainer>
-      <Button
-        title="RESET"
-        onPress={() => {
-          setTodaySolved((prev) => !prev);
-          setMonthKey(undefined);
-          setDayKey(undefined);
-        }}
-      />
     </Container>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components/native";
 import { subjectInfo, subj2kor } from "../testInfo";
 
@@ -35,7 +35,6 @@ const SubjectText = styled.Text`
 const SubjectSelect = ({ route, navigation }) => {
   const subjects = Object.keys(subjectInfo);
   const [subject, setSubject] = useState();
-  const [modalVisible, setModalVisible] = useState(false);
   const goToTest = (mode) => {
     switch (mode) {
       case "elevation":
@@ -60,7 +59,6 @@ const SubjectSelect = ({ route, navigation }) => {
         <SubejectButton
           key={name}
           onPress={() => {
-            // setSubject(name);
             navigation.navigate("초기화면");
           }}
         >

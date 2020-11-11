@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
-import { BackHandler, ActivityIndicator, View, Text } from "react-native";
+import { ActivityIndicator, View, Text } from "react-native";
 import QuestResult from "../components/TestResult/QuestResult";
 import ScrollContainer from "../components/ScrollContainer";
 import ResultTable from "./../components/TestResult/ResultTable";
 import styled from "styled-components/native";
-import { apiTestAns, apiTestSolutions } from "../api";
 import Home from "../assets/Svg/Home.svg";
 import { Feather } from "@expo/vector-icons";
 import { screenInfo, getGrade, getTestTitle } from "../utils";
 import { setSolvedData } from "../solvedData";
 import { timerFormat } from "./../utils";
-// import { NavigationEvents } from "react-navigation";
 
 const { isTablet } = screenInfo;
 
@@ -64,8 +62,6 @@ export default (props) => {
   const testTitle = getTestTitle(year, month);
 
   const getComments = async () => {
-    const { correctAns } = await apiTestAns();
-    const { solutionImageUrl: solutions } = await apiTestSolutions();
     const testResult = getGrade(studentAns, data.correctAns);
     setResult([timerFormat(time), `${testResult.totalScore}점`, "2등급"]);
     setComments({
@@ -88,12 +84,6 @@ export default (props) => {
     getComments();
     setSolvedData(year, month, ...result);
   }, [comments.loading]);
-
-  // useEffect(() => {
-  //   BackHandler.addEventListener("hardwareBackPress", () => true);
-  //   return () =>
-  //     BackHandler.removeEventListener("hardwareBackPress", () => true);
-  // }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({

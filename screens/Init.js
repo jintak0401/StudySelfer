@@ -61,7 +61,6 @@ export default ({ navigation, route }) => {
 
   const goToRecommend = async () => {
     const data = await apiGetRecommendNode();
-    console.log("Init.js", data);
     navigation.navigate("추천", {
       ...data,
     });
