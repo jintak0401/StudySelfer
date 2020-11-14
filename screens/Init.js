@@ -1,4 +1,5 @@
 import React, { useLayoutEffect } from "react";
+import { StyleSheet } from "react-native";
 import styled from "styled-components/native";
 import StepUp from "../assets/Svg/StepUp.svg";
 import NoteAndPerson from "../assets/Svg/NoteAndPerson.svg";
@@ -50,7 +51,6 @@ const Text = styled.Text`
   padding-right: 5px;
 `;
 
-<<<<<<< HEAD
 const Slide1 = styled.View`
   background-color: black;
   height: 100%;
@@ -130,8 +130,6 @@ const styles = StyleSheet.create({
   },
 });
 
-=======
->>>>>>> b4e3bab1bd6432b72564c01e05e049f51a6d6d2c
 export default ({ navigation, route }) => {
   const loaded = true;
   const msg = "먼저 진단평가를 봐주세요!";
@@ -167,9 +165,14 @@ export default ({ navigation, route }) => {
 
   return loaded ? (
     <Container>
-<<<<<<< HEAD
       <GoToDiagResult onPress={() => navigation.navigate("새 진단평가결과")}>
         <GoToDiagText>진단결과</GoToDiagText>
+      </GoToDiagResult>
+      <GoToDiagResult
+        style={{ marginTop: 30 }}
+        onPress={() => navigation.navigate("새 진단평가")}
+      >
+        <GoToDiagText>진단평가</GoToDiagText>
       </GoToDiagResult>
       {/* <TmpButton>
         <BeforeRecommend width={100} height={100} />
@@ -222,8 +225,6 @@ export default ({ navigation, route }) => {
         </BlueBox>
         <YellowBox style={{ transform: [{ rotate: spinning }] }} />
       </Wrapper> */}
-=======
->>>>>>> b4e3bab1bd6432b72564c01e05e049f51a6d6d2c
       <Button
         activeOpacity={0.8}
         onPress={() => navigation.navigate("진단평가")}

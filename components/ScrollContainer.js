@@ -13,7 +13,7 @@ const ScrollContainer = ({
       showsVerticalScrollIndicator={false}
       style={{
         flexGrow: flexValue || 0,
-        backgroundColor: "white",
+        // backgroundColor: "white",
         width: "100%",
       }}
       contentContainerStyle={{
