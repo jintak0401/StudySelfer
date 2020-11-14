@@ -24,6 +24,10 @@ import Weak3 from "./Weak3.svg";
 import RecommendBack from "./RecommendBack.svg";
 import BeforeRecommend from "./BeforeRecommend";
 import AfterRecommend from "./AfterRecommend";
+import Logo from "./Logo.svg";
+import LogoBook from "./LogoBook.svg";
+import LogoTitle from "./LogoTitle.svg";
+import DrawerMenu from "./DrawerMenu.svg";
 
 export {
   BackMark,
@@ -52,4 +56,8 @@ export {
   RecommendBack,
   BeforeRecommend,
   AfterRecommend,
+  Logo,
+  LogoBook,
+  LogoTitle,
+  DrawerMenu,
 };

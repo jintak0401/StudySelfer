@@ -121,6 +121,18 @@ const LineContainer = styled.View`
 //   border-bottom-color: white;
 // `;
 
+const GoToDiagResult = styled.TouchableOpacity`
+  background-color: tomato;
+  height: 50px;
+  border-radius: 30px;
+  justify-content: center;
+  align-items: center;
+`;
+
+const GoToDiagText = styled.Text`
+  font-size: 20px;
+`;
+
 const styles = StyleSheet.create({
   wrapper: {},
   slide1: {
@@ -270,6 +282,9 @@ export default ({ navigation, route }) => {
 
   return loaded ? (
     <Container>
+      <GoToDiagResult onPress={() => navigation.navigate("새 진단평가결과")}>
+        <GoToDiagText>진단결과</GoToDiagText>
+      </GoToDiagResult>
       {/* <TmpButton>
         <BeforeRecommend width={100} height={100} />
         <AfterRecommend width={100} height={100} />

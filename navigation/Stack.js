@@ -20,6 +20,7 @@ import Recommend from "../screens/Recommend";
 import EvaluateComment from "../screens/EvaluateComment";
 import RecommendQuestions from "../screens/RecommendQuestions";
 import RecommendResult from "../screens/RecommendResult";
+import DiagnoseResult from "../screens/DiagnoseResult";
 
 const Stack = createStackNavigator();
 
@@ -31,10 +32,14 @@ export default ({ navigation }) => (
       // animationEnabled: false,
       // headerMode: "none",
       headerStyle: {
-        backgroundColor: "blue",
+        // backgroundColor: "transparent",
+        // position: "absolute",
+        // top: 0,
+        // left: 0,
+        // right: 0,
         // height: 100,
       },
-      headerTintColor: "#4F62C0",
+      // headerTintColor: "#4F62C0",
       headerBackTitleVisible: false,
     }}
   >
@@ -55,6 +60,7 @@ export default ({ navigation }) => (
     <Stack.Screen name="진단해설" component={EvaluateComment} />
     <Stack.Screen name="추천문제" component={RecommendQuestions} />
     <Stack.Screen name="추천문제결과" component={RecommendResult} />
+    <Stack.Screen name="새 진단평가결과" component={DiagnoseResult} />
   </Stack.Navigator>
 );
 

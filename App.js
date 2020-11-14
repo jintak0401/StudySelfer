@@ -6,18 +6,25 @@ import Drawer from "./navigation/Drawer";
 import { fonts } from "./src/Fonts";
 import { useFonts } from "expo-font";
 import styled from "styled-components/native";
-import { Book, FlyingPapers, WalkingPerson } from "./assets/Svg";
+import {
+  Book,
+  FlyingPapers,
+  LogoBook,
+  LogoTitle,
+  WalkingPerson,
+} from "./assets/Svg";
 import { screenInfo } from "./utils";
 import { Kakao } from "./assets/Svg";
 
-const { HEIGHT } = screenInfo;
+const { WIDTH, HEIGHT } = screenInfo;
 
-const Container = styled.View`
-  flex: 1;
+const Container = styled.ImageBackground`
   align-items: center;
   justify-content: center;
-  background-color: #4f62c0;
+  width: 100%;
+  height: 100%;
 `;
+// background-color: #4f62c0;
 
 const Title = styled.Text`
   color: white;
@@ -30,7 +37,7 @@ const Title = styled.Text`
 const Subtitle = styled.Text`
   color: white;
   font-size: 19px;
-  font-family: NanumSquare;
+  font-family: HGG60;
   margin-top: 2px;
   text-align: center;
   letter-spacing: 1px;
@@ -62,6 +69,11 @@ const KakaoText = styled.Text`
   letter-spacing: -1px;
   font-weight: bold;
   margin-horizontal: 10px;
+`;
+
+const BackgroundImage = styled.ImageBackground`
+  width: ${WIDTH}px;
+  height: ${HEIGHT}px;
 `;
 
 export default function App() {
@@ -132,10 +144,14 @@ export default function App() {
         {/* <Stack /> */}
         <Drawer />
       </NavigationContainer>
-      <StatusBar backgroundColor="#6c63ff" barStyle="light-content" />
+      <StatusBar
+        backgroundColor="transparent"
+        translucent={true}
+        barStyle="light-content"
+      />
     </>
   ) : fontLoad ? (
-    <Container>
+    <Container source={require("./assets/Png/StartPage.png")}>
       <Wrapper
         style={{
           opacity: fadeAnim,
@@ -159,9 +175,9 @@ export default function App() {
       <Wrapper
         style={{ opacity: logoOpacity, transform: [{ translateY: moveUp }] }}
       >
-        <Book width={130} height={150} />
-        <Title>수학노트</Title>
-        <Subtitle>진단·추천·기출문제 풀이</Subtitle>
+        <LogoBook width={180} height={200} />
+        <LogoTitle width={200} height={100} />
+        <Subtitle>내 손안의 성적도우미</Subtitle>
       </Wrapper>
       <KakaoContainer style={{ opacity: kakaoOpacity }}>
         <KakaoButton
