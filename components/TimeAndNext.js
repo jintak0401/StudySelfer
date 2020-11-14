@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Switch } from "react-native";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";

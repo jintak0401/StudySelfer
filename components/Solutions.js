@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Image } from "react-native";
-import ScrollContainer from "./ScrollContainer";
-import PropTypes from "prop-types";
+import { Image } from "react-native";
 import styled from "styled-components/native";
 import { screenInfo } from "../utils";
 
-const { isTablet, WIDTH, HEIGHT } = screenInfo;
+const { WIDTH } = screenInfo;
 
 const Container = styled.View`
   justify-content: center;
@@ -40,7 +38,6 @@ export default ({ questNum, solutionImageUrl }) => {
     set_10,
   ];
   const ratio = [_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10];
-  // const [ratio, setRatio] = useState({});
   useEffect(() => {
     if (solutionImageUrl) {
       setLoad(false);
@@ -53,26 +50,14 @@ export default ({ questNum, solutionImageUrl }) => {
         await solutionImageUrl.forEach(async (url, idx) => {
           await Image.getSize(url, (width, height) => {
             setRatio[idx](width / height);
-            //setRatio({...ratio, [idx]: width / height});
           });
         });
       }
     };
     if (!load) {
       loading().then(() => setLoad(true));
-      // loading().then(() => setNum((prev) => prev + 1));
     }
   }, [load]);
-
-  // useEffect(() => {
-  //   if (solutionImageUrl) {
-  //     let i = 0;
-  //     for (; i < solutionImageUrl.length; i++) {
-  //       if (ratio[i] === 0) break;
-  //     }
-  //     setLoad(i === solutionImageUrl.length);
-  //   }
-  // }, [num]);
 
   return (
     <Container>
@@ -93,7 +78,5 @@ export default ({ questNum, solutionImageUrl }) => {
           })
         : null}
     </Container>
-    // <ScrollContainer flexValue={flexValue} isTest={isTest}>
-    // </ScrollContainer>
   );
 };

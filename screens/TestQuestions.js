@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import Questions from "../components/Questions";
-import { apiGetTest, apiGetTestList, apiTestQuests } from "./../api";
+import { apiGetTest } from "./../api";
 import ProgressBar from "../components/TestQuestions/ProgressBar";
 import styled from "styled-components/native";
 import TestAdditionalFunc from "./../components/TestAdditionalFunc";
@@ -34,14 +34,11 @@ const IconSet = styled.View`
   margin-top: 10px;
 `;
 
-//flex: 1
 const Container = styled.View`
   background-color: white;
   flex: 1;
 `;
 
-// bottom: 0px;
-// position: absolute;
 const AnsbtnSet = styled.View`
   flex-direction: row;
   align-items: center;
@@ -50,22 +47,6 @@ const AnsbtnSet = styled.View`
 
 const InputContainer = styled.View`
   align-items: center;
-`;
-
-const MoveQuestBtnSet = styled.View`
-  flex-direction: row;
-  position: absolute;
-  bottom: 60px;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-const RightBtn = styled.TouchableOpacity`
-  margin-right: 10px;
-`;
-
-const LeftBtn = styled.TouchableOpacity`
-  margin-left: 10px;
 `;
 
 export default ({ navigation, route }) => {
@@ -92,8 +73,6 @@ export default ({ navigation, route }) => {
   };
 
   const getQuestData = async () => {
-    // const tmp = await apiTestQuests();
-    // setQuestData({ ...tmp });
     const tmp = await apiGetTest(route.params.subtitle);
     setData(tmp);
     setLoad(true);

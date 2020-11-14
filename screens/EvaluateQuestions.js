@@ -1,10 +1,9 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
-import { Switch, View } from "react-native";
+import { View } from "react-native";
 import styled from "styled-components/native";
-import { apiPostAnswer, apiPostEvaluation } from "../api";
+import { apiPostEvaluation } from "../api";
 import Questions from "../components/Questions";
 import Ansbtn from "../components/TestQuestions/Ansbtn";
-import TimeAndNext from "../components/TimeAndNext";
 import Input from "../components/TestQuestions/Input";
 import ScrollContainer from "../components/ScrollContainer";
 import Timer from "../components/Timer";
@@ -58,13 +57,6 @@ const TimeContainer = styled.View`
   margin-right: 20px;
   margin-top: 10px;
 `;
-
-// const IconSet = styled.View`
-//   flex-direction: row;
-//   justify-content: flex-end;
-//   margin-right: 20px;
-//   margin-top: 10px;
-// `;
 
 const EvaluateQuestions = (props) => {
   const { route, navigation } = props;
@@ -155,12 +147,6 @@ const EvaluateQuestions = (props) => {
     if (Object.keys(studentAns).length != 0) postAnswer();
   }, [studentAns]);
 
-  // useEffect(() => {
-  //   setSolutions({ ...solutions, [questNum]: solution });
-  //   setQuests({ ...quests, [questNum]: questData });
-  //   console.log("EvaluateQuestions.js", solutions);
-  // }, [questNum]);
-
   const removingAns = (num) => {
     removedAns[num] = removedAns[num] ? false : true;
   };
@@ -227,14 +213,6 @@ const EvaluateQuestions = (props) => {
             />
           </InputContainer>
         )}
-        {/* {showBottom ? (
-          <TimeAndNext
-            time={time}
-            goToNext={goToNext}
-            dontKnow={dontKnow}
-            setDontKnow={setDontKnow}
-          />
-        ) : null} */}
       </BottomContainer>
       {showBottom ? (
         <NextAndDontKnow

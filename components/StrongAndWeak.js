@@ -1,10 +1,6 @@
 import React from "react";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
-import { ScrollView } from "react-native";
-import { screenInfo } from "../utils";
-
-const { WIDTH } = screenInfo;
 
 const Container = styled.View`
   width: 100%;
@@ -13,8 +9,6 @@ const Container = styled.View`
   align-items: center;
   margin-bottom: 20px;
 `;
-// margin-bottom: ${(props) => (props.isWeak ? 70 : 50)}px;
-// margin-vertical: 30px;
 
 const SubContainer = styled.ScrollView`
   flex-direction: row;

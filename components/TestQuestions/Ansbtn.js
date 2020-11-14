@@ -1,24 +1,6 @@
-import React, { useRef, useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components/native";
-import { AntDesign } from "@expo/vector-icons";
-import { Animated } from "react-native";
 import DoubleClick from "react-native-double-tap";
-
-const Container = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  border-left-width: ${(props) => (!props.isFirst ? 1 : 0)}px;
-  border-color: white;
-`;
-
-const Button = styled.TouchableHighlight`
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  flex: 7;
-`;
 
 const Text = styled.Text`
   flex: 1;

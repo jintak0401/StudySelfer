@@ -5,7 +5,7 @@ import { Feather } from "@expo/vector-icons";
 import { screenInfo } from "../../utils";
 import { answerFormat } from "./../../utils";
 
-const { isTablet, WIDTH, HEIGHT } = screenInfo;
+const { isTablet } = screenInfo;
 
 const Container = styled.View`
   padding-horizontal: 30px;
@@ -30,11 +30,6 @@ const Right = styled.View`
     props.isCorrect ? "flex-end" : "space-between"};
   width: ${isTablet ? 15 : 80}px;
 `;
-
-// const Text = styled.Text`
-//   color: ${(props) => (props.isCorrect ? "#4F62C0" : "red")};
-//   font-size: ${isTablet ? 25 : 15}px;
-// `;
 
 const Text = styled.Text`
   font-size: ${(props) =>

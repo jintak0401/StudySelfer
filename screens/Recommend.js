@@ -1,12 +1,4 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Button,
-  SectionList,
-  Text,
-  TouchableOpacity,
-} from "react-native";
 import styled from "styled-components/native";
 import Profile from "../assets/Svg/Profile.svg";
 import SelectRecommend from "../components/SelectRecommend";
@@ -21,19 +13,10 @@ import { AfterRecommend, BeforeRecommend } from "../assets/Svg";
 import SelectRecommendMonth from "../components/SelectRecommendMonth";
 import SelectRecommendDay from "../components/SelectRecommendDay";
 import { BackMark } from "../assets/Svg";
-import {
-  apiGetRecommendNode,
-  apiTestAns,
-  apiTestQuests,
-  apiTestSolutions,
-} from "../api";
+import { apiGetRecommendNode } from "../api";
 
 const { WIDTH } = screenInfo;
 const { recommend: recommendData } = solvedData;
-
-const BookButton = styled.TouchableOpacity`
-  margin-left: 30px;
-`;
 
 const HeaderTitle = styled.Text`
   font-size: 26px;
@@ -316,14 +299,6 @@ export default (props) => {
           )
         ) : null}
       </SelectYearMonthContainer>
-      <Button
-        title="RESET"
-        onPress={() => {
-          setTodaySolved((prev) => !prev);
-          setMonthKey(undefined);
-          setDayKey(undefined);
-        }}
-      />
     </Container>
   );
 };

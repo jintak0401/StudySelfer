@@ -4,17 +4,12 @@ import styled from "styled-components/native";
 import Questions from "../components/Questions";
 import ScrollContainer from "../components/ScrollContainer";
 import MoveQuestBtn from "./../components/MoveQuestBtn";
-import ModalAnsSheet from "./../components/ModalAnsSheet";
 import Home from "../assets/Svg/Home.svg";
-import TestAdditionalFunc from "../components/TestAdditionalFunc";
 import QuestSummary from "../components/QuestComment/QuestSummary";
-import { screenInfo } from "../utils";
 import Collapsible from "react-native-collapsible";
 import Dash from "react-native-dash";
 import { AntDesign } from "@expo/vector-icons";
 import Solutions from "../components/Solutions";
-
-const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
 const TitleContainer = styled.View`
   margin-left: -20px;
@@ -141,11 +136,9 @@ export default (props) => {
         </TitleContainer>
       ),
       headerRight: () => (
-        // <IconSet>
         <HomeButton onPress={() => navigation.popToTop()}>
           <Home width={28} height={28} />
         </HomeButton>
-        // </IconSet>
       ),
     });
   }, [route, questNum]);

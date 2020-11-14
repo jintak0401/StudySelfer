@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import Dash from "react-native-dash";
 import { answerFormat } from "../utils";
 
-const { isTablet, WIDTH, HEIGHT } = screenInfo;
+const { isTablet } = screenInfo;
 
 const Container = styled.View`
   height: ${(props) => (props.isTablet ? 100 : 100)}px;

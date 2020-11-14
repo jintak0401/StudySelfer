@@ -1,11 +1,8 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { StyleSheet, View, Button, SectionList, Text } from "react-native";
 import styled from "styled-components/native";
 import Profile from "../assets/Svg/Profile.svg";
 import { getTestTitle } from "../utils";
-import ScrollContainer from "./../components/ScrollContainer";
 import BackMark from "../assets/Svg/BackMark.svg";
-import { resetSolvedData } from "../solvedData";
 import {
   ModalModeSelect,
   ModalRestudy,
@@ -14,10 +11,6 @@ import {
   SelectYear,
 } from "../components/Test";
 import { testInfo } from "../testInfo";
-
-const BookButton = styled.TouchableOpacity`
-  margin-left: 30px;
-`;
 
 const HeaderTitle = styled.Text`
   font-size: 26px;
@@ -83,9 +76,7 @@ const EmptyBox = styled.View`
 
 export default (props) => {
   const { navigation, route } = props;
-  const flatListItemSeparator = () => <View style={styles.separator} />;
   const [show, setShow] = useState({ 2020: true, 2019: true, 2018: true });
-  const years = [2020, 2019, 2018];
   const [selectedYear, setSelectedYear] = useState(0);
   const [selectedMonth, setSelectedMonth] = useState(0);
   const [restudyModalVisible, setRestudyModalVisible] = useState(false);
@@ -203,13 +194,6 @@ export default (props) => {
           </>
         ) : null}
       </SelectYearMonthContainer>
-      <Button
-        title="RESET"
-        onPress={() => {
-          resetSolvedData();
-          setSelectedMonth(100);
-        }}
-      />
       <ModalRestudy
         restudyModalVisible={restudyModalVisible}
         setRestudyModalVisible={setRestudyModalVisible}

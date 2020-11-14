@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Image, ScrollView, Text } from "react-native";
-import ScrollContainer from "./ScrollContainer";
-import PropTypes from "prop-types";
+import { Image } from "react-native";
 import styled from "styled-components/native";
 import { screenInfo } from "../utils";
 
-const { isTablet, WIDTH, HEIGHT } = screenInfo;
+const { WIDTH } = screenInfo;
 
 const Container = styled.View`
   justify-content: center;
