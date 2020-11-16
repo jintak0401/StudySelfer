@@ -5,6 +5,8 @@ import { screenInfo } from "../../utils";
 import PropTypes from "prop-types";
 import Dash from "react-native-dash";
 import { answerFormat } from "./../../utils";
+import colorset from "../../colorset";
+import { GoToSolutionBtn, GoToSolutionBtnActive } from "../../assets/Svg";
 
 const { isTablet, WIDTH, HEIGHT } = screenInfo;
 
@@ -30,19 +32,19 @@ const Right = styled.View`
     props.isCorrect ? "flex-end" : "space-between"};
   align-items: center;
   flex-direction: row;
-  width: ${(props) => (props.isTablet ? 35 : 170)}px;
+  width: ${(props) => (props.isTablet ? 35 : 190)}px;
 `;
 
 const RightWrapper = styled.View`
-  flex: 1;
+  flex: ${(props) => (props.needMoreFlex ? 3 : 1)};
   justify-content: center;
   align-items: center;
 `;
 
 const QuestNum = styled.Text`
   font-size: ${isTablet ? 25 : 15}px;
-  color: #4f62c0;
-  font-weight: bold;
+  color: black;
+  font-family: HGG60;
 `;
 
 const Text = styled.Text`
@@ -54,9 +56,8 @@ const Text = styled.Text`
       : props.isChoice && props.hasValue
       ? 20
       : 15}px;
-  color: ${(props) => (props.isCorrect ? "#4F62C0" : "red")};
-  font-weight: ${(props) =>
-    props.isChoice && props.hasValue ? "bold" : "normal"};
+  color: ${(props) => (props.isCorrect ? colorset.lightBlue : colorset.cherry)};
+  font-family: HGG60;
 `;
 
 const GotoSolContainer = styled.TouchableOpacity`
@@ -89,13 +90,13 @@ const QuestResult = ({
         <Feather
           name={isCorrect ? "circle" : "x"}
           size={isTablet ? 34 : 24}
-          color={isCorrect ? "#A9E4EB" : "red"}
+          color={isCorrect ? colorset.emerald : colorset.cherry}
         />
       </Left>
       <Right isTablet={isTablet} isCorrect={isCorrect}>
         {isCorrect ? null : (
           <>
-            <RightWrapper>
+            <RightWrapper needMoreFlex>
               <Text
                 isChoice={isChoice}
                 hasValue={studentAns}
@@ -116,14 +117,29 @@ const QuestResult = ({
             </RightWrapper>
           </>
         )}
-        <GotoSolContainer
+        {isCorrect ? (
+          <GoToSolutionBtn
+            style={{ marginLeft: 10 }}
+            width={100}
+            height={50}
+            onPress={() => goToComment(questNum)}
+          />
+        ) : (
+          <GoToSolutionBtnActive
+            style={{ marginLeft: 10 }}
+            width={100}
+            height={50}
+            onPress={() => goToComment(questNum)}
+          />
+        )}
+        {/* <GotoSolContainer
           isTablet={isTablet}
           onPress={() => goToComment(questNum)}
         >
           <GotoSolutions isTablet={isTablet} isCorrect={isCorrect}>
             해설보기
           </GotoSolutions>
-        </GotoSolContainer>
+        </GotoSolContainer> */}
       </Right>
       {isLast ? null : (
         <Dash

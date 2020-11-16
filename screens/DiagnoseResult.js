@@ -13,6 +13,7 @@ import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import colorset from "../colorset";
 import Swiper from "react-native-swiper";
 import { screenInfo } from "../utils";
+import Graph from "../components/Diagnose/Graph";
 
 const { WIDTH, HEIGHT } = screenInfo;
 
@@ -61,6 +62,13 @@ const ChapterImage = styled.Image`
   background-color: black;
 `;
 
+const Divider = styled.View`
+  background-color: ${colorset.lightGray};
+  width: 80%;
+  height: 2px;
+  margin-vertical: 20px;
+`;
+
 const DiagnoseResult = (props) => {
   const { navigation, route } = props;
   const strong = {
@@ -106,7 +114,7 @@ const DiagnoseResult = (props) => {
           justifyContent: "center",
         }}
       >
-        <View style={{ height: 50, width: 100, backgroundColor: "tomato" }} />
+        <View style={{ height: 50, width: 100 }} />
         <ScrollBody />
         <ProfileImage
           style={{
@@ -153,12 +161,17 @@ const DiagnoseResult = (props) => {
         <View style={{ marginTop: 100 }}>
           <ResultSummary />
         </View>
+        <Divider />
+        <Graph />
+        <Divider />
         <View style={styles.chapter}>
           <StrongChap />
         </View>
+        <Divider />
         <View style={styles.chapter}>
           <WeakChap />
         </View>
+        <Divider />
         <View style={styles.footer} />
       </Container>
     </View>
@@ -178,11 +191,11 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
   },
   chapter: {
-    height: 370,
-    marginTop: -100,
+    height: 280,
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "black",
   },
   footer: {
     height: 200,

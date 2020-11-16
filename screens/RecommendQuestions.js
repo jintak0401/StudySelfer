@@ -15,6 +15,8 @@ import Timer from "../components/Timer";
 import NextAndDontKnow from "../components/NextAndDontKnow";
 import Comment from "../components/Comment";
 import { apiPostRecommend } from "../api";
+import { BackMarkWhite } from "../assets/Svg";
+import colorset from "../colorset";
 
 const Container = styled.View`
   flex: 1;
@@ -44,13 +46,16 @@ const TitleContainer = styled.View`
 
 const HeaderTitle = styled.Text`
   font-size: 23px;
-  color: #4f62c0;
-  font-weight: bold;
+  color: white;
+  margin-top: 20px;
+  font-family: HGG80;
 `;
 
 const HeaderSubtitle = styled.Text`
   font-size: 15px;
-  color: #999999;
+  color: ${colorset.skyblue};
+  font-family: HGG60;
+  margin-top: 5px;
 `;
 
 const BottomContainer = styled.View`
@@ -63,6 +68,13 @@ const TimeContainer = styled.View`
   align-items: center;
   margin-right: 20px;
   margin-top: 10px;
+`;
+
+const HeaderImage = styled.ImageBackground`
+  width: 100%;
+  aspect-ratio: 3.987;
+  position: absolute;
+  top: 0;
 `;
 
 const RecommendQuestions = (props) => {
@@ -158,6 +170,15 @@ const RecommendQuestions = (props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerStyle: { backgroundColor: "white", height: 80, elevation: 0 },
+      headerTransparent: true,
+      headerLeft: () => (
+        <BackMarkWhite
+          width={20}
+          height={20}
+          style={{ marginLeft: 20 }}
+          onPress={() => navigation.pop(1)}
+        />
+      ),
       headerTitle: () => (
         <TitleContainer>
           <HeaderTitle>추천문제</HeaderTitle>
@@ -185,7 +206,7 @@ const RecommendQuestions = (props) => {
         <>
           {turn === "q" ? (
             <>
-              <ScrollContainer flexValue={6} footer={70}>
+              <ScrollContainer isQuest={true} flexValue={6} footer={70}>
                 <Questions questData={quests[questNum]} />
               </ScrollContainer>
               <BottomContainer>
@@ -224,6 +245,7 @@ const RecommendQuestions = (props) => {
               questData={quests[questNum]}
               solutions={solutions[questNum]}
               isChoice={isChoice[questNum]}
+              needMarginTop={true}
             />
           )}
           {show ? (
@@ -236,6 +258,9 @@ const RecommendQuestions = (props) => {
           ) : null}
         </>
       )}
+      <HeaderImage
+        source={require("../assets/Png/HeaderBackRect.png")}
+      ></HeaderImage>
     </Container>
   );
 };

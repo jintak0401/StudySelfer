@@ -35,6 +35,13 @@ import GoDiagnose from "./GoDiagnose.svg";
 import CustomNext from "./CustomNext.svg";
 import DontKnow from "./DontKnow.svg";
 import DontKnowActive from "./DontKnowActive.svg";
+import LastRecommend from "./LastRecommend.svg";
+import LastRecommendActive from "./LastRecommendActive.svg";
+import TodayRecommend from "./TodayRecommend.svg";
+import TodayRecommendActive from "./TodayRecommendActive.svg";
+import GoToSolutionBtn from "./GoToSolutionBtn.svg";
+import GoToSolutionBtnActive from "./GoToSolutionBtnActive.svg";
+import DetailAnal from "./DetailAnal.svg";
 
 export {
   BackMark,
@@ -74,4 +81,11 @@ export {
   CustomNext,
   DontKnow,
   DontKnowActive,
+  LastRecommend,
+  LastRecommendActive,
+  TodayRecommend,
+  TodayRecommendActive,
+  GoToSolutionBtn,
+  GoToSolutionBtnActive,
+  DetailAnal,
 };

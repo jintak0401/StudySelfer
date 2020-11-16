@@ -14,6 +14,7 @@ import RecommendQuestions from "../screens/RecommendQuestions";
 import RecommendResult from "../screens/RecommendResult";
 import DiagnoseResult from "../screens/DiagnoseResult";
 import ChoiceChapter2 from "../screens/ChoiceChapter2";
+import Recommend2 from "../screens/Recommend2";
 
 const Stack = createStackNavigator();
 
@@ -52,5 +53,6 @@ export default () => (
     <Stack.Screen name="추천문제결과" component={RecommendResult} />
     <Stack.Screen name="새 진단평가결과" component={DiagnoseResult} />
     <Stack.Screen name="새 진단평가" component={ChoiceChapter2} />
+    <Stack.Screen name="새 추천" component={Recommend2} />
   </Stack.Navigator>
 );

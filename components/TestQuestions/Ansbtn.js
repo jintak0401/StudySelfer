@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components/native";
 import DoubleClick from "react-native-double-tap";
 import { LinearGradient } from "expo-linear-gradient";
-// import { Text } from "react-native";
+import { Text } from "react-native";
 import colorset from "../../colorset";
 
 const ButtonText = styled.Text`
@@ -45,34 +45,43 @@ const Ansbtn = ({
       activeOpacity={0.9}
       disabled={dontKnow}
     >
-      {/* <LinearGradient
+      <LinearGradient
         colors={
-          isSelected
+          isRemoved
+            ? ["white", "white"]
+            : isSelected
             ? [colorset.gradFromBlue, colorset.gradToBlue]
             : [colorset.gradFromGray, colorset.gradToGray]
         }
         start={[0, 0]}
         end={[1, 1]}
-        style={{ padding: 15, alignItems: "center", borderRadius: 5 }}
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          borderTopLeftRadius: 10,
+          borderTopRightRadius: 10,
+          width: "97%",
+          height: "100%",
+        }}
       >
         <Text
           style={{
             backgroundColor: "transparent",
-            fontSize: 15,
-            color: "#fff",
+            fontSize: 25,
+            color: isRemoved ? "gray" : "#fff",
             fontFamily: "HGG80",
           }}
         >
           {ansNum}
         </Text>
-      </LinearGradient> */}
-      <ButtonText
+      </LinearGradient>
+      {/* <ButtonText
         isFirst={ansNum === 1}
         isSelected={isSelected}
         isRemoved={isRemoved}
       >
         {ansNum}
-      </ButtonText>
+      </ButtonText> */}
     </DoubleClick>
   );
 };

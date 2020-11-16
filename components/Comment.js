@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 const Container = styled.View`
   flex: 1;
   background-color: white;
+  ${(props) => props.needMarginTop && "margin-top: 110px"};
 `;
 
 const CollapseButton = styled.TouchableOpacity`
@@ -51,6 +52,7 @@ const Comment = ({
   questData,
   solutions,
   isChoice,
+  needMarginTop,
 }) => {
   const [questCollapsed, setQuestCollapsed] = useState(false);
   const [solutionCollapsed, setSolutionCollapsed] = useState(false);
@@ -89,7 +91,7 @@ const Comment = ({
   }, [solutionCollapsed]);
 
   return (
-    <Container>
+    <Container needMarginTop={needMarginTop}>
       <QuestSummary
         questNum={questNum}
         studentAns={studentAns}

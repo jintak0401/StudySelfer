@@ -1,6 +1,12 @@
 import React from "react";
 import styled from "styled-components/native";
 import PropTypes from "prop-types";
+import {
+  TodayRecommend,
+  TodayRecommendActive,
+  LastRecommend,
+  LastRecommendActive,
+} from "../assets/Svg";
 
 const Container = styled.View`
   flex-direction: row;
@@ -29,7 +35,26 @@ const Text = styled.Text`
 const SelectRecommend = ({ selectedTab, setSelectedTab, resetKey }) => {
   return (
     <Container>
-      <Button
+      {selectedTab === "today" ? (
+        <TodayRecommendActive
+          width={160}
+          height={35}
+          onPress={() => {
+            if (selectedTab === "past") resetKey();
+            setSelectedTab("today");
+          }}
+        />
+      ) : (
+        <TodayRecommend
+          width={160}
+          height={35}
+          onPress={() => {
+            if (selectedTab === "past") resetKey();
+            setSelectedTab("today");
+          }}
+        />
+      )}
+      {/* <Button
         isSelected={selectedTab === "today"}
         onPress={() => {
           if (selectedTab === "past") resetKey();
@@ -37,8 +62,29 @@ const SelectRecommend = ({ selectedTab, setSelectedTab, resetKey }) => {
         }}
       >
         <Text>오늘의 추천문제</Text>
-      </Button>
-      <Button
+      </Button> */}
+      {selectedTab === "past" ? (
+        <LastRecommendActive
+          style={{ marginLeft: 20 }}
+          width={160}
+          height={35}
+          onPress={() => {
+            if (selectedTab === "today") resetKey();
+            setSelectedTab("past");
+          }}
+        />
+      ) : (
+        <LastRecommend
+          style={{ marginLeft: 20 }}
+          width={160}
+          height={35}
+          onPress={() => {
+            if (selectedTab === "today") resetKey();
+            setSelectedTab("past");
+          }}
+        />
+      )}
+      {/* <Button
         isSelected={selectedTab === "past"}
         onPress={() => {
           if (selectedTab === "today") resetKey();
@@ -46,7 +92,7 @@ const SelectRecommend = ({ selectedTab, setSelectedTab, resetKey }) => {
         }}
       >
         <Text>지난 추천문제</Text>
-      </Button>
+      </Button> */}
     </Container>
   );
 };

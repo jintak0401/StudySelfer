@@ -141,7 +141,7 @@ export default ({ navigation, route }) => {
 
   const goToRecommend = async () => {
     const data = await apiGetRecommendNode();
-    navigation.navigate("추천", {
+    navigation.navigate("새 추천", {
       ...data,
     });
   };
@@ -165,9 +165,15 @@ export default ({ navigation, route }) => {
 
   return loaded ? (
     <Container>
-      {/* <GoToDiagResult onPress={() => navigation.navigate("새 진단평가결과")}>
+      <GoToDiagResult onPress={() => navigation.navigate("새 진단평가결과")}>
         <GoToDiagText>진단결과</GoToDiagText>
-      </GoToDiagResult> */}
+      </GoToDiagResult>
+      <GoToDiagResult
+        style={{ marginTop: 30 }}
+        onPress={() => navigation.navigate("새 추천")}
+      >
+        <GoToDiagText>추천문제</GoToDiagText>
+      </GoToDiagResult>
       {/* <TmpButton>
         <BeforeRecommend width={100} height={100} />
         <AfterRecommend width={100} height={100} />
