@@ -7,11 +7,13 @@ const ScrollContainer = ({
   contentContainerStyle,
   flexValue,
   footer,
+  isQuest,
 }) => {
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
       style={{
+        marginTop: isQuest ? 120 : 0,
         flexGrow: flexValue || 0,
         // backgroundColor: "white",
         width: "100%",

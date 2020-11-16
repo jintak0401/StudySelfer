@@ -17,6 +17,7 @@ import colorset from "../colorset";
 import { convertRecommendTitle, screenInfo } from "../utils";
 import { color } from "react-native-reanimated";
 import ScrollContainer from "../components/ScrollContainer";
+import { BackMarkWhite, DrawerMenu, GoDiagnose } from "../assets/Svg";
 
 const { WIDTH, HEIGHT } = screenInfo;
 
@@ -65,7 +66,7 @@ const Background = styled.ImageBackground`
 
 const ChapterBox = styled.ImageBackground`
   width: 85%;
-  aspect-ratio: ${(props) => (0.85 * WIDTH) / (57 + 41 * props.len)}
+  aspect-ratio: ${(props) => (props.len === 3 ? 1.88 : 1.487)};
   justify-content: center;
   margin-vertical: 3px;
 `;
@@ -73,7 +74,7 @@ const ChapterBox = styled.ImageBackground`
 const ChapterTitleContainer = styled.TouchableOpacity`
   flex-direction: row;
   width: 100%;
-  height: 55px;
+  height: 40px;
   padding-left: 40px;
   align-items: center;
   justify-content: space-between;
@@ -94,7 +95,7 @@ const ChapterTitleCheckImage = styled.Image`
 const ChapterSubtitleContainer = styled.TouchableOpacity`
   flex-direction: row;
   width: 100%;
-  height: 40px;
+  height: 38px;
   padding-left: 40px;
   align-items: center;
   justify-content: space-between;
@@ -112,7 +113,7 @@ const ChaptersubTitleCheckImage = styled.Image`
 `;
 
 const Seperator = styled.View`
-  width: 90%;
+  width: 89%;
   align-self: center;
   height: ${(props) => (props.isTitle ? 2 : 1)}px;
   background-color: ${(props) =>
@@ -209,10 +210,21 @@ export default ({ navigation, route }) => {
           <HeaderTitle>진단평가</HeaderTitle>
         </>
       ),
+      headerLeft: () => (
+        <BackMarkWhite
+          width={20}
+          height={20}
+          style={{ marginLeft: 20 }}
+          onPress={() => navigation.pop(1)}
+        />
+      ),
       headerRight: () => (
-        <ProfileButton onPress={() => navigation.openDrawer()}>
-          <Profile width={30} height={30} />
-        </ProfileButton>
+        <DrawerMenu
+          width={25}
+          height={25}
+          style={{ marginRight: 20 }}
+          onPress={() => navigation.openDrawer()}
+        />
       ),
     });
   }, [route]);
@@ -225,11 +237,12 @@ export default ({ navigation, route }) => {
           {[0, 1, 2, 3].map((n) => {
             const title = area[part][n][1];
             const data = chapters[area[part][n][0]];
+            const chapterBoxPath =
+              data.length === 3
+                ? require("../assets/Png/ChapterBox3.png")
+                : require("../assets/Png/ChapterBox4.png");
             return (
-              <ChapterBox
-                len={data.length}
-                source={require("../assets/Png/InfoBox.png")}
-              >
+              <ChapterBox key={n} len={data.length} source={chapterBoxPath}>
                 <ChapterTitleContainer
                   activeOpacity={0.8}
                   onPress={() => choiceSection(title)}
@@ -269,6 +282,12 @@ export default ({ navigation, route }) => {
               </ChapterBox>
             );
           })}
+          <GoDiagnose
+            style={{ alignSelf: "center" }}
+            width={300}
+            height={100}
+            onPress={() => goToEvaluate()}
+          />
         </ScrollContainer>
       </Background>
       <HeaderImage

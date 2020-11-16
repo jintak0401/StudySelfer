@@ -74,6 +74,19 @@ const EmptyBox = styled.View`
   height: 30px;
 `;
 
+const Background = styled.ImageBackground`
+  width: 100%;
+  height: 100%;
+  resize-mode: stretch;
+`;
+
+const HeaderImage = styled.ImageBackground`
+  width: 100%;
+  aspect-ratio: 2.843;
+  position: absolute;
+  top: 0;
+`;
+
 export default (props) => {
   const { navigation, route } = props;
   const [show, setShow] = useState({ 2020: true, 2019: true, 2018: true });

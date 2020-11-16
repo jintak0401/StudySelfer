@@ -28,6 +28,13 @@ import Logo from "./Logo.svg";
 import LogoBook from "./LogoBook.svg";
 import LogoTitle from "./LogoTitle.svg";
 import DrawerMenu from "./DrawerMenu.svg";
+import BackMarkWhite from "./BackMarkWhite.svg";
+import TitleImage from "./TitleImage.svg";
+import ProfileImage from "./ProfileImage.svg";
+import GoDiagnose from "./GoDiagnose.svg";
+import CustomNext from "./CustomNext.svg";
+import DontKnow from "./DontKnow.svg";
+import DontKnowActive from "./DontKnowActive.svg";
 
 export {
   BackMark,
@@ -60,4 +67,11 @@ export {
   LogoBook,
   LogoTitle,
   DrawerMenu,
+  BackMarkWhite,
+  TitleImage,
+  ProfileImage,
+  GoDiagnose,
+  CustomNext,
+  DontKnow,
+  DontKnowActive,
 };

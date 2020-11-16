@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { timerFormat } from "../utils";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
+import colorset from "../colorset";
 
 const Container = styled.View`
   justify-content: flex-end;
@@ -14,8 +15,8 @@ const Container = styled.View`
 const TimeText = styled.Text`
   font-size: 16px;
   margin-right: 10px;
-  color: #999999;
-  font-family: NanumSquare;
+  color: ${colorset.skyblue};
+  font-family: HGG60;
   font-weight: bold;
   text-align: center;
   text-align-vertical: center;
@@ -32,7 +33,7 @@ const Timer = ({ time }) => {
         onPress={() => setShow(!show)}
         name="clock-outline"
         size={30}
-        color={show ? "#4F62C0" : "#999999"}
+        color={show ? "white" : "#999999"}
       />
     </Container>
   );

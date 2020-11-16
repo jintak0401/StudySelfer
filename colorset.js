@@ -8,4 +8,9 @@ export default colorset = {
   gray: "#86888A",
   lightGray: "#DADEE5",
   darkGray: "#878787",
+  gradFromGray: "#F4F5FA",
+  gradToGray: "#DBE0ED",
+  gradFromBlue: "#5894FE",
+  gradToBlue: "#7879F6",
+  skyblue: "#AED7FF",
 };

@@ -9,6 +9,8 @@ import ScrollContainer from "../components/ScrollContainer";
 import Timer from "../components/Timer";
 import NextAndDontKnow from "../components/NextAndDontKnow";
 import { solvedData } from "../solvedData";
+import { BackMarkWhite } from "../assets/Svg";
+import colorset from "../colorset";
 
 const Container = styled.View`
   flex: 1;
@@ -38,12 +40,16 @@ const TitleContainer = styled.View`
 
 const HeaderTitle = styled.Text`
   font-size: 23px;
-  color: #4f62c0;
+  color: white;
+  margin-top: 20px;
+  font-family: HGG80;
 `;
 
 const HeaderSubtitle = styled.Text`
   font-size: 15px;
-  color: #999999;
+  color: ${colorset.skyblue};
+  font-family: HGG60;
+  margin-top: 5px;
 `;
 
 const BottomContainer = styled.View`
@@ -56,6 +62,13 @@ const TimeContainer = styled.View`
   align-items: center;
   margin-right: 20px;
   margin-top: 10px;
+`;
+
+const HeaderImage = styled.ImageBackground`
+  width: 100%;
+  aspect-ratio: 3.987;
+  position: absolute;
+  top: 0;
 `;
 
 const EvaluateQuestions = (props) => {
@@ -163,6 +176,15 @@ const EvaluateQuestions = (props) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerStyle: { backgroundColor: "white", height: 80, elevation: 0 },
+      headerTransparent: true,
+      headerLeft: () => (
+        <BackMarkWhite
+          width={20}
+          height={20}
+          style={{ marginLeft: 20 }}
+          onPress={() => navigation.pop(1)}
+        />
+      ),
       headerTitle: () => (
         <TitleContainer>
           <HeaderTitle>진단평가</HeaderTitle>
@@ -180,6 +202,7 @@ const EvaluateQuestions = (props) => {
   return (
     <Container>
       <ScrollContainer
+        isQuest={true}
         flexValue={6}
         ListFooterComponent={() => (
           <View style={{ height: 70, backgroundColor: "white" }} />
@@ -221,6 +244,9 @@ const EvaluateQuestions = (props) => {
           setDontKnow={setDontKnow}
         />
       ) : null}
+      <HeaderImage
+        source={require("../assets/Png/HeaderBackRect.png")}
+      ></HeaderImage>
     </Container>
   );
 };

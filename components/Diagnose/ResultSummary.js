@@ -51,7 +51,7 @@ const ResultImage = styled.Image`
   margin-top: -100px;
 `;
 
-const DiagnoseResult = (props) => {
+export default (props) => {
   const difficulty = ["쉬울 때", "보통일 때", "어려울 때"];
   const [selectedDiff, setSelectedDiff] = useState(1);
   const resultImagePath = [
@@ -128,5 +128,3 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
 });
-
-export default DiagnoseResult;

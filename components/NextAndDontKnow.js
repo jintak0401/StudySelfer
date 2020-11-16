@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 import { AntDesign } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import { screenInfo } from "../utils";
+import { CustomNext, DontKnow, DontKnowActive } from "../assets/Svg";
 
 const { isTablet, HEIGHT } = screenInfo;
 
@@ -39,21 +40,21 @@ const NextAndDontKnow = ({ goToNext, dontKnow, setDontKnow, turn = "q" }) => {
     <MoveQuestBtnSet turn={turn}>
       {turn === "q" ? (
         <LeftBtn onPress={() => setDontKnow(!dontKnow)}>
-          <AntDesign
+          {dontKnow ? (
+            <DontKnowActive style={{ opacity: 0.7 }} width={45} height={45} />
+          ) : (
+            <DontKnow style={{ opacity: 0.7 }} width={45} height={45} />
+          )}
+          {/* <AntDesign
             style={{ opacity: 0.7 }}
             name={iconName.left}
             size={iconSize}
             color={dontKnow ? iconColor.dontKnow : iconColor.know}
-          />
+          /> */}
         </LeftBtn>
       ) : null}
       <RightBtn onPress={() => goToNext()}>
-        <AntDesign
-          style={{ opacity: 0.7 }}
-          name={iconName.right}
-          size={iconSize}
-          color={iconColor.next}
-        />
+        <CustomNext style={{ opacity: 0.7 }} width={45} height={45} />
       </RightBtn>
     </MoveQuestBtnSet>
   );

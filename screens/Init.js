@@ -165,15 +165,9 @@ export default ({ navigation, route }) => {
 
   return loaded ? (
     <Container>
-      <GoToDiagResult onPress={() => navigation.navigate("새 진단평가결과")}>
+      {/* <GoToDiagResult onPress={() => navigation.navigate("새 진단평가결과")}>
         <GoToDiagText>진단결과</GoToDiagText>
-      </GoToDiagResult>
-      <GoToDiagResult
-        style={{ marginTop: 30 }}
-        onPress={() => navigation.navigate("새 진단평가")}
-      >
-        <GoToDiagText>진단평가</GoToDiagText>
-      </GoToDiagResult>
+      </GoToDiagResult> */}
       {/* <TmpButton>
         <BeforeRecommend width={100} height={100} />
         <AfterRecommend width={100} height={100} />
@@ -227,7 +221,7 @@ export default ({ navigation, route }) => {
       </Wrapper> */}
       <Button
         activeOpacity={0.8}
-        onPress={() => navigation.navigate("진단평가")}
+        onPress={() => navigation.navigate("새 진단평가")}
       >
         <StepUp width={100} height={100} />
         <Text>진단평가</Text>

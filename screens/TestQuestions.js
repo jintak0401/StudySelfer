@@ -49,6 +49,13 @@ const InputContainer = styled.View`
   align-items: center;
 `;
 
+const HeaderImage = styled.ImageBackground`
+  width: 100%;
+  aspect-ratio: 3.987;
+  position: absolute;
+  top: 0;
+`;
+
 export default ({ navigation, route }) => {
   const [questNum, setQuestNum] = useState(1);
   const [studentAns, setStudentAns] = useState({});
@@ -122,6 +129,7 @@ export default ({ navigation, route }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerStyle: { backgroundColor: "white", height: 80, elevation: 0 },
+      headerTransparent: true,
       headerTitle: () => (
         <TitleContainer>
           <HeaderTitle>모의고사 풀기</HeaderTitle>
@@ -216,6 +224,9 @@ export default ({ navigation, route }) => {
           />
         </>
       ) : null}
+      <HeaderImage
+        source={require("../assets/Png/HeaderBackRect.png")}
+      ></HeaderImage>
     </Container>
   );
 };
