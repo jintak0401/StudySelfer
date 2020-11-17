@@ -42,6 +42,11 @@ import TodayRecommendActive from "./TodayRecommendActive.svg";
 import GoToSolutionBtn from "./GoToSolutionBtn.svg";
 import GoToSolutionBtnActive from "./GoToSolutionBtnActive.svg";
 import DetailAnal from "./DetailAnal.svg";
+import LeftCircleDeco from "./LeftCircleDeco.svg";
+import LeftPencilDeco from "./LeftPencilDeco.svg";
+import RightAlphabetDeco from "./RightAlphabetDeco.svg";
+import RightTriangleDeco from "./RightTriangleDeco.svg";
+import UpArrowDeco from "./UpArrowDeco.svg";
 
 export {
   BackMark,
@@ -88,4 +93,9 @@ export {
   GoToSolutionBtn,
   GoToSolutionBtnActive,
   DetailAnal,
+  LeftCircleDeco,
+  LeftPencilDeco,
+  RightAlphabetDeco,
+  RightTriangleDeco,
+  UpArrowDeco,
 };

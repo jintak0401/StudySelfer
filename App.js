@@ -14,6 +14,7 @@ import styled from "styled-components/native";
 import {
   Book,
   FlyingPapers,
+  LeftCircleDeco,
   LogoBook,
   LogoTitle,
   WalkingPerson,
@@ -153,15 +154,25 @@ export default function App() {
         style={{ width: "100%", height: "100%" }}
         source={require("./assets/Png/StartDeco.png")}
       > */}
+
+      {/* <LeftCircleDeco
+        style={{ position: "absolute", left: -50, bottom: -50 }}
+        width={200}
+        height={200}
+      /> */}
       <Wrapper
         style={{
           opacity: fadeAnim,
           position: "absolute",
-          right: -10,
-          bottom: 50,
+          left: -50,
+          bottom: -50,
         }}
       >
-        <WalkingPerson />
+        <LeftCircleDeco
+          // style={{ position: "absolute", left: -50, bottom: -50 }}
+          width={200}
+          height={200}
+        />
       </Wrapper>
       <Wrapper
         style={{

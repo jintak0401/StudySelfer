@@ -170,9 +170,9 @@ export default ({ navigation, route }) => {
       </GoToDiagResult>
       <GoToDiagResult
         style={{ marginTop: 30 }}
-        onPress={() => navigation.navigate("새 추천")}
+        onPress={() => navigation.navigate("상세정보")}
       >
-        <GoToDiagText>추천문제</GoToDiagText>
+        <GoToDiagText>상세정보</GoToDiagText>
       </GoToDiagResult>
       {/* <TmpButton>
         <BeforeRecommend width={100} height={100} />

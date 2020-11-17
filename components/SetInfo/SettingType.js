@@ -4,58 +4,61 @@ import colorset from "../../colorset";
 
 const Container = styled.View`
   width: 100%;
-  height: 500px;
+  height: 150px;
   justify-content: center;
   align-items: center;
+  margin-top: -20px;
 `;
 
 const ImageLine = styled.View`
+  width: 100%;
+  height: 100px;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 const TitleText = styled.Text`
   font-family: HGG80;
   font-size: 20px;
   color: ${colorset.lightBlue};
+  align-self: flex-start;
+  margin-left: 30px;
+  margin-bottom: -10px;
 `;
 
 const GradeImage = styled.Image`
-  width: 35%;
-  height: 0.9854;
+  height: 62px;
+  aspect-ratio: 2.6692;
 `;
 
 const ImageContainer = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
+  height: 100%;
+  margin-horizontal: 15px;
 `;
 
-export default ({ grade, setGrade }) => {
+export default ({ type, setType }) => {
   const images = {
-    _1active: require("../../assets/Png/grade1Active.png"),
-    _1: require("../../assets/Png/grade1.png"),
-    _2active: require("../../assets/Png/grade2Active.png"),
-    _2: require("../../assets/Png/grade2.png"),
-    _3active: require("../../assets/Png/grade3Active.png"),
-    _3: require("../../assets/Png/grade3.png"),
-    _4active: require("../../assets/Png/grade4Active.png"),
-    _4: require("../../assets/Png/grade4.png"),
+    liberty: require("../../assets/Png/liberty.png"),
+    libertyActive: require("../../assets/Png/libertyActive.png"),
+    natural: require("../../assets/Png/natural.png"),
+    naturalActive: require("../../assets/Png/naturalActive.png"),
   };
   return (
     <Container>
+      <TitleText>문이과 선택</TitleText>
       <ImageLine>
-        <ImageContainer>
-          <GradeImage source={images["_1" + (grade === 1 ? "active" : "")]} />
+        <ImageContainer onPress={() => setType("liberty")}>
+          <GradeImage
+            source={images["liberty" + (type === "liberty" ? "Active" : "")]}
+          />
         </ImageContainer>
-        <ImageContainer>
-          <GradeImage source={images["_2" + (grade === 2 ? "active" : "")]} />
-        </ImageContainer>
-      </ImageLine>
-      <ImageLine>
-        <ImageContainer>
-          <GradeImage source={images["_3" + (grade === 3 ? "active" : "")]} />
-        </ImageContainer>
-        <ImageContainer>
-          <GradeImage source={images["_4" + (grade === 4 ? "active" : "")]} />
+        <ImageContainer onPress={() => setType("natural")}>
+          <GradeImage
+            source={images["natural" + (type === "natural" ? "Active" : "")]}
+          />
         </ImageContainer>
       </ImageLine>
     </Container>
