@@ -1,5 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Animated, Easing, StatusBar } from "react-native";
+import {
+  Animated,
+  Easing,
+  Image,
+  ImageBackground,
+  StatusBar,
+} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import Drawer from "./navigation/Drawer";
 import { fonts } from "./src/Fonts";
@@ -143,6 +149,10 @@ export default function App() {
     </>
   ) : fontLoad ? (
     <Container source={require("./assets/Png/StartPage.png")}>
+      {/* <ImageBackground
+        style={{ width: "100%", height: "100%" }}
+        source={require("./assets/Png/StartDeco.png")}
+      > */}
       <Wrapper
         style={{
           opacity: fadeAnim,
@@ -180,6 +190,7 @@ export default function App() {
           <KakaoText>카카오 아이디로 로그인</KakaoText>
         </KakaoButton>
       </KakaoContainer>
+      {/* </ImageBackground> */}
     </Container>
   ) : (
     <Container />

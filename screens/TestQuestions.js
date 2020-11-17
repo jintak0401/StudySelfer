@@ -167,7 +167,7 @@ export default ({ navigation, route }) => {
           <Collapsible collapsed={!clock}>
             <ProgressBar time={time} totalTime={testTime + readyTime} />
           </Collapsible>
-          <ScrollContainer flexValue={6}>
+          <ScrollContainer isQuest={true} flexValue={6}>
             <Questions
               questNum={questNum}
               questData={data.questionImageUrl[questNum]}

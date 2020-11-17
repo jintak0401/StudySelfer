@@ -1,6 +1,12 @@
 import React, { useLayoutEffect } from "react";
 import styled from "styled-components/native";
-import { ResultSummary, StrongChap, WeakChap } from "../components/Diagnose";
+import {
+  ResultSummary,
+  StrongChap,
+  WeakChap,
+  Graph,
+  GoRecommendButton,
+} from "../components/Diagnose";
 // import ResultSummary from "../components/Diagnose/ResultSummary";
 // import StrongChap from "../components/Diagnose/StrongChap";
 import {
@@ -13,7 +19,6 @@ import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import colorset from "../colorset";
 import Swiper from "react-native-swiper";
 import { screenInfo } from "../utils";
-import Graph from "../components/Diagnose/Graph";
 
 const { WIDTH, HEIGHT } = screenInfo;
 
@@ -59,7 +64,6 @@ const ChapterImage = styled.Image`
   width: 80%;
   height: ${WIDTH * 0.8 * 0.6265}px;
   resize-mode: contain;
-  background-color: black;
 `;
 
 const Divider = styled.View`
@@ -167,11 +171,11 @@ const DiagnoseResult = (props) => {
         <View style={styles.chapter}>
           <StrongChap />
         </View>
-        <Divider />
-        <View style={styles.chapter}>
+        <View style={{ ...styles.chapter, marginTop: -30, marginBottom: -50 }}>
           <WeakChap />
         </View>
         <Divider />
+        <GoRecommendButton />
         <View style={styles.footer} />
       </Container>
     </View>
@@ -188,14 +192,12 @@ const styles = StyleSheet.create({
     width: "80%",
     height: WIDTH * 0.8 * 0.6265,
     resizeMode: "contain",
-    backgroundColor: "black",
   },
   chapter: {
-    height: 280,
+    height: 340,
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "black",
   },
   footer: {
     height: 200,

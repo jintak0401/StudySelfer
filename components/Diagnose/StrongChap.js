@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components/native";
-import { Image, StyleSheet } from "react-native";
+import { Image, StyleSheet, Text } from "react-native";
 import Swiper from "react-native-swiper";
 import { screenInfo } from "../../utils";
+import colorset from "../../colorset";
 
 const { HEIGHT, WIDTH } = screenInfo;
 
@@ -28,6 +29,18 @@ export default StrongChap = ({ style }) => {
   };
   return (
     <Container style={{ ...style }}>
+      <Text
+        style={{
+          color: colorset.emerald,
+          fontSize: 24,
+          fontFamily: "HGG80",
+          alignSelf: "flex-start",
+          marginLeft: 45,
+          marginVertical: 10,
+        }}
+      >
+        내가 강한 유형 TOP3
+      </Text>
       <Swiper loop={false} style={styles.swiper} showsPagination={false}>
         {[1, 2, 3].map((val) => (
           <ChapterImage key={val} source={img[val]} />
@@ -47,6 +60,5 @@ const styles = StyleSheet.create({
     width: "80%",
     height: WIDTH * 0.8 * 0.6265,
     resizeMode: "contain",
-    backgroundColor: "black",
   },
 });

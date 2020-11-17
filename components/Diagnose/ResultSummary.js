@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import styled from "styled-components/native";
 import InfoBox from "./InfoBox";
 import Swiper from "react-native-swiper";
@@ -10,6 +10,7 @@ const Container = styled.View`
   width: 100%;
   justify-content: center;
   align-items: center;
+  margin-bottom: 20px;
 `;
 
 const ButtonSet = styled.View`
@@ -22,7 +23,7 @@ const ButtonSet = styled.View`
 
 const ButtonContainer = styled.TouchableOpacity`
   background-color: ${(props) =>
-    props.isSelected ? colorset.darkPurple : colorset.lightPurple};
+    props.isSelected ? colorset.darkPurple : "#b496eb"};
   width: 90px;
   height: 30px;
   justify-content: center;
@@ -61,6 +62,27 @@ export default (props) => {
 
   return (
     <Container>
+      <View
+        style={{
+          alignSelf: "center",
+          width: "100%",
+          height: 16,
+          backgroundColor: colorset.skyblue,
+          marginBottom: 20,
+          marginTop: 30,
+        }}
+      >
+        <Text
+          style={{
+            marginTop: -14,
+            fontSize: 28,
+            fontFamily: "HGG80",
+            color: colorset.lightBlue,
+          }}
+        >
+          21학년도 수능 예상 진단
+        </Text>
+      </View>
       <ButtonSet>
         {difficulty.map((val, idx) => {
           return (

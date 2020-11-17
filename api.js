@@ -1,8 +1,4 @@
 import axios from "axios";
-import { Dimensions } from "react-native";
-import { testInfo } from "./testInfo";
-
-const { width: WIDTH, height: HEIGHT } = Dimensions.get("screen");
 
 export const apiTestQuests = async () => {
   try {
@@ -223,7 +219,6 @@ export const apiGetTest = async (title) => {
     });
   };
   const getTestData = async (id) => {
-    // const { data } = await axios.get(`http://3.35.52.211:9696/test/${id}`);
     const { data } = await axios.get(`http://3.35.52.211:9696/test/21`);
     return data;
   };

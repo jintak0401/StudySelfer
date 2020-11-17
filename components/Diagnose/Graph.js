@@ -1,18 +1,20 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import styled from "styled-components/native";
 import { DetailAnal } from "../../assets/Svg";
 import colorset from "../../colorset";
 
 const Container = styled.View`
-  height: 400px;
+  height: 370px;
   justify-content: center;
   align-items: center;
+  margin-top: 30px;
 `;
 
 const GraphScroll = styled.ScrollView`
   width: 350px;
   height: 50px;
+  margin-top: 20px;
 `;
 
 const GraphImage = styled.Image`
@@ -23,13 +25,32 @@ const GraphImage = styled.Image`
 export default Grahp = () => {
   return (
     <Container>
-      <DetailAnal
-        style={{ marginLeft: -130, marginBottom: 20 }}
-        width={200}
-        height={40}
-      />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "flex-start",
+          width: "100%",
+        }}
+      >
+        <DetailAnal
+          style={{ marginLeft: -130, marginBottom: 20 }}
+          width={70}
+          height={40}
+        />
+        <Text
+          style={{
+            fontFamily: "HGG80",
+            color: colorset.lightBlue,
+            fontSize: 30,
+            marginLeft: 14,
+          }}
+        >
+          상세 분석
+        </Text>
+      </View>
       <Text
         style={{
+          marginTop: 7,
           marginLeft: 10,
           alignSelf: "flex-start",
           fontFamily: "HGG80",
@@ -57,7 +78,7 @@ export default Grahp = () => {
       >
         현재 상위 19.7%
       </Text>
-      <GraphScroll horizontal={true}>
+      <GraphScroll horizontal={true} showsHorizontalScrollIndicator={false}>
         <GraphImage source={require("../../assets/Png/Graph1.png")} />
         <GraphImage source={require("../../assets/Png/Graph2.png")} />
         <GraphImage source={require("../../assets/Png/Graph3.png")} />

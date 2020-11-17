@@ -243,10 +243,11 @@ export default ({ navigation, route }) => {
       </Button>
       <Button
         activeOpacity={0.8}
-        onPress={() =>
-          solvedData.diagnose
-            ? navigation.navigate("모의수능 및 모의고사")
-            : showMsg()
+        onPress={
+          () => navigation.navigate("모의수능 및 모의고사")
+          // solvedData.diagnose
+          //   ? navigation.navigate("모의수능 및 모의고사")
+          //   : showMsg()
         }
       >
         <TestingPeople width={97.76} height={100} />
