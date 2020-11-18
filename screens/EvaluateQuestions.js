@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import styled from "styled-components/native";
 import { apiPostEvaluation } from "../api";
 import Questions from "../components/Questions";
@@ -71,6 +71,15 @@ const HeaderImage = styled.ImageBackground`
   top: 0;
 `;
 
+const LoadingImage = styled.Image`
+  position: absolute;
+  align-self: center;
+  z-index: 1;
+  top: 50%;
+  width: 50px;
+  height: 50px;
+`;
+
 const EvaluateQuestions = (props) => {
   const { route, navigation } = props;
   const {
@@ -94,6 +103,8 @@ const EvaluateQuestions = (props) => {
   const [isChoice, setIsChoice] = useState({ 1: _isChoice });
   const [correctAns, setCorrectAns] = useState({ 1: _correctAns });
   const [id, setId] = useState(qid);
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
 
   const initAns = () => {
     setTime(0);
@@ -108,7 +119,7 @@ const EvaluateQuestions = (props) => {
 
   const goToEvaluateSolution = (data) => {
     solvedData.diagnose = true;
-    navigation.navigate("진단평가결과", {
+    navigation.navigate("새 진단평가결과", {
       studentAns: studentAns,
       quests: quests,
       solutions: solutions,
@@ -116,6 +127,14 @@ const EvaluateQuestions = (props) => {
       isChoice: isChoice,
       ...data,
     });
+  };
+
+  const BridgeEvaluation = (data) => {
+    setDone(true);
+    setTimeout(
+      () => goToEvaluateSolution(data),
+      parseInt(2000 + Math.random() * 200)
+    );
   };
 
   const goToNext = () => {
@@ -131,7 +150,10 @@ const EvaluateQuestions = (props) => {
         id
       );
       // 진단이 끝난 경우
-      if (data.good) goToEvaluateSolution(data);
+      if (data.good) {
+        // goToEvaluateSolution(data)
+        BridgeEvaluation(data);
+      }
       // 진단이 아직 안 끝난 경우
       else {
         const {
@@ -201,49 +223,80 @@ const EvaluateQuestions = (props) => {
 
   return (
     <Container>
-      <ScrollContainer
-        isQuest={true}
-        flexValue={6}
-        ListFooterComponent={() => (
-          <View style={{ height: 70, backgroundColor: "white" }} />
-        )}
-      >
-        <Questions questData={questData} />
-      </ScrollContainer>
-      <BottomContainer>
-        {isChoiceProb ? (
-          <AnsbtnSet>
-            {[1, 2, 3, 4, 5].map((n) => (
-              <Ansbtn
-                key={n}
-                ansNum={n}
-                isSelected={answer === n}
-                selectAns={selectAns}
-                isRemoved={removedAns[n]}
-                removeAns={removingAns}
+      {loading ? (
+        <>
+          <LoadingImage source={require("../assets/Gif/LoadingGIF.gif")} />
+          {done && (
+            <Text
+              style={{
+                position: "absolute",
+                top: "60%",
+                alignSelf: "center",
+                color: colorset.lightBlue,
+                fontSize: 24,
+                fontFamily: "HGG60",
+              }}
+            >
+              진단평가 결과를 분석중이에요!
+            </Text>
+          )}
+        </>
+      ) : (
+        !done && (
+          <>
+            <ScrollContainer
+              isQuest={true}
+              flexValue={6}
+              ListFooterComponent={() => (
+                <View style={{ height: 70, backgroundColor: "white" }} />
+              )}
+            >
+              <Questions questData={questData} />
+            </ScrollContainer>
+            <BottomContainer>
+              {isChoiceProb ? (
+                <AnsbtnSet>
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <Ansbtn
+                      key={n}
+                      ansNum={n}
+                      isSelected={answer === n}
+                      selectAns={selectAns}
+                      isRemoved={removedAns[n]}
+                      removeAns={removingAns}
+                      dontKnow={dontKnow}
+                    />
+                  ))}
+                </AnsbtnSet>
+              ) : (
+                <InputContainer>
+                  <Input
+                    placeholder={"답을 입력해주세요"}
+                    onSubmit={selectAns}
+                    defaultValue={answer}
+                    setMoveActive={setShowBottom}
+                    dontKnow={dontKnow}
+                  />
+                </InputContainer>
+              )}
+            </BottomContainer>
+            {showBottom ? (
+              <NextAndDontKnow
+                goToNext={() => {
+                  setLoading(true);
+                  goToNext();
+                  setTimeout(() => {
+                    setLoading(false);
+                  }, parseInt(Math.random() * 100 + 1500));
+                }}
+                // goToNext={goToNext}
                 dontKnow={dontKnow}
+                setDontKnow={setDontKnow}
               />
-            ))}
-          </AnsbtnSet>
-        ) : (
-          <InputContainer>
-            <Input
-              placeholder={"답을 입력해주세요"}
-              onSubmit={selectAns}
-              defaultValue={answer}
-              setMoveActive={setShowBottom}
-              dontKnow={dontKnow}
-            />
-          </InputContainer>
-        )}
-      </BottomContainer>
-      {showBottom ? (
-        <NextAndDontKnow
-          goToNext={goToNext}
-          dontKnow={dontKnow}
-          setDontKnow={setDontKnow}
-        />
-      ) : null}
+            ) : null}
+          </>
+        )
+      )}
       <HeaderImage
         source={require("../assets/Png/HeaderBackRect.png")}
       ></HeaderImage>

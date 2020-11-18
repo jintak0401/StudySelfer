@@ -31,8 +31,8 @@ const CollapseText = styled.Text`
   padding-right: 5px;
   font-size: 16px;
   color: #4f62c0;
-  font-weight: bold;
   padding-left: 6px;
+  font-family: HGG60;
 `;
 
 const FoldDirection = styled(Animated.View)`
@@ -97,6 +97,7 @@ const Comment = ({
         studentAns={studentAns}
         correctAns={correctAns}
         isChoice={isChoice}
+        isInTest={true}
       />
       <ScrollContainer>
         <Wrapper>

@@ -47,7 +47,9 @@ import LeftPencilDeco from "./LeftPencilDeco.svg";
 import RightAlphabetDeco from "./RightAlphabetDeco.svg";
 import RightTriangleDeco from "./RightTriangleDeco.svg";
 import UpArrowDeco from "./UpArrowDeco.svg";
-
+import CustomBefore from "./CustomBefore.svg";
+import NextBlack from "./NextBlack.svg";
+import BeforeBlack from "./BeforeBlack.svg";
 export {
   BackMark,
   Book,
@@ -98,4 +100,7 @@ export {
   RightAlphabetDeco,
   RightTriangleDeco,
   UpArrowDeco,
+  CustomBefore,
+  BeforeBlack,
+  NextBlack,
 };

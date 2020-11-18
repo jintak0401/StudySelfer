@@ -13,4 +13,5 @@ export default colorset = {
   gradFromBlue: "#5894FE",
   gradToBlue: "#7879F6",
   skyblue: "#AED7FF",
+  yellow: "#FCD246",
 };

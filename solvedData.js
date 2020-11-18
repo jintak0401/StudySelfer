@@ -166,6 +166,46 @@ export const studentSolveData = {
       3: 103,
     },
   },
+  diagnose: {
+    math1: [
+      ["지수", 2.9],
+      ["로그", 2.9],
+      ["지수함수의 뜻과 그래프", 4.2],
+      ["로그함수의 뜻과 그래프", 2.9],
+      ["삼각함수의 뜻과 그래프", 4.2],
+      ["등차수열과 등비수열", 1.9],
+      ["여러가지 수열, 수열의 합", 1.9],
+      ["수학적 귀납법", 2.9],
+    ],
+    math2: [
+      ["함수의 극한", 33.4],
+      ["함수의 연속", 35.8],
+      ["미분계수", 35.8],
+      ["다항함수 도함수", 54.7],
+      ["다항함수 도함수 활용", 54.7],
+      ["부정적분", 54.7],
+      ["정적분", 54.7],
+      ["다항함수 정적분 활용", 54.7],
+    ],
+    calculus: [
+      ["수열의 극한", 8.2],
+      ["급수", 8.2],
+      ["지수함수와 로그함수의 미분", 54.7],
+      ["삼각함수의 미분", 44.4],
+      ["여러가지 미분법", 54.7],
+      ["여러가지 함수의 도함수 활용", 54.7],
+      ["여러가지 함수의 적분법", 54.7],
+      ["여러가지 함수의 정적분 활용", 54.7],
+    ],
+    statistic: [
+      ["여러가지 순열과 조합", 2.4],
+      ["이항정리", 2.9],
+      ["확률의 뜻과 활용", 2.9],
+      ["조건부확률", 2.9],
+      ["확률변수와 확률분포, 데이터부족", undefined],
+      ["통계적 추정", undefined],
+    ],
+  },
 };
 
 export const getSolvedMonth = (year, month) => {
@@ -200,9 +240,6 @@ export const setRecommendData = (
   if (!monthKey && !dayKey) [monthKey, dayKey] = getTodayDateKey();
   if (!solvedData.recommend[monthKey]) solvedData.recommend[monthKey] = {};
   solvedData.recommend[monthKey][dayKey] = [time, result];
-  // solvedData.recommend[monthKey] = {
-  //   ...solvedData.recommend[monthKey],
-  //   [dayKey]: [time, result],
 };
 
 export const getRecommendData = (monthKey = undefined, dayKey = undefined) => {

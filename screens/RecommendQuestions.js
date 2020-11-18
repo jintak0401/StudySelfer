@@ -77,6 +77,15 @@ const HeaderImage = styled.ImageBackground`
   top: 0;
 `;
 
+const LoadingImage = styled.Image`
+  position: absolute;
+  align-self: center;
+  z-index: 1;
+  top: 50%;
+  width: 50px;
+  height: 50px;
+`;
+
 const RecommendQuestions = (props) => {
   const { route, navigation } = props;
   const {
@@ -196,13 +205,14 @@ const RecommendQuestions = (props) => {
   return (
     <Container>
       {load ? (
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
-          <ActivityIndicator color="#4f62c0" size="large" />
-          <Text style={{ fontSize: 30 }}> 로딩중 </Text>
-        </View>
+        <LoadingImage source={require("../assets/Gif/LoadingGIF.gif")} />
       ) : (
+        // <View
+        //   style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        // >
+        //   <ActivityIndicator color="#4f62c0" size="large" />
+        //   <Text style={{ fontSize: 30 }}> 로딩중 </Text>
+        // </View>
         <>
           {turn === "q" ? (
             <>

@@ -235,7 +235,8 @@ export default ({ navigation, route }) => {
       <Button
         activeOpacity={0.8}
         onPress={() => {
-          solvedData.diagnose ? goToRecommend() : showMsg();
+          // solvedData.diagnose ? goToRecommend() : showMsg();
+          goToRecommend();
         }}
       >
         <NoteAndPerson width={117.71} height={100} />

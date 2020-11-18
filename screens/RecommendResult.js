@@ -10,6 +10,7 @@ import Collapsible from "react-native-collapsible";
 import RecommendTable from "../components/RecommendTable";
 import { getTodayDateKey, setRecommendData, solvedData } from "../solvedData";
 import RecommendBottom from "../components/RecommendBottom";
+import colorset from "../colorset";
 
 const { isTablet } = screenInfo;
 
@@ -33,13 +34,16 @@ const HeaderLeftButton = styled.TouchableOpacity`
 
 const HeaderTitle = styled.Text`
   font-size: 23px;
-  color: #4f62c0;
-  font-weight: bold;
+  color: white;
+  margin-top: 20px;
+  font-family: HGG80;
 `;
 
 const HeaderSubtitle = styled.Text`
   font-size: 15px;
-  color: #999999;
+  color: ${colorset.skyblue};
+  font-family: HGG60;
+  margin-top: 5px;
 `;
 
 const HomeButton = styled.TouchableOpacity`
@@ -52,7 +56,7 @@ const DevideBox = styled.View`
   border-bottom-color: #95989a;
   border-bottom-width: 3px;
   height: 50%;
-  width: 120%;
+  width: 85%;
   opacity: 0.3;
 `;
 
@@ -70,17 +74,26 @@ const CollapseText = styled.Text`
   padding-right: 5px;
   font-size: 16px;
   color: #4f62c0;
-  font-weight: bold;
   padding-left: 6px;
+  font-family: HGG80;
 `;
 
-const DevideContainer = styled.View``;
+const DevideContainer = styled.View`
+  margin-top: 20px;
+`;
 
 const TmpBox = styled.View`
   width: 95%;
   margin-left: 12px;
   align-items: center;
   justify-content: center;
+`;
+
+const HeaderImage = styled.ImageBackground`
+  width: 100%;
+  aspect-ratio: 3.987;
+  position: absolute;
+  top: 0;
 `;
 
 const RecommendResult = (props) => {
@@ -133,12 +146,13 @@ const RecommendResult = (props) => {
       2
     )}월 ${dayKey}일`;
     navigation.setOptions({
+      headerStyle: { backgroundColor: "white", height: 80, elevation: 0 },
+      headerTransparent: true,
       headerLeft: () => (
         <HeaderLeftButton onPress={() => navigation.pop(2)}>
-          <Feather name="x" size={isTablet ? 34 : 24} color="#4F62C0" />
+          <Feather name="x" size={isTablet ? 34 : 24} color="white" />
         </HeaderLeftButton>
       ),
-      headerStyle: { backgroundColor: "white", height: 80, elevation: 0 },
       headerTitle: () => (
         <TitleContainer>
           <HeaderTitle>추천문제 풀이결과</HeaderTitle>
@@ -146,7 +160,7 @@ const RecommendResult = (props) => {
         </TitleContainer>
       ),
       headerRight: () => (
-        <HomeButton onPress={() => navigation.popToTop()}>
+        <HomeButton onPress={() => navigation.pop(2)}>
           <Home width={28} height={28} />
         </HomeButton>
       ),
@@ -159,7 +173,7 @@ const RecommendResult = (props) => {
 
   return (
     <Container>
-      <ScrollContainer flexValue={1}>
+      <ScrollContainer isQuest={true} flexValue={1}>
         <RecommendTable time={timerFormat(totalTime, true)} result={result} />
         <DevideContainer>
           <DevideBox />
@@ -191,6 +205,9 @@ const RecommendResult = (props) => {
           todayDone={todayDone}
         />
       </ScrollContainer>
+      <HeaderImage
+        source={require("../assets/Png/HeaderBackRect.png")}
+      ></HeaderImage>
     </Container>
   );
 };

@@ -7,9 +7,9 @@ const ButtonContainer = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   width: 300px;
-  height: 150px;
+  height: 200px;
   border-radius: 30px;
-  margin-top: 30px;
+  margin-top: 10px;
 `;
 
 const BackImage = styled.ImageBackground`
@@ -34,6 +34,11 @@ const ContentText = styled.Text`
   ${(props) => props.upLine && "margin-top: 7px"};
 `;
 
+const DoneImage = styled.Image`
+  height: 100%;
+  aspect-ratio: 1.5957;
+`;
+
 const RecommendBottom = ({ goBackTodayRecommend, todayDone }) => {
   const [monthKey, dayKey] = getTodayDateKey();
   const path = todayDone
@@ -47,7 +52,10 @@ const RecommendBottom = ({ goBackTodayRecommend, todayDone }) => {
       disabled={todayDone}
       onPress={goBackTodayRecommend}
     >
-      <BackImage source={path}>
+      <DoneImage
+        source={require("../assets/Png/RecommendDone.png")}
+      ></DoneImage>
+      {/* <BackImage source={path}>
         {todayDone && (
           <>
             <DateText>{date}</DateText>
@@ -57,7 +65,7 @@ const RecommendBottom = ({ goBackTodayRecommend, todayDone }) => {
             <ContentText>추천문제 풀이완료!</ContentText>
           </>
         )}
-      </BackImage>
+      </BackImage> */}
     </ButtonContainer>
   );
 };

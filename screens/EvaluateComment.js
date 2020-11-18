@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
-import { Animated, Easing } from "react-native";
+import { Animated, Easing, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import Questions from "../components/Questions";
 import ScrollContainer from "../components/ScrollContainer";
@@ -10,6 +10,8 @@ import Collapsible from "react-native-collapsible";
 import Dash from "react-native-dash";
 import { AntDesign } from "@expo/vector-icons";
 import Solutions from "../components/Solutions";
+import colorset from "../colorset";
+import { BackMarkWhite } from "../assets/Svg";
 
 const TitleContainer = styled.View`
   margin-left: -20px;
@@ -18,13 +20,22 @@ const TitleContainer = styled.View`
 
 const HeaderTitle = styled.Text`
   font-size: 23px;
-  color: #4f62c0;
-  font-weight: bold;
+  color: white;
+  margin-top: 20px;
+  font-family: HGG80;
 `;
 
 const HeaderSubtitle = styled.Text`
   font-size: 15px;
-  color: #999999;
+  color: ${colorset.skyblue};
+  font-family: HGG60;
+  margin-top: 5px;
+`;
+
+const HeaderLeftButton = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  margin-left: 15px;
 `;
 
 const IconSet = styled.View`
@@ -58,8 +69,8 @@ const CollapseText = styled.Text`
   padding-right: 5px;
   font-size: 16px;
   color: #4f62c0;
-  font-weight: bold;
   padding-left: 6px;
+  font-family: HGG60;
 `;
 
 const FoldDirection = styled(Animated.View)`
@@ -70,6 +81,13 @@ const FoldDirection = styled(Animated.View)`
 const Wrapper = styled.View`
   justify-content: center;
   align-items: center;
+`;
+
+const HeaderImage = styled.ImageBackground`
+  width: 100%;
+  aspect-ratio: 3.987;
+  position: absolute;
+  top: 0;
 `;
 
 export default (props) => {
@@ -122,28 +140,40 @@ export default (props) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerStyle: {
-        backgroundColor: "white",
-        height: 80,
-        elevation: 1,
-        borderBottomWidth: 3,
-        borderColor: "#95989A",
-      },
+      // headerStyle: {
+      //   backgroundColor: "white",
+      //   height: 80,
+      //   elevation: 1,
+      //   borderBottomWidth: 3,
+      //   borderColor: "#95989A",
+      // },
+
+      headerStyle: { backgroundColor: "white", height: 80, elevation: 0 },
+      headerTransparent: true,
+      headerLeft: () => (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.pop(1);
+          }}
+        >
+          <BackMarkWhite width={20} height={20} style={{ marginLeft: 20 }} />
+        </TouchableOpacity>
+      ),
       headerTitle: () => (
         <TitleContainer>
           <HeaderTitle>해설 보기</HeaderTitle>
-          <HeaderSubtitle>진단 평가 {questNum}번 문제</HeaderSubtitle>
+          <HeaderSubtitle>
+            {/*"진단 평가"*/ "추천문제"} {questNum}번 문제
+          </HeaderSubtitle>
         </TitleContainer>
       ),
       headerRight: () => (
-        <HomeButton onPress={() => navigation.popToTop()}>
+        <HomeButton onPress={() => navigation.pop(3)}>
           <Home width={28} height={28} />
         </HomeButton>
       ),
     });
   }, [route, questNum]);
-
-  console.log("EvaluateComment.js", questData, solutions);
 
   return (
     <Container>
@@ -152,6 +182,7 @@ export default (props) => {
         studentAns={studentAns[questNum]}
         correctAns={correctAns[questNum]}
         isChoice={isChoice?.[questNum]}
+        needMargin={true}
       />
       <ScrollContainer>
         <Wrapper>
@@ -177,7 +208,7 @@ export default (props) => {
             </FoldDirection>
           </CollapseButton>
           <Collapsible collapsed={questCollapsed}>
-            <Questions questData={questData[questNum]} />
+            <Questions questData={questData[questNum].questImageUrl} />
           </Collapsible>
         </Wrapper>
         <Wrapper>
@@ -214,6 +245,9 @@ export default (props) => {
         changeQuestNum={(qNum) => setQuestNum(qNum)}
         endQuestionNum={endQuestionNum}
       />
+      <HeaderImage
+        source={require("../assets/Png/HeaderBackRect.png")}
+      ></HeaderImage>
     </Container>
   );
 };

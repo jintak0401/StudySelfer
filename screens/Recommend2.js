@@ -224,7 +224,7 @@ export default (props) => {
       headerTitle: () => (
         <>
           <HeaderSubtitle>한진탁 학생</HeaderSubtitle>
-          <HeaderTitle>진단평가</HeaderTitle>
+          <HeaderTitle>추천문제</HeaderTitle>
         </>
       ),
       headerLeft: () => (

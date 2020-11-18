@@ -71,11 +71,11 @@ const Right = styled.View`
     props.isCorrect ? "flex-end" : "space-between"};
   align-items: center;
   flex-direction: row;
-  width: ${(props) => (props.isTablet ? 35 : 170)}px;
+  width: ${(props) => (props.isTablet ? 35 : 180)}px;
 `;
 
 const RightWrapper = styled.View`
-  flex: 1;
+  flex: ${(props) => (props.needFlex ? 2 : 1)};
   justify-content: center;
   align-items: center;
 `;
@@ -95,8 +95,8 @@ const Text = styled.Text`
       ? 20
       : 15}px;
   color: ${(props) => (props.isCorrect ? colorset.lightBlue : colorset.cherry)};
-  font-weight: ${(props) =>
-    props.isChoice && props.hasValue ? "bold" : "normal"};
+  margin-left: 2px;
+  font-family: HGG60;
 `;
 
 const GotoSolContainer = styled.TouchableOpacity`
@@ -138,7 +138,7 @@ const QuestResult = ({
         <Right isTablet={isTablet} isCorrect={isCorrect}>
           {isCorrect ? null : (
             <>
-              <RightWrapper>
+              <RightWrapper needFlex={true}>
                 <Text
                   isChoice={isChoice}
                   hasValue={studentAns}

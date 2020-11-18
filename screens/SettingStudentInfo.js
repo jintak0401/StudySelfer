@@ -77,7 +77,7 @@ export default ({ navigation, route }) => {
       <SettingType type={type} setType={settingType} />
       <GoDiagnoseButton
         disabled={!(type && grade)}
-        onPress={() => navigation.pop(1)}
+        onPress={() => navigation.navigate("새 진단평가")}
       >
         <ButtonImage
           opacity={grade && type}

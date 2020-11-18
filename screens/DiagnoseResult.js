@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import styled from "styled-components/native";
 import {
   ResultSummary,
@@ -6,6 +6,9 @@ import {
   WeakChap,
   Graph,
   GoRecommendButton,
+  SubjectBar,
+  SubjectTitle,
+  ChapterList,
 } from "../components/Diagnose";
 // import ResultSummary from "../components/Diagnose/ResultSummary";
 // import StrongChap from "../components/Diagnose/StrongChap";
@@ -19,6 +22,7 @@ import { Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import colorset from "../colorset";
 import Swiper from "react-native-swiper";
 import { screenInfo } from "../utils";
+import { apiGetRecommendNode } from "../api";
 
 const { WIDTH, HEIGHT } = screenInfo;
 
@@ -73,13 +77,55 @@ const Divider = styled.View`
   margin-vertical: 20px;
 `;
 
+const LoadingImage = styled.Image`
+  position: absolute;
+  align-self: center;
+  z-index: 1;
+  top: 50%;
+  width: 50px;
+  height: 50px;
+`;
+
+const HeaderImage = styled.ImageBackground`
+  width: 100%;
+  aspect-ratio: 2.843;
+  position: absolute;
+  top: 0;
+`;
+
 const DiagnoseResult = (props) => {
   const { navigation, route } = props;
+  const [subject, setSubject] = useState("math1");
   const strong = {
     1: require("../assets/Png/StrongChap1.png"),
     2: require("../assets/Png/StrongChap2.png"),
     3: require("../assets/Png/StrongChap3.png"),
   };
+
+  const [loading, setLoading] = useState(true);
+
+  const settingSubject = (num) => {
+    const sub = ["math1", "math2", "calculus", "statistic"];
+    let idx = 0;
+    for (; idx < 4; idx++) {
+      if (subject === sub[idx]) break;
+    }
+    if (num === 1 && 0 <= idx && idx <= 2) setSubject(sub[idx + 1]);
+    else if (num === -1 && 1 <= idx && idx <= 3) setSubject(sub[idx - 1]);
+  };
+
+  const goToRecommend = async () => {
+    const data = await apiGetRecommendNode();
+    navigation.navigate("새 추천", {
+      ...data,
+    });
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000 + parseInt(Math.random() * 200));
+  }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -110,7 +156,7 @@ const DiagnoseResult = (props) => {
 
   return (
     <View>
-      <TopImage source={require("../assets/Png/StartPage.png")} />
+      <TopImage source={require("../assets/Png/HeaderBackground.png")} />
       <Container
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
@@ -158,7 +204,7 @@ const DiagnoseResult = (props) => {
           >
             연속 {13}일 출석
             <Text style={{ color: colorset.lightBlue, fontFamily: "HGG60" }}>
-              {"    "}지난출석 {"2020.11.15"}
+              {"    "}지난출석 {"2020.11.18"}
             </Text>
           </Text>
         </View>
@@ -175,7 +221,10 @@ const DiagnoseResult = (props) => {
           <WeakChap />
         </View>
         <Divider />
-        <GoRecommendButton />
+        <SubjectTitle subject={subject} />
+        <SubjectBar subject={subject} settingSubject={settingSubject} />
+        <ChapterList subject={subject} />
+        <GoRecommendButton goToRecommend={goToRecommend} />
         <View style={styles.footer} />
       </Container>
     </View>

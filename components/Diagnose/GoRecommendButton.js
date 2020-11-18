@@ -5,7 +5,8 @@ import colorset from "../../colorset";
 
 const Container = styled.View`
   width: 100%;
-  height: 300px;
+  height: 170px;
+  margin-top: 80px;
 `;
 
 const GoButton = styled.TouchableOpacity`
@@ -52,7 +53,7 @@ export default ({ goToRecommend }) => {
       >
         분석결과에 따른 튜터의 추천문제가 준비되어있어요
       </Text>
-      <GoButton activeOpacity={0.8}>
+      <GoButton activeOpacity={0.8} onPress={() => goToRecommend()}>
         <ButtonImage source={require("../../assets/Png/GoToRecommend.png")} />
       </GoButton>
     </Container>

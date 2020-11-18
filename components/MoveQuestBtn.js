@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 import { AntDesign } from "@expo/vector-icons";
 import PropTypes from "prop-types";
 import { screenInfo } from "../utils";
+import { CustomBefore, CustomNext } from "../assets/Svg";
 
 const { isTablet, HEIGHT } = screenInfo;
 
@@ -41,12 +42,13 @@ const MoveQuestBtn = ({
     <MoveQuestBtnSet>
       <LeftBtn onPress={() => changeQuestNum(questNum - 1)}>
         {questNum === 1 ? null : (
-          <AntDesign
-            style={{ opacity: 0.7 }}
-            name={moveQuestIcon.left}
-            size={iconSize}
-            color={color}
-          />
+          <CustomBefore style={{ opacity: 0.7 }} width={45} height={45} />
+          // <AntDesign
+          //   style={{ opacity: 0.7 }}
+          //   name={moveQuestIcon.left}
+          //   size={iconSize}
+          //   color={color}
+          // />
         )}
       </LeftBtn>
       <RightBtn
@@ -55,13 +57,14 @@ const MoveQuestBtn = ({
         }
       >
         {questNum !== (endQuestionNum || 30) ? (
-          <AntDesign
-            style={{ opacity: 0.7 }}
-            name={moveQuestIcon.right}
-            size={iconSize}
-            color={color}
-          />
-        ) : inTest ? (
+          <CustomNext style={{ opacity: 0.7 }} width={45} height={45} />
+        ) : // <AntDesign
+        //   style={{ opacity: 0.7 }}
+        //   name={moveQuestIcon.right}
+        //   size={iconSize}
+        //   color={color}
+        // />
+        inTest ? (
           <AntDesign
             style={{ opacity: 0.7 }}
             name={moveQuestIcon.done}

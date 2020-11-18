@@ -120,6 +120,15 @@ const Seperator = styled.View`
     props.isTitle ? colorset.gray : colorset.lightGray};
 `;
 
+const LoadingImage = styled.Image`
+  position: absolute;
+  align-self: center;
+  z-index: 1;
+  top: 50%;
+  width: 50px;
+  height: 50px;
+`;
+
 export default ({ navigation, route }) => {
   const [part, setPart] = useState("natural");
   const [selectedChap, setSelectedChap] = useState({});
@@ -131,6 +140,7 @@ export default ({ navigation, route }) => {
     toggleCircle: require("../assets/Png/toggleCircle.png"),
     toggleCircleActive: require("../assets/Png/toggleCircleActive.png"),
   };
+  const [loading, setLoading] = useState(false);
 
   const convertSection = (section) => {
     let subj = "";
@@ -231,6 +241,9 @@ export default ({ navigation, route }) => {
 
   return (
     <>
+      {loading && (
+        <LoadingImage source={require("../assets/Gif/LoadingGIF.gif")} />
+      )}
       <Background source={require("../assets/Png/BackgroundPattern.png")}>
         <ScrollContainer>
           <View style={{ height: 160 }} />
@@ -286,7 +299,13 @@ export default ({ navigation, route }) => {
             style={{ alignSelf: "center" }}
             width={300}
             height={100}
-            onPress={() => goToEvaluate()}
+            onPress={() => {
+              setLoading(true);
+              setTimeout(() => {
+                goToEvaluate();
+                setLoading(false);
+              }, parseInt(Math.random() * 100 + 1500));
+            }}
           />
         </ScrollContainer>
       </Background>

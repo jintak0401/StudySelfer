@@ -15,6 +15,10 @@ import {
   Book,
   FlyingPapers,
   LeftCircleDeco,
+  LeftPencilDeco,
+  RightAlphabetDeco,
+  RightTriangleDeco,
+  UpArrowDeco,
   LogoBook,
   LogoTitle,
   WalkingPerson,
@@ -82,6 +86,8 @@ const BackgroundImage = styled.ImageBackground`
   height: ${HEIGHT}px;
 `;
 
+const LoadingImage = styled.Image``;
+
 export default function App() {
   const [fontLoad] = useFonts(fonts);
   const [splashLoad, setSplashLoad] = useState(false);
@@ -91,6 +97,10 @@ export default function App() {
   const moveUp = useRef(new Animated.Value(0)).current;
   const kakaoOpacity = useRef(new Animated.Value(0)).current;
   const [isTimeToGo, setIsTimeToGo] = useState(false);
+  const movePlus = useRef(new Animated.Value(0)).current;
+  const moveMinus = useRef(new Animated.Value(0)).current;
+  const moveMinusDouble = useRef(new Animated.Value(0)).current;
+  const [goNext, setGoNext] = useState(false);
 
   useEffect(() => {
     Animated.timing(logoOpacity, {
@@ -122,6 +132,27 @@ export default function App() {
       delay: 200,
       useNativeDriver: true,
     }).start();
+    Animated.timing(movePlus, {
+      toValue: splashEnd ? HEIGHT / 7 : 0,
+      duration: 700,
+      delay: 200,
+      easing: Easing.easeInOutQuint,
+      useNativeDriver: true,
+    }).start();
+    Animated.timing(moveMinus, {
+      toValue: splashEnd ? -(HEIGHT / 7) : 0,
+      duration: 700,
+      delay: 200,
+      easing: Easing.easeInOutQuint,
+      useNativeDriver: true,
+    }).start();
+    Animated.timing(moveMinusDouble, {
+      toValue: splashEnd ? -(HEIGHT / 5) : 0,
+      duration: 700,
+      delay: 200,
+      easing: Easing.easeInOutQuint,
+      useNativeDriver: true,
+    }).start();
   }, [splashEnd]);
 
   useEffect(() => {
@@ -137,7 +168,18 @@ export default function App() {
     if (splashLoad) wait();
   }, [splashLoad]);
 
+  useEffect(() => {
+    const wait = async () => {
+      await setTimeout(
+        () => setGoNext(true),
+        parseInt(1000 + Math.random() * 100)
+      );
+    };
+    if (isTimeToGo) wait();
+  }, [isTimeToGo]);
+
   return isTimeToGo ? (
+    // goNext ? (
     <>
       <NavigationContainer>
         <Drawer />
@@ -148,7 +190,10 @@ export default function App() {
         barStyle="light-content"
       />
     </>
-  ) : fontLoad ? (
+  ) : // ) : (
+  //   <LoadingImage source={require("./assets/Gif/LoadingGif.gif")} />
+  // )
+  fontLoad ? (
     <Container source={require("./assets/Png/StartPage.png")}>
       {/* <ImageBackground
         style={{ width: "100%", height: "100%" }}
@@ -162,27 +207,58 @@ export default function App() {
       /> */}
       <Wrapper
         style={{
-          opacity: fadeAnim,
+          opacity: logoOpacity,
+          transform: [{ translateX: moveMinus, translateY: movePlus }],
           position: "absolute",
           left: -50,
           bottom: -50,
         }}
       >
-        <LeftCircleDeco
-          // style={{ position: "absolute", left: -50, bottom: -50 }}
-          width={200}
-          height={200}
-        />
+        <LeftCircleDeco width={200} height={200} />
       </Wrapper>
       <Wrapper
         style={{
-          opacity: fadeAnim,
+          opacity: logoOpacity,
+          transform: [{ translateX: moveMinus }],
           position: "absolute",
-          left: -20,
-          top: 40,
+          left: -50,
+          top: 150,
         }}
       >
-        <FlyingPapers />
+        <LeftPencilDeco width={140} height={140} />
+      </Wrapper>
+      <Wrapper
+        style={{
+          opacity: logoOpacity,
+          transform: [{ translateY: moveMinusDouble }],
+          position: "absolute",
+          left: "36%",
+          top: -20,
+        }}
+      >
+        <UpArrowDeco width={140} height={140} />
+      </Wrapper>
+      <Wrapper
+        style={{
+          opacity: logoOpacity,
+          transform: [{ translateX: movePlus }],
+          position: "absolute",
+          right: -10,
+          top: 150,
+        }}
+      >
+        <RightAlphabetDeco width={100} height={100} />
+      </Wrapper>
+      <Wrapper
+        style={{
+          opacity: logoOpacity,
+          transform: [{ translateX: movePlus, translateY: movePlus }],
+          position: "absolute",
+          right: -25,
+          bottom: 0,
+        }}
+      >
+        <RightTriangleDeco width={150} height={150} />
       </Wrapper>
       <Wrapper
         style={{ opacity: logoOpacity, transform: [{ translateY: moveUp }] }}

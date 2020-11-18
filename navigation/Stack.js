@@ -36,6 +36,7 @@ export default () => (
       headerBackTitleVisible: false,
     }}
   >
+    <Stack.Screen name="상세정보" component={SettingStudentInfo} />
     <Stack.Screen name="초기화면" component={Init} />
     <Stack.Screen
       name="추천"
@@ -55,6 +56,5 @@ export default () => (
     <Stack.Screen name="새 진단평가결과" component={DiagnoseResult} />
     <Stack.Screen name="새 진단평가" component={ChoiceChapter2} />
     <Stack.Screen name="새 추천" component={Recommend2} />
-    <Stack.Screen name="상세정보" component={SettingStudentInfo} />
   </Stack.Navigator>
 );
